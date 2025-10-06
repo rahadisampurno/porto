@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kafka Simulator Sederhana</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Inter', sans-serif; background: #f8fafc; }
+		code, .font-mono { font-family: 'Fira Code', monospace; }
+		.partition { min-height: 80px; }
+		.msg { transition: transform .2s ease; }
+	</style>
+</head>
+<body class="text-slate-800">
+	<div class="max-w-7xl mx-auto p-4 sm:p-6">
+		<header class="mb-5 flex items-center justify-between">
+			<h1 class="text-2xl font-bold text-amber-600">Kafka<span class="text-slate-800 font-normal"> Simulator</span></h1>
+			<div class="flex gap-2">
+				<button id="btn-start" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded">Start</button>
+				<button id="btn-pause" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded">Pause</button>
+			</div>
+		</header>
+
+		<section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+			<!-- Setup -->
+			<div class="bg-white border border-slate-200 rounded-lg p-4">
+				<h2 class="font-semibold">Konfigurasi</h2>
+				<div class="mt-3 grid grid-cols-2 gap-3 text-sm">
+					<label class="flex flex-col">Partitions <span class="ml-1 inline text-slate-400" title="Bagi pesan ke beberapa laci. Semakin banyak laci, semakin banyak consumer yang bisa kerja paralel (maksimum = jumlah partitions).">ⓘ</span>
+						<input id="inp-partitions" type="number" min="1" max="12" value="3" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<label class="flex flex-col">Brokers <span class="ml-1 inline text-slate-400" title="Jumlah server penyimpan data. Lebih banyak broker = lebih tahan gangguan dan bisa menampung beban lebih besar.">ⓘ</span>
+						<input id="inp-brokers" type="number" min="1" max="9" value="3" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<label class="flex flex-col">Replication Factor <span class="ml-1 inline text-slate-400" title="Berapa salinan tiap partisi di broker berbeda. 3 artinya 1 leader + 2 follower. Jika 1 broker mati, data tetap aman.">ⓘ</span>
+						<input id="inp-repl" type="number" min="1" max="3" value="1" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<label class="flex flex-col">Produce interval (ms) <span class="ml-1 inline text-slate-400" title="Jarak waktu antar pesan baru dari producer. Angka kecil = pesan mengalir lebih cepat.">ⓘ</span>
+						<input id="inp-produce" type="number" min="50" step="50" value="600" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<label class="flex flex-col col-span-2">Kecepatan animasi <span class="ml-1 inline text-slate-400" title="Mengatur cepat/lambatnya simulasi berjalan (berlaku untuk producer dan consumer).">ⓘ</span>
+						<input id="inp-speed" type="range" min="0.5" max="2" step="0.25" value="1" class="mt-2">
+						<span class="text-xs text-slate-500 mt-1">0.5x – 2x</span>
+					</label>
+					<label class="flex flex-col">Partitioner <span class="ml-1 inline text-slate-400" title="Round-robin: pesan dibagi rata ke semua partisi. By key: pesan dengan key yang sama selalu masuk partisi yang sama (menggunakan hash).">ⓘ</span>
+						<select id="sel-partitioner" class="mt-1 border rounded px-2 py-1">
+							<option value="round">Round-robin</option>
+							<option value="key">By key (hash)</option>
+						</select>
+					</label>
+					<label class="flex flex-col">Producer key (opsional) <span class="ml-1 inline text-slate-400" title="Isi jika memilih By key. Contoh: user-42. Semua pesan dengan key ini akan diarahkan ke partisi yang sama.">ⓘ</span>
+						<input id="inp-key" type="text" placeholder="user-1" class="mt-1 border rounded px-2 py-1">
+					</label>
+				</div>
+				<button id="btn-apply" class="mt-3 bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded">Apply Setup</button>
+				<p class="text-xs text-slate-500 mt-2">Catatan: simulasi ini tidak terhubung ke cluster Kafka sungguhan.</p>
+			</div>
+
+			<!-- Consumers -->
+			<div class="bg-white border border-slate-200 rounded-lg p-4">
+				<h2 class="font-semibold">Consumers</h2>
+				<div id="consumers" class="space-y-2 mt-3"></div>
+				<div class="mt-3 grid grid-cols-3 gap-2 text-sm">
+					<label class="flex flex-col col-span-1">Consume interval (ms) <span class="ml-1 inline text-slate-400" title="Jarak waktu antar pembacaan pesan oleh consumer. Angka kecil = membaca lebih cepat.">ⓘ</span>
+						<input id="inp-consume" type="number" min="50" step="50" value="500" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<label class="flex flex-col col-span-1">Kebijakan commit <span class="ml-1 inline text-slate-400" title="Count: simpan posisi baca setiap N pesan. Time: simpan posisi setiap N milidetik. Commit lebih sering = risiko duplikat lebih kecil saat restart.">ⓘ</span>
+						<select id="sel-commit-mode" class="mt-1 border rounded px-2 py-1">
+							<option value="count">Per jumlah pesan</option>
+							<option value="time">Per interval waktu</option>
+						</select>
+					</label>
+					<label class="flex flex-col col-span-1">Commit tiap (N/ms) <span class="ml-1 inline text-slate-400" title="Isi angka sesuai mode di kiri. Contoh: 5 (Count) = tiap 5 pesan; 500 (Time) = tiap 500 ms.">ⓘ</span>
+						<input id="inp-commitN" type="number" min="1" value="5" class="mt-1 border rounded px-2 py-1">
+					</label>
+					<button id="btn-add-consumer" class="self-end bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded">Tambah Consumer</button>
+				</div>
+				<label class="inline-flex items-center gap-2 text-sm mt-2" title="Jika dicentang, consumer baru mulai dari pesan paling awal (offset 0). Jika tidak, mulai dari pesan terbaru saja.">
+					<input id="chk-from-begin" type="checkbox" class="rounded">
+					<span>Mulai baca dari awal (from-beginning)</span>
+				</label>
+			</div>
+
+			<!-- Visualisation -->
+			<div class="bg-white border border-slate-200 rounded-lg p-4 lg:col-span-1">
+				<h2 class="font-semibold">Brokers & Topic</h2>
+				<div id="viz-brokers" class="mt-3 flex flex-wrap gap-2"></div>
+				<div id="controls-brokers" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"></div>
+				<h3 class="font-medium mt-4">Partitions</h3>
+				<div id="viz-partitions" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2"></div>
+			</div>
+		</section>
+
+		<section class="mt-5 bg-white border border-slate-200 rounded-lg p-4">
+			<h2 class="font-semibold">Logs</h2>
+			<div id="logs" class="text-xs font-mono mt-2 h-40 overflow-y-auto bg-slate-50 border border-slate-100 rounded p-2"></div>
+		</section>
+
+		<section class="mt-5 bg-white border border-slate-200 rounded-lg p-4">
+			<h2 class="font-semibold">Panduan Kasus Simulasi</h2>
+			<p class="text-sm text-slate-600 mt-1">Gunakan skenario berikut untuk meniru kondisi umum di proyek dan lihat dampaknya pada partitions, ISR, dan offsets.</p>
+			<div class="mt-4 space-y-4 text-sm">
+				<div>
+					<h3 class="font-medium">1) Dasar produce → consume</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Apply Setup → Start.</li>
+						<li>Tambah 1 consumer. Amati offset bergerak dan log konsumsi.</li>
+						<li>Ubah <em>Produce interval</em> untuk melihat perubahan laju pesan.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">2) Partitioner by key (ordering & hotspot)</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Pilih <em>Partitioner = By key</em>, isi <em>Producer key</em> mis. <code class="font-mono">user-42</code>, Apply Setup → Start.</li>
+						<li>Perhatikan semua pesan masuk ke partisi yang sama (ordering per partisi terjaga).</li>
+						<li>Ganti key lain untuk melihat perpindahan partisi; ini meniru hotspot key.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">3) Scale out consumer group</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Partitions = 3. Tambah consumer 1→2→3.</li>
+						<li>Lihat assignment: maksimal 1 consumer aktif per partisi.</li>
+						<li>Hapus salah satu consumer untuk memicu rebalance.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">4) Replikasi, ISR, dan failover</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Set <em>Replication Factor</em> = 3, Apply Setup → Start.</li>
+						<li>Turunkan broker yang menjadi Leader (tombol Down). Lihat Leader berpindah ke replica dengan lag terkecil.</li>
+						<li>Naikkan kembali broker (Up). Follower akan mengejar, masuk ISR saat lag=0.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">5) Simulasi lag & tuning catch-up</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Start, lalu lihat nilai <em>Lag</em> per follower pada kartu partisi.</li>
+						<li>Atur <em>Replicate speed Broker</em> untuk mempercepat/memperlambat habisnya lag.</li>
+						<li>Perhatikan ISR ikut drain (keluar) saat lag&gt;0 dan join (masuk) saat lag=0.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">6) From-beginning vs latest</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Nonaktifkan <em>from-beginning</em>, tambah consumer → hanya pesan baru yang dibaca.</li>
+						<li>Aktifkan <em>from-beginning</em>, tambah consumer baru → membaca dari offset 0.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">7) Kebijakan commit (at-least-once trade-off)</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Pilih <em>Count</em> dan isi 1 vs 10. Commit lebih sering → lebih sedikit duplikasi saat restart, tapi overhead lebih besar.</li>
+						<li>Pilih <em>Time</em> 200ms vs 2000ms untuk melihat dampak jeda commit periodik.</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">8) Tanpa replikasi (RF=1) vs dengan replikasi (RF=3)</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>RF=1: turunkan broker leader → produksi berhenti untuk partisi tersebut.</li>
+						<li>RF=3: turunkan satu broker → produksi tetap berjalan (masih ada leader).</li>
+					</ol>
+				</div>
+				<div>
+					<h3 class="font-medium">9) Ordering per partition</h3>
+					<ol class="list-decimal pl-5 mt-1 space-y-1">
+						<li>Pakai By key dengan key tetap. Perhatikan offset bertambah berurutan pada partisi yang sama.</li>
+						<li>Tambahkan lebih banyak consumer; urutan per partisi tetap terjaga.</li>
+					</ol>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<script>
+		// --- State ---
+		let state = {
+			partitions: 3,
+			brokers: 3,
+			repl: 1,
+			produceInterval: 600,
+			producerTimer: null,
+			messageSeq: 0,
+			partitionLeaders: [],
+			partitionReplicas: [], // per partition: broker indexes
+			partitionISR: [], // per partition: Set of in-sync replica broker indexes
+			replicationLag: [], // per partition: Map(broker->lag)
+			brokersUp: [],
+			partitionLogs: [], // per partition: [{offset, value}]
+			consumers: [], // {id, intervalMs, commitEvery, timer, assignment, readOffset, committed, commitMode, commitTimer}
+			partitioner: 'round',
+			producerKey: '',
+			speed: 1,
+			replicationSpeed: []
+		};
+
+		// --- Utils ---
+		function log(msg){
+			const el = document.getElementById('logs');
+			const time = new Date().toLocaleTimeString();
+			el.innerText += `[${time}] ${msg}\n`;
+			el.scrollTop = el.scrollHeight;
+		}
+
+		function randomInt(n){ return Math.floor(Math.random() * n); }
+
+		// --- Setup & Rendering ---
+		function assignLeaders(){
+			state.partitionLeaders = Array.from({length: state.partitions}, (_,i)=> i % state.brokers);
+			state.partitionReplicas = Array.from({length: state.partitions}, (_,p)=>{
+				const reps = new Set();
+				for(let r=0;r<state.repl;r++) reps.add((p + r) % state.brokers);
+				return Array.from(reps);
+			});
+			state.partitionISR = state.partitionReplicas.map(reps=> new Set(reps));
+			state.replicationLag = state.partitionReplicas.map(reps=> new Map(reps.map(b=> [b,0])));
+		}
+
+		function resetPartitions(){
+			state.partitionLogs = Array.from({length: state.partitions}, () => []);
+		}
+
+		function renderBrokers(){
+			const wrap = document.getElementById('viz-brokers');
+			wrap.innerHTML = '';
+			for(let b=0;b<state.brokers;b++){
+				const box = document.createElement('div');
+				const up = state.brokersUp[b];
+				box.className = 'px-3 py-2 border rounded text-sm flex items-center gap-2 ' + (up?'bg-green-50 border-green-300':'bg-rose-50 border-rose-300');
+				box.innerHTML = `<span>Broker ${b}</span><button data-b="${b}" class="toggle text-xs ${up?'text-rose-700':'text-green-700'} underline">${up?'Down':'Up'}</button>`;
+				wrap.appendChild(box);
+				box.querySelector('.toggle').addEventListener('click', ()=> toggleBroker(b));
+			}
+
+			// controls per-broker: replication speed factor (lag drain rate)
+			const ctrl = document.getElementById('controls-brokers');
+			ctrl.innerHTML = '';
+			for(let b=0;b<state.brokers;b++){
+				const row = document.createElement('div');
+				row.className = 'border rounded p-2 bg-slate-50';
+				row.innerHTML = `
+					<div class="flex items-center justify-between">
+					<div>Replicate speed Broker ${b} <span class="text-slate-400" title="Mengatur kecepatan follower broker ini mengejar leader. Naikkan jika ingin lag cepat habis.">ⓘ</span></div>
+						<div class="font-mono text-xs">x<span id="sp-b${b}">${(state.replicationSpeed?.[b]||1).toFixed(1)}</span></div>
+					</div>
+					<input type="range" min="0.5" max="3" step="0.5" value="${state.replicationSpeed?.[b]||1}" data-b="${b}" class="w-full mt-2">
+				`;
+				ctrl.appendChild(row);
+				row.querySelector('input').addEventListener('input', (e)=>{
+					const val = Number(e.target.value);
+					state.replicationSpeed[b] = val;
+					row.querySelector(`#sp-b${b}`).textContent = val.toFixed(1);
+				});
+			}
+		}
+
+		function renderPartitions(){
+			const grid = document.getElementById('viz-partitions');
+			grid.innerHTML = '';
+			for(let p=0;p<state.partitions;p++){
+				const leader = state.partitionLeaders[p];
+				const card = document.createElement('div');
+				card.className = 'border rounded p-2 partition';
+				const isr = Array.from(state.partitionISR[p]).join(',');
+				const lagInfo = Array.from(state.replicationLag[p].entries()).filter(([b])=> b!==leader).map(([b,l])=>`B${b}:${l}`).join(' ');
+				const reps = state.partitionReplicas[p].join(',');
+				card.innerHTML = `
+					<div class="flex items-center justify-between">
+						<div class="font-mono text-sm">P${p}</div>
+						<div class="text-xs text-slate-500">Leader: B${leader} · Replicas: [${reps}] · ISR: <span class="${state.partitionISR[p].size? 'text-green-700':'text-rose-700'}">[${isr}]</span> · Lag: ${lagInfo || '-'} </div>
+					</div>
+					<div id="msgs-${p}" class="mt-2 flex flex-wrap gap-1"></div>
+				`;
+				grid.appendChild(card);
+
+				const holder = card.querySelector(`#msgs-${p}`);
+				state.partitionLogs[p].slice(-20).forEach(m => {
+					const pill = document.createElement('span');
+					pill.className = 'msg text-xs px-2 py-1 rounded bg-amber-100 text-amber-900 border border-amber-200';
+					pill.textContent = `${m.offset}`;
+					holder.appendChild(pill);
+				});
+			}
+		}
+
+		function renderConsumers(){
+			const list = document.getElementById('consumers');
+			list.innerHTML = '';
+			state.consumers.forEach(c => {
+				const box = document.createElement('div');
+				box.className = 'border rounded p-2';
+				const assign = c.assignment.length? c.assignment.map(p=>`P${p}`).join(', ') : '—';
+				box.innerHTML = `
+					<div class="flex items-center justify-between">
+						<div class="font-medium">Consumer #${c.id}</div>
+						<button data-id="${c.id}" class="btn-remove text-xs text-red-600">Remove</button>
+					</div>
+					<p class="text-xs text-slate-500 mt-1">Assign: ${assign}</p>
+					<div class="text-xs mt-1">Offsets: ${Array.from(c.readOffset.entries()).map(([p,o])=>`P${p}:${o}`).join(' ')}</div>
+					<div class="text-xs text-slate-500">Committed: ${Array.from(c.committed.entries()).map(([p,o])=>`P${p}:${o}`).join(' ')}</div>
+				`;
+				list.appendChild(box);
+				box.querySelector('.btn-remove').addEventListener('click', ()=> removeConsumer(c.id));
+			});
+		}
+
+		function renderAll(){
+			renderBrokers();
+			renderPartitions();
+			renderConsumers();
+		}
+
+		// --- Group assignment ---
+		function rebalance(){
+			const N = state.consumers.length;
+			state.consumers.forEach(c=>{ c.assignment=[]; });
+			if(N===0){ renderConsumers(); return; }
+			for(let p=0;p<state.partitions;p++){
+				const idx = p % N; // simple round-robin
+				state.consumers[idx].assignment.push(p);
+			}
+			state.consumers.forEach(c=>{
+				const startAt = document.getElementById('chk-from-begin').checked ? 0 : state.partitionLogs.map(x=>x.length);
+				c.readOffset = new Map(c.assignment.map(p=> [p, Array.isArray(startAt)? startAt[p] : startAt]));
+				c.committed = new Map(c.assignment.map(p=> [p, -1]));
+			});
+			renderConsumers();
+			log('Rebalance selesai.');
+		}
+
+		// --- Producer ---
+		function choosePartition(){
+			if(state.partitioner==='round'){
+				return state.messageSeq % state.partitions;
+			}
+			// key hash
+			const key = state.producerKey || '';
+			let h=0; for(let i=0;i<key.length;i++){ h = (h*31 + key.charCodeAt(i))>>>0; }
+			return h % state.partitions;
+		}
+
+		function startProducer(){
+			stopProducer();
+			const interval = state.produceInterval / state.speed;
+			state.producerTimer = setInterval(()=>{
+				const p = choosePartition();
+				const logArr = state.partitionLogs[p];
+				const offset = logArr.length;
+				const msg = { offset, value: `m-${state.messageSeq++}` };
+				const leader = state.partitionLeaders[p];
+				if(!state.brokersUp[leader]){ log(`GAGAL: leader B${leader} down (P${p})`); return; }
+				logArr.push(msg);
+				// replicate to followers that are up
+				const followers = state.partitionReplicas[p].filter(b=> b!==leader);
+				followers.forEach(b=>{
+					if(state.brokersUp[b]){
+						// follower lags behind by some amount, reduce by replication speed factor
+						const curLag = state.replicationLag[p].get(b) || 0;
+						const factor = state.replicationSpeed[b] || 1;
+						const newLag = Math.max(0, curLag - factor);
+						state.replicationLag[p].set(b, newLag);
+					}
+				});
+				// recompute ISR: replicas that are up and lag == 0
+				state.partitionISR[p] = new Set(state.partitionReplicas[p].filter(b=> state.brokersUp[b] && (state.replicationLag[p].get(b) || 0) === 0));
+				log(`Produce -> P${p} offset ${offset}`);
+				renderPartitions();
+			}, interval);
+		}
+		function stopProducer(){ if(state.producerTimer){ clearInterval(state.producerTimer); state.producerTimer=null; } }
+
+		// --- Consumers ---
+		function startConsumerTimer(c){
+			if(c.timer) clearInterval(c.timer);
+			let sinceCommit = 0;
+			const tick = ()=>{
+				c.assignment.forEach(p=>{
+					const logArr = state.partitionLogs[p];
+					const next = c.readOffset.get(p) ?? 0;
+					if(next < logArr.length){
+						c.readOffset.set(p, next+1);
+						log(`C#${c.id} consume P${p} offset ${next}`);
+						sinceCommit++;
+					}
+				});
+				if(c.commitMode==='count' && sinceCommit >= c.commitEvery){
+					c.assignment.forEach(p=>{
+						const committed = (c.readOffset.get(p) ?? 0) - 1;
+						c.committed.set(p, committed);
+					});
+					log(`C#${c.id} commit offsets`);
+					sinceCommit = 0;
+				}
+				renderConsumers();
+			};
+			c.timer = setInterval(tick, c.intervalMs / state.speed);
+			if(c.commitMode==='time'){
+				if(c.commitTimer) clearInterval(c.commitTimer);
+				c.commitTimer = setInterval(()=>{
+					c.assignment.forEach(p=>{
+						const committed = (c.readOffset.get(p) ?? 0) - 1;
+						c.committed.set(p, committed);
+					});
+					log(`C#${c.id} commit (timer)`);
+					renderConsumers();
+				}, Math.max(100, c.commitEvery) / state.speed);
+			}
+		}
+
+		function addConsumer(){
+			const intervalMs = Number(document.getElementById('inp-consume').value) || 500;
+			const commitEvery = Number(document.getElementById('inp-commitN').value) || 5;
+			const commitMode = document.getElementById('sel-commit-mode').value;
+			const id = state.consumers.length ? Math.max(...state.consumers.map(x=>x.id))+1 : 1;
+			const c = { id, intervalMs, commitEvery, commitMode, timer: null, commitTimer: null, assignment: [], readOffset: new Map(), committed: new Map() };
+			state.consumers.push(c);
+			rebalance();
+			startConsumerTimer(c);
+		}
+
+		function removeConsumer(id){
+			const idx = state.consumers.findIndex(c=>c.id===id);
+			if(idx>=0){
+				const c = state.consumers[idx];
+				if(c.timer) clearInterval(c.timer);
+				state.consumers.splice(idx,1);
+				rebalance();
+			}
+		}
+
+		// --- Actions ---
+		function applySetup(){
+			state.partitions = Math.max(1, Number(document.getElementById('inp-partitions').value) || 3);
+			state.brokers = Math.max(1, Number(document.getElementById('inp-brokers').value) || 3);
+			state.repl = Math.max(1, Number(document.getElementById('inp-repl').value) || 1);
+			state.produceInterval = Math.max(50, Number(document.getElementById('inp-produce').value) || 600);
+			state.partitioner = document.getElementById('sel-partitioner').value;
+			state.producerKey = document.getElementById('inp-key').value || '';
+			state.speed = Number(document.getElementById('inp-speed').value) || 1;
+			assignLeaders();
+			resetPartitions();
+			state.brokersUp = Array.from({length: state.brokers}, ()=> true);
+			state.replicationSpeed = Array.from({length: state.brokers}, ()=> 1);
+			// introduce random initial lag for followers to visualize catch-up
+			for(let p=0;p<state.partitions;p++){
+				state.partitionReplicas[p].forEach(b=>{
+					if(b !== state.partitionLeaders[p]){
+						state.replicationLag[p].set(b, Math.floor(Math.random()*3));
+					}
+				});
+				state.partitionISR[p] = new Set(state.partitionReplicas[p].filter(b=> (state.replicationLag[p].get(b)||0)===0));
+			}
+			state.messageSeq = 0;
+			// clear consumers
+			state.consumers.forEach(c=> c.timer && clearInterval(c.timer));
+			state.consumers = [];
+			renderAll();
+			log('Setup diterapkan.');
+		}
+
+		function toggleBroker(b){
+			state.brokersUp[b] = !state.brokersUp[b];
+			// if leader down, elect new leader from ISR
+			for(let p=0;p<state.partitions;p++){
+				if(state.partitionLeaders[p]===b && !state.brokersUp[b]){
+					const candidates = state.partitionReplicas[p]
+						.filter(x=> state.brokersUp[x])
+						.sort((a,b)=> (state.replicationLag[p].get(a)||0) - (state.replicationLag[p].get(b)||0));
+					if(candidates.length>0){ state.partitionLeaders[p] = candidates[0]; log(`Failover: P${p} leader -> B${candidates[0]}`); }
+				}
+				// recompute ISR (up replicas)
+				state.partitionISR[p] = new Set(state.partitionReplicas[p].filter(x=> state.brokersUp[x] && (state.replicationLag[p].get(x)||0)===0));
+			}
+			renderBrokers();
+			renderPartitions();
+		}
+
+		// --- Event bindings ---
+		document.getElementById('btn-apply').addEventListener('click', applySetup);
+		document.getElementById('btn-add-consumer').addEventListener('click', addConsumer);
+		document.getElementById('btn-start').addEventListener('click', ()=>{ startProducer(); state.consumers.forEach(startConsumerTimer); log('Start simulation'); });
+		document.getElementById('btn-pause').addEventListener('click', ()=>{ stopProducer(); state.consumers.forEach(c=> c.timer && clearInterval(c.timer)); log('Paused'); });
+
+		// --- Init ---
+		applySetup();
+	</script>
+</body>
+</html>
+
+

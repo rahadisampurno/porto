@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://rahadisampurna.com/sitemap.xml
+
+# Disallow specific files
+Disallow: /CV ATS RAHADI.pdf
+Disallow: /*.pdf$
+
+# Allow all other content
+Allow: /index.html
+Allow: /project-detail.html
+Allow: /blog-detail.html
+Allow: /images/
+Allow: /*.css
+Allow: /*.js

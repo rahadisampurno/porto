@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Panduan Interaktif Perintah Kafka</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+		code, .font-mono { font-family: 'Fira Code', monospace; }
+		.data-section { display: none; }
+		.data-section.active { display: grid; }
+		.nav-link.active { background-color: #e2e8f0; color: #1e293b; font-weight: 600; }
+	</style>
+</head>
+<body class="text-slate-800">
+
+	<div class="flex flex-col md:flex-row min-h-screen">
+		<!-- Sidebar Navigation -->
+		<aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0">
+			<div class="p-6">
+				<h1 class="text-xl font-bold text-amber-600">Kafka<span class="font-normal text-slate-700">Pedia</span></h1>
+				<p class="text-sm text-slate-500 mt-1">Catatan Agar Tak Luput Dari Ingatan</p>
+			</div>
+			<nav id="navigation" class="px-4 pb-4"></nav>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+			<header class="mb-6">
+				<h2 id="main-header" class="text-3xl font-bold text-slate-800"></h2>
+				<p id="main-description" class="mt-2 text-slate-600"></p>
+				<div class="relative mt-6">
+					<input type="text" id="search-input" placeholder="Cari perintah (mis: kafka-topics, consumer-groups)..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+						<svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+					</div>
+				</div>
+			</header>
+
+			<div id="command-container"></div>
+			<div id="no-results" class="hidden text-center py-10">
+				<p class="text-slate-500">Tidak ada perintah yang cocok dengan pencarian Anda.</p>
+			</div>
+		</main>
+	</div>
+
+	<!-- CLI Simulator -->
+	<div id="cli-simulator" class="fixed bottom-0 right-0 m-4 w-full max-w-lg bg-slate-900 text-white rounded-lg shadow-2xl transition-transform translate-y-full">
+		<div class="flex items-center justify-between p-3 bg-slate-800 rounded-t-lg">
+			<div class="flex items-center gap-2">
+				<span class="h-3 w-3 bg-red-500 rounded-full"></span>
+				<span class="h-3 w-3 bg-yellow-400 rounded-full"></span>
+				<span class="h-3 w-3 bg-green-500 rounded-full"></span>
+				<p class="text-sm ml-2 font-mono">Kafka CLI Simulator</p>
+			</div>
+			<button id="close-cli" class="text-slate-400 hover:text-white">
+				<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+			</button>
+		</div>
+		<div id="cli-output" class="p-4 h-64 overflow-y-auto font-mono text-sm">
+			<p><span class="text-green-400">&gt;</span> Simulator siap. Perintah di sini hanya contoh, tidak benar-benar terhubung ke cluster.</p>
+		</div>
+	</div>
+
+	<!-- Hidden textarea for copy functionality -->
+	<textarea id="copy-helper" style="position: absolute; left: -9999px;"></textarea>
+
+	<script>
+		const kafkaData = {
+			topics: {
+				title: "Topics",
+				description: "Topik itu seperti kotak surat. Produser memasukkan surat, konsumer mengambil surat.",
+				howto: [
+					"Buat kotak surat (topic)",
+					"Atur jumlah laci di dalamnya (partitions)",
+					"Lihat/ubah/hapus kotak bila perlu"
+				],
+				commands: [
+					{ cmd: "Create Topic", syntax: "kafka-topics --create --topic my-topic --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092", desc: "Membuat topic baru.", example: "kafka-topics --create --topic orders --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092", output: "Created topic orders." },
+					{ cmd: "List Topics", syntax: "kafka-topics --list --bootstrap-server localhost:9092", desc: "Daftar semua topic.", example: "kafka-topics --list --bootstrap-server localhost:9092", output: "orders\npayments" },
+					{ cmd: "Describe Topic", syntax: "kafka-topics --describe --topic my-topic --bootstrap-server localhost:9092", desc: "Detail partisi dan replikasi.", example: "kafka-topics --describe --topic orders --bootstrap-server localhost:9092", output: "Topic: orders\tPartitionCount:3\tReplicationFactor:1 ..." },
+					{ cmd: "Delete Topic", syntax: "kafka-topics --delete --topic my-topic --bootstrap-server localhost:9092", desc: "Hapus topic.", example: "kafka-topics --delete --topic orders --bootstrap-server localhost:9092", output: "Topic orders is marked for deletion." }
+				]
+			},
+			producer: {
+				title: "Producers",
+				description: "Produser itu seperti pengirim surat yang memasukkan pesan ke kotak (topic).",
+				howto: [
+					"Buka produser", "Ketik pesan", "Pesan dikirim ke topic"
+				],
+				commands: [
+					{ cmd: "Console Producer", syntax: "kafka-console-producer --topic my-topic --bootstrap-server localhost:9092", desc: "Kirim pesan lewat terminal.", example: "kafka-console-producer --topic orders --bootstrap-server localhost:9092", output: "> (ketik pesan lalu Enter)" },
+					{ cmd: "Producer With Key", syntax: "kafka-console-producer --topic my-topic --property parse.key=true --property key.separator=: --bootstrap-server localhost:9092", desc: "Kirim pesan dengan key untuk pengaturan partisi.", example: "kafka-console-producer --topic orders --property parse.key=true --property key.separator=: --bootstrap-server localhost:9092", output: "> user-1:{\"id\":1}" }
+				]
+			},
+			consumer: {
+				title: "Consumers",
+				description: "Konsumer itu seperti pengambil surat dari kotak.",
+				howto: [
+					"Mulai konsumer", "Ambil pesan dari topic", "Tampilkan di layar"
+				],
+				commands: [
+					{ cmd: "Console Consumer", syntax: "kafka-console-consumer --topic my-topic --from-beginning --bootstrap-server localhost:9092", desc: "Baca pesan dari awal.", example: "kafka-console-consumer --topic orders --from-beginning --bootstrap-server localhost:9092", output: "{\"id\":1}\n{\"id\":2}" },
+					{ cmd: "Consumer With Group", syntax: "kafka-console-consumer --topic my-topic --group my-group --bootstrap-server localhost:9092", desc: "Baca sebagai bagian dari group.", example: "kafka-console-consumer --topic orders --group analytics --bootstrap-server localhost:9092", output: "... streaming messages ..." }
+				]
+			},
+			groups: {
+				title: "Consumer Groups",
+				description: "Seperti regu pembaca surat. Mereka berbagi pekerjaan membaca kotak yang sama.",
+				howto: [
+					"Buat beberapa konsumer dengan nama group sama",
+					"Pesan dibagi rata per partisi",
+					"Cek status group"
+				],
+				commands: [
+					{ cmd: "List Groups", syntax: "kafka-consumer-groups --list --bootstrap-server localhost:9092", desc: "Daftar semua group.", example: "kafka-consumer-groups --list --bootstrap-server localhost:9092", output: "analytics\netl" },
+					{ cmd: "Describe Group", syntax: "kafka-consumer-groups --describe --group my-group --bootstrap-server localhost:9092", desc: "Lihat lag dan assignment.", example: "kafka-consumer-groups --describe --group analytics --bootstrap-server localhost:9092", output: "GROUP analytics\nTOPIC orders PARTITION 0 ... LAG 0" },
+					{ cmd: "Reset Offsets (dry-run)", syntax: "kafka-consumer-groups --group my-group --topic my-topic --reset-offsets --to-earliest --dry-run --bootstrap-server localhost:9092", desc: "Simulasi reset offset.", example: "kafka-consumer-groups --group analytics --topic orders --reset-offsets --to-earliest --dry-run --bootstrap-server localhost:9092", output: "DRY-RUN: Would reset offsets ..." }
+				]
+			},
+			offsets: {
+				title: "Partitions & Offsets",
+				description: "Partisi itu laci-laci di kotak. Offset itu nomor urut surat di tiap laci.",
+				howto: [
+					"Pisah kotak jadi beberapa laci (partitions)",
+					"Pesan masuk ke salah satu laci",
+					"Setiap surat punya nomor urut (offset)"
+				],
+				commands: [
+					{ cmd: "Increase Partitions", syntax: "kafka-topics --alter --topic my-topic --partitions 6 --bootstrap-server localhost:9092", desc: "Tambah jumlah partisi.", example: "kafka-topics --alter --topic orders --partitions 6 --bootstrap-server localhost:9092", output: "Increasing number of partitions ..." },
+					{ cmd: "Get Offsets (kcat)", syntax: "kcat -L -b localhost:9092 -t my-topic", desc: "Lihat metadata dan offsets (menggunakan kcat).", example: "kcat -L -b localhost:9092 -t orders", output: "metadata for orders ..." }
+				]
+			},
+			configs: {
+				title: "Configs",
+				description: "Pengaturan seperti tombol-tombol di kotak: retention, cleanup, dsb.",
+				howto: ["Lihat konfigurasi", "Ubah nilai", "Cek lagi"],
+				commands: [
+					{ cmd: "Describe Topic Config", syntax: "kafka-configs --describe --topic my-topic --bootstrap-server localhost:9092", desc: "Lihat konfigurasi topic.", example: "kafka-configs --describe --topic orders --bootstrap-server localhost:9092", output: "retention.ms=604800000 ..." },
+					{ cmd: "Alter Topic Config", syntax: "kafka-configs --alter --topic my-topic --add-config retention.ms=3600000 --bootstrap-server localhost:9092", desc: "Ubah konfigurasi topic.", example: "kafka-configs --alter --topic orders --add-config retention.ms=3600000 --bootstrap-server localhost:9092", output: "Completed updating config for topic orders." }
+				]
+			},
+			acls: {
+				title: "ACLs",
+				description: "Seperti izin masuk. Siapa boleh kirim/baca dari kotak.",
+				howto: ["Tambahkan izin", "Cek izin", "Cabut bila perlu"],
+				commands: [
+					{ cmd: "Add Read ACL", syntax: "kafka-acls --add --allow-principal User:alice --operation Read --topic orders --bootstrap-server localhost:9092", desc: "Izinkan baca untuk user.", example: "kafka-acls --add --allow-principal User:alice --operation Read --topic orders --bootstrap-server localhost:9092", output: "Adding ACLs for resource `Topic:orders`" },
+					{ cmd: "List ACLs", syntax: "kafka-acls --list --bootstrap-server localhost:9092", desc: "Daftar semua ACL.", example: "kafka-acls --list --bootstrap-server localhost:9092", output: "Current ACLs for resource ..." }
+				]
+			},
+			admin: {
+				title: "Cluster/Admin",
+				description: "Bagian mesin: cek broker, versi API, dan quorum (KRaft).",
+				howto: ["Cek info broker", "Lihat versi API", "Cek quorum"],
+				commands: [
+					{ cmd: "Broker API Versions", syntax: "kafka-broker-api-versions --bootstrap-server localhost:9092", desc: "Lihat versi API yang didukung broker.", example: "kafka-broker-api-versions --bootstrap-server localhost:9092", output: "{\"apiKey\":\"PRODUCE\", ... }" },
+					{ cmd: "Metadata Quorum (KRaft)", syntax: "kafka-metadata-quorum --describe --bootstrap-server localhost:9092", desc: "Status quorum metadata.", example: "kafka-metadata-quorum --describe --bootstrap-server localhost:9092", output: "Leader: ... Voters: ..." }
+				]
+			},
+			connect: {
+				title: "Kafka Connect",
+				description: "Seperti jembatan otomatis kirim-ambil data dari sumber/tujuan lain.",
+				howto: ["Buat konektor", "Lihat status", "Hentikan bila perlu"],
+				commands: [
+					{ cmd: "Create Connector (REST)", syntax: "POST http://localhost:8083/connectors { name, config }", desc: "Buat connector via REST.", example: `curl -X POST -H 'Content-Type: application/json' --data '{"name":"file-source","config":{"connector.class":"FileStreamSource","tasks.max":"1","file":"/tmp/input.txt","topic":"orders"}}' http://localhost:8083/connectors`, output: "{\"name\":\"file-source\", ... }" },
+					{ cmd: "List Connectors", syntax: "GET http://localhost:8083/connectors", desc: "Daftar semua connector.", example: "curl http://localhost:8083/connectors", output: "[\"file-source\"]" }
+				]
+				},
+				simulator: {
+					title: "Simulator",
+					description: "Mainkan visual Kafka langsung di sini: partitions, consumer group, replikasi, ISR, failover, lag, commit policy.",
+					isSimulator: true,
+					commands: []
+				}
+		};
+
+		const navigation = document.getElementById('navigation');
+		const commandContainer = document.getElementById('command-container');
+		const mainHeader = document.getElementById('main-header');
+		const mainDescription = document.getElementById('main-description');
+		const searchInput = document.getElementById('search-input');
+		const noResults = document.getElementById('no-results');
+		const cliSimulator = document.getElementById('cli-simulator');
+		const cliOutput = document.getElementById('cli-output');
+		const closeCli = document.getElementById('close-cli');
+		const copyHelper = document.getElementById('copy-helper');
+
+		let activeCategory = 'topics';
+
+		function renderNav() {
+			navigation.innerHTML = '';
+			Object.keys(kafkaData).forEach(key => {
+				const link = document.createElement('a');
+				link.href = '#';
+				link.textContent = kafkaData[key].title;
+				link.dataset.category = key;
+				link.className = `nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition ${key === activeCategory ? 'active' : ''}`;
+				navigation.appendChild(link);
+			});
+		}
+
+			function renderCommands(categoryKey, filter = '') {
+			const category = kafkaData[categoryKey];
+			if (!category) return;
+
+			mainHeader.textContent = category.title;
+			mainDescription.innerHTML = `${category.description || ''}`;
+			commandContainer.innerHTML = '';
+
+				// Special: render simulator iframe
+				if (category.isSimulator) {
+					commandContainer.className = 'data-section active grid grid-cols-1';
+					const wrap = document.createElement('div');
+					wrap.className = 'rounded-lg border border-slate-200 overflow-hidden bg-white';
+					wrap.innerHTML = `
+						<div class="p-3 flex items-center justify-between border-b bg-slate-50">
+							<p class="text-sm text-slate-600">Simulator Kafka interaktif tertanam</p>
+							<a href="kafka-simulator.html" target="_blank" class="text-amber-600 text-sm underline">Buka di tab baru</a>
+						</div>
+						<iframe src="kafka-simulator.html" title="Kafka Simulator" style="width:100%; height:900px; border:0; background:#fff;"></iframe>
+					`;
+					commandContainer.appendChild(wrap);
+					return;
+				}
+
+			if (Array.isArray(category.howto) && category.howto.length > 0 && !filter) {
+				const how = document.createElement('div');
+				how.className = 'mb-4 lg:mb-6 col-span-1 lg:col-span-2';
+				how.innerHTML = `
+					<div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-4">
+						<p class="font-medium">Cara cepat memahaminya:</p>
+						<ol class="list-decimal pl-5 mt-2 space-y-1 text-sm">
+							${category.howto.map(step => `<li>${step}</li>`).join('')}
+						</ol>
+					</div>
+				`;
+				commandContainer.appendChild(how);
+			}
+
+			const filteredCommands = category.commands.filter(c =>
+				c.cmd.toLowerCase().includes(filter.toLowerCase()) ||
+				c.desc.toLowerCase().includes(filter.toLowerCase()) ||
+				c.syntax.toLowerCase().includes(filter.toLowerCase())
+			);
+
+			noResults.style.display = filteredCommands.length === 0 ? 'block' : 'none';
+			commandContainer.className = `data-section active grid grid-cols-1 lg:grid-cols-2 gap-4`;
+
+			filteredCommands.forEach(command => {
+				const card = document.createElement('div');
+				card.className = 'bg-white border border-slate-200 rounded-lg p-5 flex flex-col justify-between hover:shadow-md transition-shadow';
+				card.innerHTML = `
+					<div>
+						<h3 class="font-bold text-lg text-slate-800 font-mono">${command.cmd}</h3>
+						<p class="text-sm text-slate-500 mt-1">${command.syntax}</p>
+						<p class="text-slate-700 mt-3 text-sm">${command.desc}</p>
+						<div class="mt-4 bg-slate-50 p-3 rounded-md">
+							<code class="text-sm text-amber-600">${command.example}</code>
+						</div>
+					</div>
+					<div class="flex items-center gap-2 mt-4">
+						<button class="copy-btn flex-1 text-sm bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded-md transition">Salin</button>
+						<button class="try-btn flex-1 text-sm bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md transition">Coba Jalankan</button>
+					</div>
+				`;
+				card.querySelector('.copy-btn').addEventListener('click', () => copyToClipboard(command.example));
+				card.querySelector('.try-btn').addEventListener('click', () => runInCli(command.example, command.output));
+				commandContainer.appendChild(card);
+			});
+		}
+
+		function copyToClipboard(text) {
+			copyHelper.value = text;
+			copyHelper.select();
+			try {
+				document.execCommand('copy');
+				alert('Perintah disalin ke clipboard!');
+			} catch (err) {
+				alert('Gagal menyalin perintah.');
+			}
+		}
+
+		function runInCli(command, output) {
+			cliSimulator.classList.remove('translate-y-full');
+			const commandLine = document.createElement('p');
+			commandLine.innerHTML = `<span class="text-green-400">&gt;</span> ${command}`;
+
+			const outputLine = document.createElement('p');
+			outputLine.className = 'text-cyan-400 whitespace-pre-wrap';
+			outputLine.textContent = output;
+
+			cliOutput.appendChild(commandLine);
+			cliOutput.appendChild(outputLine);
+			cliOutput.scrollTop = cliOutput.scrollHeight;
+		}
+
+		navigation.addEventListener('click', (e) => {
+			e.preventDefault();
+			if (e.target.matches('.nav-link')) {
+				activeCategory = e.target.dataset.category;
+				searchInput.value = '';
+				renderNav();
+				renderCommands(activeCategory);
+			}
+		});
+
+		searchInput.addEventListener('input', () => {
+			renderCommands(activeCategory, searchInput.value);
+		});
+
+		closeCli.addEventListener('click', () => {
+			cliSimulator.classList.add('translate-y-full');
+		});
+
+		// Initial render
+		renderNav();
+		renderCommands(activeCategory);
+	</script>
+</body>
+</html>
+
+

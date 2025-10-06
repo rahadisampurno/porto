@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Detail - Rahadi Sampurna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, .font-mono { font-family: 'Fira Code', monospace; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .backdrop-blur { backdrop-filter: blur(10px); }
+        .prose { max-width: none; }
+        .prose h1, .prose h2, .prose h3, .prose h4 { color: #1f2937; font-weight: 600; }
+        .prose p { color: #4b5563; line-height: 1.7; }
+        .prose code { background-color: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.875rem; }
+        .prose pre { background-color: #1f2937; color: #f9fafb; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        .prose pre code { background-color: transparent; padding: 0; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-gray-900">
+                        <span class="text-blue-600">Rahadi</span>Sampurna
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">← Back to Blog</a>
+                    <a href="CV ATS RAHADI.pdf" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">View CV</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Content -->
+    <div class="pt-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Blog Header -->
+            <div id="blog-header" class="mb-12">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+
+            <!-- Blog Content -->
+            <div class="grid lg:grid-cols-4 gap-12">
+                <!-- Main Content -->
+                <div class="lg:col-span-3">
+                    <article class="bg-white rounded-xl shadow-lg p-8">
+                        <div id="blog-content" class="prose">
+                            <!-- Content will be populated by JavaScript -->
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="space-y-8">
+                    <!-- Author Info -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">About the Author</h3>
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                RS
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-semibold text-gray-900">Rahadi Sampurna</h4>
+                                <p class="text-sm text-gray-600">Backend Engineer</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Backend Engineer with 10+ years of experience in system integration, microservices architecture, and API development. 
+                            Passionate about sharing knowledge and best practices in backend development.
+                        </p>
+                    </div>
+
+                    <!-- Related Posts -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Related Posts</h3>
+                        <div class="space-y-3">
+                            <a href="blog-detail.html?post=mongodb-optimization" class="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                <div class="font-medium text-gray-900">MongoDB Performance Optimization</div>
+                                <div class="text-sm text-gray-600">December 10, 2024</div>
+                            </a>
+                            <a href="blog-detail.html?post=ai-backend" class="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                <div class="font-medium text-gray-900">Integrating AI into Backend Services</div>
+                                <div class="text-sm text-gray-600">December 5, 2024</div>
+                            </a>
+                            <a href="blog-detail.html?post=kafka-simulator" class="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                <div class="font-medium text-gray-900">Kafka Simulator</div>
+                                <div class="text-sm text-gray-600">December 20, 2024</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
+                        <div id="blog-tags" class="flex flex-wrap gap-2">
+                            <!-- Content will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">
+                    <span class="text-blue-400">Rahadi</span>Sampurna
+                </h3>
+                <p class="text-gray-400 mb-6">Backend Engineer with 10+ years of experience building scalable systems</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition-colors">Portfolio</a>
+                    <a href="index.html#blog" class="text-gray-400 hover:text-white transition-colors">Blog</a>
+                    <a href="rahadi-cv.html" class="text-gray-400 hover:text-white transition-colors">Resume</a>
+                    <a href="index.html#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Blog posts data
+        const blogPosts = {
+            'golang-microservices': {
+                title: 'Building Scalable Microservices with Golang',
+                date: 'December 12, 2024',
+                readTime: '8 min read',
+                icon: 'fas fa-microservices',
+                gradient: 'from-blue-500 to-indigo-600',
+                tags: ['Golang', 'Microservices', 'Architecture', 'Backend'],
+                content: `
+                    <h1>Building Scalable Microservices with Golang</h1>
+                    
+                    <p>In today's fast-paced digital landscape, building scalable and maintainable backend systems is crucial for business success. Golang, with its excellent concurrency model and performance characteristics, has become a popular choice for building microservices architectures.</p>
+
+                    <h2>Why Choose Golang for Microservices?</h2>
+                    
+                    <p>Golang offers several advantages that make it ideal for microservices development:</p>
+                    
+                    <ul>
+                        <li><strong>Concurrency:</strong> Goroutines provide lightweight concurrency that makes it easy to handle thousands of concurrent requests</li>
+                        <li><strong>Performance:</strong> Compiled language with near C-level performance</li>
+                        <li><strong>Simplicity:</strong> Clean syntax and minimal learning curve</li>
+                        <li><strong>Built-in Tools:</strong> Excellent tooling for testing, profiling, and deployment</li>
+                        <li><strong>Cross-platform:</strong> Single binary deployment across different platforms</li>
+                    </ul>
+
+                    <h2>Microservices Architecture Design</h2>
+                    
+                    <p>When designing microservices with Golang, consider these key principles:</p>
+
+                    <h3>1. Service Boundaries</h3>
+                    <p>Define clear service boundaries based on business capabilities rather than technical layers. Each service should have a single responsibility and be independently deployable.</p>
+
+                    <h3>2. Communication Patterns</h3>
+                    <p>Choose appropriate communication patterns:</p>
+                    <ul>
+                        <li><strong>Synchronous:</strong> HTTP/REST for request-response patterns</li>
+                        <li><strong>Asynchronous:</strong> Message queues for event-driven communication</li>
+                        <li><strong>gRPC:</strong> For high-performance internal communication</li>
+                    </ul>
+
+                    <h3>3. Data Management</h3>
+                    <p>Each microservice should own its data. Avoid shared databases and implement eventual consistency where needed.</p>
+
+                    <h2>Implementation Example</h2>
+                    
+                    <p>Let's look at a simple microservice implementation:</p>
+
+                    <pre><code>package main
+
+import (
+    "encoding/json"
+    "log"
+    "net/http"
+    "time"
+    
+    "github.com/gorilla/mux"
+)
+
+type UserService struct {
+    users map[string]User
+}
+
+type User struct {
+    ID    string \`json:"id"\`
+    Name  string \`json:"name"\`
+    Email string \`json:"email"\`
+}
+
+func (s *UserService) GetUser(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    userID := vars["id"]
+    
+    user, exists := s.users[userID]
+    if !exists {
+        http.NotFound(w, r)
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(user)
+}
+
+func main() {
+    r := mux.NewRouter()
+    userService := &UserService{
+        users: make(map[string]User),
+    }
+    
+    r.HandleFunc("/users/{id}", userService.GetUser).Methods("GET")
+    
+    srv := &http.Server{
+        Handler:      r,
+        Addr:         ":8080",
+        WriteTimeout: 15 * time.Second,
+        ReadTimeout:  15 * time.Second,
+    }
+    
+    log.Fatal(srv.ListenAndServe())
+}</code></pre>
+
+                    <h2>Best Practices</h2>
+                    
+                    <h3>1. Error Handling</h3>
+                    <p>Implement consistent error handling across all services. Use custom error types and proper HTTP status codes.</p>
+
+                    <h3>2. Logging and Monitoring</h3>
+                    <p>Implement structured logging and distributed tracing to monitor service health and performance.</p>
+
+                    <h3>3. Configuration Management</h3>
+                    <p>Use environment variables or configuration files for service configuration. Consider using tools like Consul or etcd for dynamic configuration.</p>
+
+                    <h3>4. Testing</h3>
+                    <p>Write comprehensive tests including unit tests, integration tests, and contract tests between services.</p>
+
+                    <h2>Deployment and Scaling</h2>
+                    
+                    <p>Containerize your services using Docker and deploy them on Kubernetes for easy scaling and management. Use service mesh like Istio for advanced traffic management and security.</p>
+
+                    <h2>Conclusion</h2>
+                    
+                    <p>Building microservices with Golang requires careful planning and adherence to best practices. By following the principles outlined in this article, you can create scalable, maintainable, and performant microservices architectures that can grow with your business needs.</p>
+
+                    <p>Remember to start simple and gradually add complexity as your system grows. Focus on observability, testing, and documentation from the beginning to ensure long-term success.</p>
+                `
+            },
+            'mongodb-optimization': {
+                title: 'MongoDB Performance Optimization Techniques',
+                date: 'December 10, 2024',
+                readTime: '12 min read',
+                icon: 'fas fa-database',
+                gradient: 'from-green-500 to-emerald-600',
+                tags: ['MongoDB', 'Performance', 'Database', 'Optimization'],
+                content: `
+                    <h1>MongoDB Performance Optimization Techniques</h1>
+                    
+                    <p>MongoDB is a powerful NoSQL database that can handle massive amounts of data and high-traffic applications. However, without proper optimization, performance can degrade significantly as your data grows. In this comprehensive guide, we'll explore various techniques to optimize MongoDB performance.</p>
+
+                    <h2>Understanding MongoDB Performance</h2>
+                    
+                    <p>Before diving into optimization techniques, it's important to understand how MongoDB works internally and what factors affect performance:</p>
+
+                    <ul>
+                        <li><strong>Indexing:</strong> Proper indexing is crucial for query performance</li>
+                        <li><strong>Memory Usage:</strong> MongoDB uses memory for caching frequently accessed data</li>
+                        <li><strong>Disk I/O:</strong> Minimizing disk operations improves performance</li>
+                        <li><strong>Query Patterns:</strong> How you structure queries affects performance</li>
+                        <li><strong>Data Modeling:</strong> Document structure impacts query efficiency</li>
+                    </ul>
+
+                    <h2>Indexing Strategies</h2>
+                    
+                    <h3>1. Single Field Indexes</h3>
+                    <p>Create indexes on frequently queried fields:</p>
+                    
+                    <pre><code>// Create index on email field
+db.users.createIndex({ "email": 1 })
+
+// Create compound index
+db.users.createIndex({ "email": 1, "status": 1 })</code></pre>
+
+                    <h3>2. Compound Indexes</h3>
+                    <p>For queries that filter on multiple fields, create compound indexes. Follow the ESR rule (Equality, Sort, Range):</p>
+
+                    <pre><code>// Good compound index for this query
+db.orders.find({ "status": "active", "createdAt": { $gte: ISODate("2024-01-01") } })
+         .sort({ "createdAt": -1 })
+
+// Create index following ESR rule
+db.orders.createIndex({ "status": 1, "createdAt": -1 })</code></pre>
+
+                    <h3>3. Text Indexes</h3>
+                    <p>For full-text search capabilities:</p>
+
+                    <pre><code>// Create text index
+db.articles.createIndex({ "title": "text", "content": "text" })
+
+// Query using text search
+db.articles.find({ $text: { $search: "mongodb performance" } })</code></pre>
+
+                    <h2>Query Optimization</h2>
+                    
+                    <h3>1. Use Projection</h3>
+                    <p>Only retrieve the fields you need:</p>
+
+                    <pre><code>// Instead of retrieving all fields
+db.users.find({ "status": "active" })
+
+// Use projection to get only needed fields
+db.users.find({ "status": "active" }, { "name": 1, "email": 1, "_id": 0 })</code></pre>
+
+                    <h3>2. Limit Results</h3>
+                    <p>Use limit() to restrict the number of returned documents:</p>
+
+                    <pre><code>db.users.find({ "status": "active" }).limit(10)</code></pre>
+
+                    <h3>3. Use Explain Plan</h3>
+                    <p>Analyze query performance using explain():</p>
+
+                    <pre><code>db.users.find({ "email": "user@example.com" }).explain("executionStats")</code></pre>
+
+                    <h2>Data Modeling Best Practices</h2>
+                    
+                    <h3>1. Embed vs Reference</h3>
+                    <p>Choose between embedding and referencing based on your use case:</p>
+
+                    <ul>
+                        <li><strong>Embed:</strong> For small, frequently accessed data</li>
+                        <li><strong>Reference:</strong> For large, infrequently accessed data</li>
+                    </ul>
+
+                    <h3>2. Denormalization</h3>
+                    <p>Sometimes denormalizing data can improve read performance:</p>
+
+                    <pre><code>// Denormalized user document with embedded address
+{
+  "_id": ObjectId("..."),
+  "name": "John Doe",
+  "email": "john@example.com",
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10001"
+  }
+}</code></pre>
+
+                    <h2>Sharding Strategies</h2>
+                    
+                    <p>For large datasets, implement sharding to distribute data across multiple servers:</p>
+
+                    <h3>1. Shard Key Selection</h3>
+                    <p>Choose a shard key that provides good distribution and supports your query patterns:</p>
+
+                    <pre><code>// Shard by user ID for user data
+sh.shardCollection("myapp.users", { "userId": "hashed" })
+
+// Shard by date for time-series data
+sh.shardCollection("myapp.events", { "timestamp": 1 })</code></pre>
+
+                    <h2>Monitoring and Profiling</h2>
+                    
+                    <h3>1. Enable Profiling</h3>
+                    <p>Enable database profiling to identify slow operations:</p>
+
+                    <pre><code>// Enable profiling for operations slower than 100ms
+db.setProfilingLevel(1, { slowms: 100 })
+
+// View profiling data
+db.system.profile.find().sort({ ts: -1 }).limit(5)</code></pre>
+
+                    <h3>2. Monitor Performance</h3>
+                    <p>Use MongoDB's built-in monitoring tools:</p>
+
+                    <pre><code>// Check server status
+db.serverStatus()
+
+// Check database stats
+db.stats()
+
+// Check collection stats
+db.users.stats()</code></pre>
+
+                    <h2>Memory and Storage Optimization</h2>
+                    
+                    <h3>1. Working Set Size</h3>
+                    <p>Ensure your working set fits in memory. Monitor the working set size:</p>
+
+                    <pre><code>db.runCommand({ "serverStatus": 1 }).wiredTiger.cache["bytes currently in the cache"]</code></pre>
+
+                    <h3>2. Compression</h3>
+                    <p>Enable compression to reduce storage requirements:</p>
+
+                    <pre><code>// Enable snappy compression
+db.createCollection("mycollection", {
+  storageEngine: {
+    wiredTiger: {
+      configString: "block_compressor=snappy"
+    }
+  }
+})</code></pre>
+
+                    <h2>Connection Pooling</h2>
+                    
+                    <p>Implement connection pooling to manage database connections efficiently:</p>
+
+                    <pre><code>// Example with Go driver
+client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+if err != nil {
+    log.Fatal(err)
+}
+
+// Set connection pool options
+clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+clientOptions.SetMaxPoolSize(100)
+clientOptions.SetMinPoolSize(10)</code></pre>
+
+                    <h2>Conclusion</h2>
+                    
+                    <p>MongoDB performance optimization is an ongoing process that requires monitoring, testing, and continuous improvement. By implementing the techniques discussed in this article, you can significantly improve your MongoDB performance and ensure your application can scale effectively.</p>
+
+                    <p>Remember to always measure before and after implementing optimizations, and consider the trade-offs between read and write performance when making design decisions.</p>
+                `
+            },
+            'ai-backend': {
+                title: 'Integrating AI into Backend Services',
+                date: 'December 5, 2024',
+                readTime: '15 min read',
+                icon: 'fas fa-robot',
+                gradient: 'from-purple-500 to-pink-600',
+                tags: ['AI', 'RAG', 'Backend', 'Machine Learning'],
+                content: `
+                    <h1>Integrating AI into Backend Services</h1>
+                    
+                    <p>The integration of Artificial Intelligence into backend services is revolutionizing how we build and deploy applications. From intelligent automation to advanced data processing, AI-powered backend services are becoming essential for modern applications.</p>
+
+                    <h2>Understanding AI in Backend Context</h2>
+                    
+                    <p>AI integration in backend services involves several key components:</p>
+
+                    <ul>
+                        <li><strong>Machine Learning Models:</strong> Trained models for predictions and classifications</li>
+                        <li><strong>Natural Language Processing:</strong> Text analysis and understanding</li>
+                        <li><strong>Computer Vision:</strong> Image and video processing</li>
+                        <li><strong>Recommendation Systems:</strong> Personalized content delivery</li>
+                        <li><strong>Anomaly Detection:</strong> Security and performance monitoring</li>
+                    </ul>
+
+                    <h2>RAG (Retrieval-Augmented Generation) Implementation</h2>
+                    
+                    <p>RAG is a powerful technique that combines retrieval of relevant information with generation of responses. Here's how to implement it in your backend:</p>
+
+                    <h3>1. Vector Database Setup</h3>
+                    <p>Use vector databases like Pinecone, Weaviate, or Chroma for storing embeddings:</p>
+
+                    <pre><code>// Example with Pinecone
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pinecone = new Pinecone({
+  apiKey: process.env.PINECONE_API_KEY
+})
+
+const index = pinecone.Index('knowledge-base')
+
+// Store document embeddings
+async function storeDocument(document) {
+  const embedding = await generateEmbedding(document.text)
+  
+  await index.upsert([{
+    id: document.id,
+    values: embedding,
+    metadata: {
+      text: document.text,
+      source: document.source
+    }
+  }])
+}</code></pre>
+
+                    <h3>2. Embedding Generation</h3>
+                    <p>Generate embeddings for your documents using models like OpenAI's text-embedding-ada-002:</p>
+
+                    <pre><code>// Generate embeddings
+async function generateEmbedding(text) {
+  const response = await openai.embeddings.create({
+    model: "text-embedding-ada-002",
+    input: text
+  })
+  
+  return response.data[0].embedding
+}</code></pre>
+
+                    <h3>3. RAG Query Implementation</h3>
+                    <p>Implement the RAG query flow:</p>
+
+                    <pre><code>async function ragQuery(question) {
+  // 1. Generate embedding for the question
+  const questionEmbedding = await generateEmbedding(question)
+  
+  // 2. Retrieve relevant documents
+  const searchResults = await index.query({
+    vector: questionEmbedding,
+    topK: 5,
+    includeMetadata: true
+  })
+  
+  // 3. Prepare context
+  const context = searchResults.matches
+    .map(match => match.metadata.text)
+    .join('\n\n')
+  
+  // 4. Generate response using LLM
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful assistant. Use the provided context to answer questions accurately."
+      },
+      {
+        role: "user",
+        content: \`Context: \${context}\n\nQuestion: \${question}\`
+      }
+    ]
+  })
+  
+  return response.choices[0].message.content
+}</code></pre>
+
+                    <h2>AI Agent Implementation</h2>
+                    
+                    <p>AI agents can perform complex tasks autonomously. Here's how to build one:</p>
+
+                    <h3>1. Agent Architecture</h3>
+                    <pre><code>class AIAgent {
+  constructor(tools, llm) {
+    this.tools = tools
+    this.llm = llm
+    this.memory = []
+  }
+  
+  async execute(task) {
+    const plan = await this.createPlan(task)
+    
+    for (const step of plan) {
+      const result = await this.executeStep(step)
+      this.memory.push({ step, result })
+    }
+    
+    return this.memory
+  }
+  
+  async createPlan(task) {
+    const prompt = \`Create a step-by-step plan for: \${task}\`
+    const response = await this.llm.generate(prompt)
+    return this.parsePlan(response)
+  }
+  
+  async executeStep(step) {
+    if (step.type === 'tool_use') {
+      return await this.tools[step.tool].execute(step.parameters)
+    } else if (step.type === 'llm_call') {
+      return await this.llm.generate(step.prompt)
+    }
+  }
+}</code></pre>
+
+                    <h3>2. Tool Integration</h3>
+                    <p>Define tools that the agent can use:</p>
+
+                    <pre><code>const tools = {
+  searchDatabase: {
+    execute: async (query) => {
+      // Database search implementation
+      return await database.search(query)
+    }
+  },
+  
+  sendEmail: {
+    execute: async (params) => {
+      // Email sending implementation
+      return await emailService.send(params)
+    }
+  },
+  
+  callAPI: {
+    execute: async (params) => {
+      // External API call implementation
+      return await fetch(params.url, params.options)
+    }
+  }
+}</code></pre>
+
+                    <h2>Performance Optimization</h2>
+                    
+                    <h3>1. Caching Strategies</h3>
+                    <p>Implement caching for AI model responses:</p>
+
+                    <pre><code>// Redis caching for embeddings
+const redis = new Redis(process.env.REDIS_URL)
+
+async function getCachedEmbedding(text) {
+  const key = \`embedding:\${hash(text)}\`
+  const cached = await redis.get(key)
+  
+  if (cached) {
+    return JSON.parse(cached)
+  }
+  
+  const embedding = await generateEmbedding(text)
+  await redis.setex(key, 3600, JSON.stringify(embedding))
+  
+  return embedding
+}</code></pre>
+
+                    <h3>2. Batch Processing</h3>
+                    <p>Process multiple requests in batches to improve efficiency:</p>
+
+                    <pre><code>async function batchProcessEmbeddings(texts) {
+  const batchSize = 100
+  const results = []
+  
+  for (let i = 0; i < texts.length; i += batchSize) {
+    const batch = texts.slice(i, i + batchSize)
+    const embeddings = await generateBatchEmbeddings(batch)
+    results.push(...embeddings)
+  }
+  
+  return results
+}</code></pre>
+
+                    <h2>Error Handling and Monitoring</h2>
+                    
+                    <h3>1. Robust Error Handling</h3>
+                    <pre><code>async function safeAICall(operation) {
+  try {
+    return await operation()
+  } catch (error) {
+    if (error.code === 'RATE_LIMIT') {
+      await delay(1000) // Wait and retry
+      return await operation()
+    } else if (error.code === 'INVALID_INPUT') {
+      throw new ValidationError('Invalid input provided')
+    } else {
+      logger.error('AI operation failed', { error })
+      throw new AIServiceError('AI service temporarily unavailable')
+    }
+  }
+}</code></pre>
+
+                    <h3>2. Monitoring and Metrics</h3>
+                    <pre><code>// Track AI service metrics
+const metrics = {
+  requests: 0,
+  errors: 0,
+  avgResponseTime: 0,
+  cacheHitRate: 0
+}
+
+function trackAIMetrics(operation, startTime, success) {
+  metrics.requests++
+  if (!success) metrics.errors++
+  
+  const responseTime = Date.now() - startTime
+  metrics.avgResponseTime = 
+    (metrics.avgResponseTime * (metrics.requests - 1) + responseTime) / metrics.requests
+}</code></pre>
+
+                    <h2>Security Considerations</h2>
+                    
+                    <h3>1. Input Validation</h3>
+                    <p>Always validate and sanitize inputs to AI services:</p>
+
+                    <pre><code>function validateAIInput(input) {
+  if (typeof input !== 'string') {
+    throw new Error('Input must be a string')
+  }
+  
+  if (input.length > 10000) {
+    throw new Error('Input too long')
+  }
+  
+  // Check for malicious content
+  if (containsMaliciousContent(input)) {
+    throw new Error('Input contains prohibited content')
+  }
+  
+  return sanitizeInput(input)
+}</code></pre>
+
+                    <h3>2. API Key Management</h3>
+                    <p>Securely manage API keys and credentials:</p>
+
+                    <pre><code>// Use environment variables and secret management
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
+
+// Rotate keys regularly
+async function rotateAPIKeys() {
+  const newKey = await generateNewAPIKey()
+  await updateSecret('OPENAI_API_KEY', newKey)
+  await restartServices()
+}</code></pre>
+
+                    <h2>Deployment Strategies</h2>
+                    
+                    <h3>1. Container Deployment</h3>
+                    <pre><code># Dockerfile for AI service
+FROM python:3.9-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+
+                    <h3>2. Kubernetes Configuration</h3>
+                    <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ai-service
+  template:
+    metadata:
+      labels:
+        app: ai-service
+    spec:
+      containers:
+      - name: ai-service
+        image: ai-service:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"</code></pre>
+
+                    <h2>Conclusion</h2>
+                    
+                    <p>Integrating AI into backend services opens up new possibilities for intelligent applications. By following the patterns and best practices outlined in this article, you can build robust, scalable, and secure AI-powered backend services.</p>
+
+                    <p>Remember to start with simple implementations and gradually add complexity as you gain experience. Always prioritize security, performance, and maintainability in your AI integrations.</p>
+                `
+            },
+            'kafka-simulator': {
+                title: 'Kafka Simulator',
+                date: 'December 20, 2024',
+                readTime: 'Interactive Demo',
+                icon: 'fas fa-chart-line',
+                gradient: 'from-purple-500 to-pink-600',
+                tags: ['JavaScript', 'HTML5', 'Kafka', 'Interactive'],
+                content: `
+                    <h1>Kafka Simulator - Interactive Learning Tool</h1>
+                    
+                    <p>The Kafka Simulator is an interactive web-based tool designed to help developers understand Apache Kafka concepts through hands-on experimentation. This tool provides a visual representation of how Kafka works, making it easier to grasp complex concepts like partitions, consumers, and message flow.</p>
+
+                    <h2>Why Build a Kafka Simulator?</h2>
+                    
+                    <p>Learning Kafka can be challenging due to its distributed nature and complex concepts. A simulator helps by:</p>
+
+                    <ul>
+                        <li><strong>Visual Learning:</strong> Seeing concepts in action makes them easier to understand</li>
+                        <li><strong>Safe Experimentation:</strong> Try different configurations without affecting production systems</li>
+                        <li><strong>Immediate Feedback:</strong> See results instantly as you change parameters</li>
+                        <li><strong>Cost-Effective:</strong> No need to set up complex Kafka clusters for learning</li>
+                    </ul>
+
+                    <h2>Key Features</h2>
+                    
+                    <h3>1. Interactive Configuration</h3>
+                    <p>Users can configure various Kafka parameters:</p>
+
+                    <ul>
+                        <li><strong>Partitions:</strong> Number of partitions (1-12)</li>
+                        <li><strong>Brokers:</strong> Number of broker nodes (1-9)</li>
+                        <li><strong>Replication Factor:</strong> Data replication level (1-3)</li>
+                        <li><strong>Producer Settings:</strong> Message production rate and partitioning strategy</li>
+                        <li><strong>Consumer Settings:</strong> Consumption rate and commit policies</li>
+                    </ul>
+
+                    <h3>2. Real-time Visualization</h3>
+                    <p>The simulator provides real-time visualization of:</p>
+
+                    <ul>
+                        <li>Message flow between producers and consumers</li>
+                        <li>Partition assignment and rebalancing</li>
+                        <li>Broker status and failover scenarios</li>
+                        <li>Offset tracking and commit operations</li>
+                        <li>ISR (In-Sync Replicas) status</li>
+                    </ul>
+
+                    <h3>3. Learning Scenarios</h3>
+                    <p>Predefined scenarios help users understand different concepts:</p>
+
+                    <ul>
+                        <li><strong>Basic Produce-Consume:</strong> Simple message flow</li>
+                        <li><strong>Partitioning Strategies:</strong> Round-robin vs key-based partitioning</li>
+                        <li><strong>Consumer Groups:</strong> Load balancing and rebalancing</li>
+                        <li><strong>Fault Tolerance:</strong> Broker failures and recovery</li>
+                        <li><strong>Performance Tuning:</strong> Optimizing throughput and latency</li>
+                    </ul>
+
+                    <h2>Technical Implementation</h2>
+                    
+                    <h3>1. Frontend Architecture</h3>
+                    <p>Built using vanilla JavaScript with modern web technologies:</p>
+
+                    <pre><code>// Core simulation engine
+class KafkaSimulator {
+  constructor() {
+    this.state = {
+      partitions: 3,
+      brokers: 3,
+      replicationFactor: 1,
+      producers: [],
+      consumers: [],
+      messages: [],
+      isRunning: false
+    }
+  }
+  
+  start() {
+    this.isRunning = true
+    this.startProducer()
+    this.startConsumers()
+    this.render()
+  }
+  
+  stop() {
+    this.isRunning = false
+    this.clearTimers()
+  }
+}</code></pre>
+
+                    <h3>2. Message Flow Simulation</h3>
+                    <p>Simulates realistic message production and consumption:</p>
+
+                    <pre><code>// Producer simulation
+startProducer() {
+  const interval = this.state.produceInterval / this.state.speed
+  this.producerTimer = setInterval(() => {
+    const partition = this.choosePartition()
+    const message = this.createMessage()
+    
+    this.state.messages.push({
+      id: message.id,
+      partition: partition,
+      offset: this.getNextOffset(partition),
+      timestamp: Date.now(),
+      content: message.content
+    })
+    
+    this.render()
+  }, interval)
+}</code></pre>
+
+                    <h3>3. Consumer Group Management</h3>
+                    <p>Implements consumer group rebalancing logic:</p>
+
+                    <pre><code>// Consumer group rebalancing
+rebalanceConsumers() {
+  const consumers = this.state.consumers
+  const partitions = this.state.partitions
+  
+  // Clear current assignments
+  consumers.forEach(consumer => {
+    consumer.assignedPartitions = []
+  })
+  
+  // Assign partitions using round-robin
+  for (let i = 0; i < partitions; i++) {
+    const consumerIndex = i % consumers.length
+    consumers[consumerIndex].assignedPartitions.push(i)
+  }
+  
+  this.renderConsumers()
+}</code></pre>
+
+                    <h2>Educational Value</h2>
+                    
+                    <h3>1. Concept Visualization</h3>
+                    <p>The simulator makes abstract concepts concrete:</p>
+
+                    <ul>
+                        <li><strong>Partitions:</strong> Visual representation of data distribution</li>
+                        <li><strong>Offsets:</strong> Clear tracking of message positions</li>
+                        <li><strong>Consumer Groups:</strong> Visual assignment and rebalancing</li>
+                        <li><strong>Replication:</strong> Leader-follower relationships</li>
+                    </ul>
+
+                    <h3>2. Interactive Learning</h3>
+                    <p>Users can experiment with different scenarios:</p>
+
+                    <ul>
+                        <li>Add/remove consumers and observe rebalancing</li>
+                        <li>Change partitioning strategies and see the impact</li>
+                        <li>Simulate broker failures and recovery</li>
+                        <li>Adjust performance parameters and measure results</li>
+                    </ul>
+
+                    <h2>Performance Considerations</h2>
+                    
+                    <h3>1. Efficient Rendering</h3>
+                    <p>Optimized rendering for smooth performance:</p>
+
+                    <pre><code>// Efficient DOM updates
+render() {
+  requestAnimationFrame(() => {
+    this.updateMessageDisplay()
+    this.updateConsumerStatus()
+    this.updateBrokerStatus()
+  })
+}
+
+updateMessageDisplay() {
+  const container = document.getElementById('messages')
+  const messages = this.state.messages.slice(-50) // Show last 50 messages
+  
+  container.innerHTML = messages.map(msg => 
+    \`<div class="message" data-partition="\${msg.partition}">
+      \${msg.content} (P\${msg.partition}:\${msg.offset})
+    </div>\`
+  ).join('')
+}</code></pre>
+
+                    <h3>2. Memory Management</h3>
+                    <p>Prevents memory leaks in long-running simulations:</p>
+
+                    <pre><code>// Cleanup old messages
+cleanupMessages() {
+  const maxMessages = 1000
+  if (this.state.messages.length > maxMessages) {
+    this.state.messages = this.state.messages.slice(-maxMessages)
+  }
+}</code></pre>
+
+                    <h2>Future Enhancements</h2>
+                    
+                    <h3>1. Advanced Scenarios</h3>
+                    <ul>
+                        <li>Schema registry integration</li>
+                        <li>Stream processing with Kafka Streams</li>
+                        <li>Connect framework simulation</li>
+                        <li>Security and authentication scenarios</li>
+                    </ul>
+
+                    <h3>2. Performance Metrics</h3>
+                    <ul>
+                        <li>Throughput measurement</li>
+                        <li>Latency tracking</li>
+                        <li>Resource utilization monitoring</li>
+                        <li>Comparative analysis tools</li>
+                    </ul>
+
+                    <h2>Conclusion</h2>
+                    
+                    <p>The Kafka Simulator demonstrates how interactive tools can make complex technologies more accessible. By providing a visual, hands-on learning experience, it helps developers understand Kafka concepts more effectively than traditional documentation alone.</p>
+
+                    <p>This project showcases the power of combining educational content with interactive technology to create engaging learning experiences that benefit the entire developer community.</p>
+
+                    <div class="mt-8 p-6 bg-blue-50 rounded-lg">
+                        <h3 class="text-lg font-semibold text-blue-900 mb-2">Try the Simulator</h3>
+                        <p class="text-blue-800 mb-4">Experience the Kafka Simulator yourself and explore different scenarios to deepen your understanding of Apache Kafka.</p>
+                        <a href="kafka-simulator.html" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Launch Simulator →
+                        </a>
+                    </div>
+                `
+            }
+        };
+
+        // Get blog post from URL parameter
+        function getBlogPostFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('post') || 'golang-microservices';
+        }
+
+        // Populate blog details
+        function populateBlogDetails() {
+            const postId = getBlogPostFromURL();
+            const post = blogPosts[postId];
+
+            if (!post) {
+                console.error('Blog post not found:', postId);
+                return;
+            }
+
+            // Update page title
+            document.title = `${post.title} - Blog - Rahadi Sampurna`;
+
+            // Populate blog header
+            const header = document.getElementById('blog-header');
+            header.innerHTML = `
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="h-64 bg-gradient-to-br ${post.gradient} flex items-center justify-center">
+                        <i class="${post.icon} text-8xl text-white"></i>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h1 class="text-4xl font-bold text-gray-900">${post.title}</h1>
+                            <div class="text-right">
+                                <div class="text-lg text-gray-500">${post.date}</div>
+                                <div class="text-sm text-gray-400">${post.readTime}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            ${post.tags.map(tag => 
+                                `<span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">${tag}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Populate blog content
+            document.getElementById('blog-content').innerHTML = post.content;
+
+            // Populate tags
+            document.getElementById('blog-tags').innerHTML = post.tags.map(tag => 
+                `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">${tag}</span>`
+            ).join('');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', populateBlogDetails);
+    </script>
+</body>
+</html>

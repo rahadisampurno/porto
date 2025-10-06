@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>KibanaPedia – Panduan Lengkap Kibana</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+		code, .font-mono { font-family: 'Fira Code', monospace; }
+		.data-section { display: block; }
+		.nav-link.active { background-color: #e2e8f0; color: #1e293b; font-weight: 600; }
+		/* Pastikan konten tidak terpotong dalam flex layout */
+		main { min-width: 0; }
+		#content-wrap { min-width: 0; }
+		/* Sticky sidebar */
+		aside { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+		/* Styling untuk code blocks */
+		pre { background-color: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+		code { background-color: #f1f5f9; color: #1e293b; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+		pre code { background-color: transparent; color: inherit; padding: 0; }
+		/* Back to top button */
+		.back-to-top { 
+			position: fixed; 
+			bottom: 2rem; 
+			right: 2rem; 
+			background-color: #f56565; 
+			color: white; 
+			border: none; 
+			border-radius: 50%; 
+			width: 3rem; 
+			height: 3rem; 
+			cursor: pointer; 
+			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			z-index: 1000;
+		}
+		.back-to-top.visible { opacity: 1; visibility: visible; }
+		.back-to-top:hover { background-color: #e53e3e; transform: translateY(-2px); }
+	</style>
+</head>
+<body class="text-slate-800">
+
+	<div class="flex flex-col md:flex-row min-h-screen">
+		<!-- Sidebar Navigation -->
+		<aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0">
+			<div class="p-6">
+				<h1 class="text-xl font-bold text-red-600">Kibana<span class="font-normal text-slate-700">Pedia</span></h1>
+				<p class="text-sm text-slate-500 mt-1">Panduan Lengkap Kibana</p>
+			</div>
+			<nav id="navigation" class="px-4 pb-4">
+				<a href="#overview" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition active">Overview</a>
+				<a href="#setup" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Setup & Installation</a>
+				<a href="#discover" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Discover</a>
+				<a href="#visualize" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Visualize</a>
+				<a href="#dashboard" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Dashboard</a>
+				<a href="#maps" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Maps</a>
+				<a href="#machine-learning" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Machine Learning</a>
+				<a href="#dev-tools" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Dev Tools</a>
+				<a href="#management" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Management</a>
+			</nav>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+			<div id="content-wrap" class="space-y-10">
+				<header id="overview" class="mb-2">
+					<h2 class="text-3xl font-bold text-slate-800">Kibana - Data Visualization & Analysis Platform</h2>
+					<p class="mt-2 text-slate-600">Kibana adalah bagian dari Elastic Stack yang menyediakan interface untuk data visualization, search, dan analysis. Sangat powerful untuk log analysis, monitoring, dan business intelligence.</p>
+				</header>
+
+				<section class="space-y-6">
+					<div>
+						<h3 class="text-2xl font-bold">Apa itu Kibana?</h3>
+						<p class="mt-2 text-slate-600">Kibana adalah web interface yang memungkinkan Anda untuk memvisualisasikan data dari Elasticsearch. Dengan Kibana, Anda dapat membuat dashboard interaktif, melakukan pencarian data, dan menganalisis data dalam waktu nyata.</p>
+					</div>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Fitur Utama Kibana</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li><span class="font-medium">Discover</span>: Eksplorasi dan pencarian data</li>
+								<li><span class="font-medium">Visualize</span>: Membuat chart dan grafik</li>
+								<li><span class="font-medium">Dashboard</span>: Kumpulan visualisasi</li>
+								<li><span class="font-medium">Maps</span>: Visualisasi geografis</li>
+								<li><span class="font-medium">Machine Learning</span>: Anomaly detection</li>
+								<li><span class="font-medium">Dev Tools</span>: Console untuk Elasticsearch</li>
+							</ul>
+						</div>
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Kapan Menggunakan Kibana</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li>Log analysis dan monitoring</li>
+								<li>Business intelligence</li>
+								<li>Security analysis (SIEM)</li>
+								<li>Application performance monitoring</li>
+								<li>Real-time data visualization</li>
+								<li>Geographic data analysis</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section id="setup" class="space-y-8">
+					<h3 class="text-2xl font-bold">Setup & Installation</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Instalasi Kibana</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Dengan Docker (Rekomendasi)</h5>
+								<pre><code># Pull Kibana image
+docker pull kibana:8.11.0
+
+# Run Kibana dengan Elasticsearch
+docker run -d \
+  --name kibana \
+  -p 5601:5601 \
+  -e ELASTICSEARCH_HOSTS=http://elasticsearch:9200 \
+  kibana:8.11.0
+
+# Atau dengan docker-compose
+version: '3.8'
+services:
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+  
+  kibana:
+    image: kibana:8.11.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Instalasi Manual</h5>
+								<pre><code># Download Kibana
+wget https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-linux-x86_64.tar.gz
+
+# Extract
+tar -xzf kibana-8.11.0-linux-x86_64.tar.gz
+cd kibana-8.11.0-linux-x86_64
+
+# Start Kibana
+./bin/kibana
+
+# Atau sebagai service
+sudo systemctl start kibana
+sudo systemctl enable kibana</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Konfigurasi Dasar</h5>
+								<pre><code># File: config/kibana.yml
+server.port: 5601
+server.host: "0.0.0.0"
+elasticsearch.hosts: ["http://localhost:9200"]
+
+# Security (opsional)
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "password"
+
+# Logging
+logging.level: "info"
+logging.appenders.file.type: file
+logging.appenders.file.fileName: /var/log/kibana/kibana.log</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="discover" class="space-y-8">
+					<h3 class="text-2xl font-bold">Discover - Eksplorasi Data</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Fitur Discover</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Search Bar</h5>
+								<pre><code># Pencarian sederhana
+error
+
+# Pencarian dengan field
+status:404
+
+# Pencarian dengan wildcard
+message:error*
+
+# Pencarian dengan range
+@timestamp:[2024-01-01 TO 2024-01-31]
+
+# Pencarian dengan boolean
+status:404 AND method:GET
+
+# Pencarian dengan regex
+message:/error|exception/i</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Filter</h5>
+								<pre><code># Filter berdasarkan field
+status: 200
+method: GET
+response_time: >1000
+
+# Filter berdasarkan range
+@timestamp: [now-1d TO now]
+bytes: [1000 TO 5000]
+
+# Filter berdasarkan exists
+_exists_: user_id
+NOT _exists_: error_message
+
+# Filter berdasarkan geo
+geoip.location: [40.7, -74.0, 10km]</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Time Range</h5>
+								<pre><code># Relative time ranges
+Last 15 minutes
+Last 1 hour
+Last 24 hours
+Last 7 days
+Last 30 days
+
+# Absolute time ranges
+2024-01-01 00:00:00 to 2024-01-31 23:59:59
+
+# Quick ranges
+Today
+This week
+This month
+This year</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Field Management</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Field Types</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><code>text</code> - Full text search</li>
+									<li><code>keyword</code> - Exact match</li>
+									<li><code>date</code> - Date/time values</li>
+									<li><code>number</code> - Numeric values</li>
+									<li><code>boolean</code> - True/false values</li>
+									<li><code>geo_point</code> - Geographic coordinates</li>
+									<li><code>ip</code> - IP addresses</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Field Statistics</h5>
+								<pre><code># Top values
+status: 200 (45.2%)
+status: 404 (23.1%)
+status: 500 (12.8%)
+
+# Field statistics
+response_time:
+  Min: 12ms
+  Max: 5.2s
+  Avg: 245ms
+  Median: 180ms
+
+# Field distribution
+user_agent:
+  Chrome: 65.2%
+  Firefox: 23.1%
+  Safari: 11.7%</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="visualize" class="space-y-8">
+					<h3 class="text-2xl font-bold">Visualize - Membuat Visualisasi</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Jenis Visualisasi</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Basic Charts</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><strong>Area Chart</strong> - Data over time dengan area</li>
+									<li><strong>Line Chart</strong> - Data over time dengan garis</li>
+									<li><strong>Bar Chart</strong> - Data kategorikal</li>
+									<li><strong>Pie Chart</strong> - Proporsi data</li>
+									<li><strong>Donut Chart</strong> - Pie chart dengan lubang tengah</li>
+									<li><strong>Histogram</strong> - Distribusi data</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Data Tables</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><strong>Data Table</strong> - Tabel data dengan aggregasi</li>
+									<li><strong>Metric</strong> - Single metric value</li>
+									<li><strong>Goal</strong> - Progress towards goal</li>
+									<li><strong>Gauge</strong> - Gauge chart</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Specialized Charts</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><strong>Heat Map</strong> - Density visualization</li>
+									<li><strong>Tag Cloud</strong> - Text frequency</li>
+									<li><strong>Timelion</strong> - Time series analysis</li>
+									<li><strong>Vega</strong> - Custom visualizations</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Aggregations</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Metric Aggregations</h5>
+								<pre><code># Count
+Count of documents
+
+# Average
+Average of response_time
+
+# Sum
+Sum of bytes
+
+# Min/Max
+Min/Max of @timestamp
+
+# Unique Count
+Unique count of user_id
+
+# Percentiles
+95th percentile of response_time
+
+# Standard Deviation
+Std deviation of response_time</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Bucket Aggregations</h5>
+								<pre><code># Terms
+Top 10 values of status
+
+# Date Histogram
+@timestamp by 1 hour
+
+# Range
+response_time ranges:
+  0-100ms
+  100-500ms
+  500ms+
+
+# Filters
+Filter by status:200
+Filter by status:404
+
+# Significant Terms
+Significant terms in message field</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Contoh Visualisasi</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Response Time Over Time</h5>
+								<pre><code>Visualization Type: Line Chart
+X-Axis: @timestamp (Date Histogram, 1 hour)
+Y-Axis: response_time (Average)
+Filter: @timestamp: [now-7d TO now]</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Status Code Distribution</h5>
+								<pre><code>Visualization Type: Pie Chart
+Buckets: Terms aggregation on 'status'
+Metric: Count
+Size: 10</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Top 10 IP Addresses</h5>
+								<pre><code>Visualization Type: Data Table
+Buckets: Terms aggregation on 'client_ip'
+Metric: Count
+Size: 10
+Order: Descending</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="dashboard" class="space-y-8">
+					<h3 class="text-2xl font-bold">Dashboard - Kumpulan Visualisasi</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Dashboard Features</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Layout Management</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Drag & drop visualizations</li>
+									<li>Resize panels</li>
+									<li>Grid layout system</li>
+									<li>Full screen mode</li>
+									<li>Panel settings</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Time Controls</h5>
+								<pre><code># Global time picker
+Time Range: Last 24 hours
+Auto Refresh: 30 seconds
+
+# Time synchronization
+Sync all panels to same time range
+Independent panel time ranges</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Filters</h5>
+								<pre><code># Global filters
+status: 200
+method: GET
+response_time: >100
+
+# Filter interactions
+Apply to all panels
+Apply to specific panels
+Exclude from panels
+
+# Filter bar
+Add filter
+Edit filter
+Remove filter
+Pin filter</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Dashboard Best Practices</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Layout Tips</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Place most important metrics at the top</li>
+									<li>Group related visualizations together</li>
+									<li>Use consistent color schemes</li>
+									<li>Add titles and descriptions</li>
+									<li>Optimize for different screen sizes</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Performance</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Limit number of panels (max 20-30)</li>
+									<li>Use appropriate time ranges</li>
+									<li>Optimize queries and aggregations</li>
+									<li>Cache frequently accessed data</li>
+									<li>Monitor dashboard load times</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="maps" class="space-y-8">
+					<h3 class="text-2xl font-bold">Maps - Visualisasi Geografis</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Map Types</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Coordinate Maps</h5>
+								<pre><code># Point data
+geoip.location: [lat, lon]
+coordinates: { lat: 40.7128, lon: -74.0060 }
+
+# Clustering
+Cluster nearby points
+Show cluster count
+Expand clusters on zoom</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Region Maps</h5>
+								<pre><code># Country/State data
+country_code: US
+state: California
+region: North America
+
+# Choropleth maps
+Color by metric value
+Size by count
+Label by region name</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Heat Maps</h5>
+								<pre><code># Density visualization
+Point size by count
+Color by metric
+Intensity by density
+
+# Grid aggregation
+Grid size: 1km
+Metric: Count
+Color scheme: Blues</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Map Layers</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Base Layers</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Road map</li>
+									<li>Satellite imagery</li>
+									<li>Terrain</li>
+									<li>Dark mode</li>
+									<li>Custom tiles</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Data Layers</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Points layer</li>
+									<li>Lines layer</li>
+									<li>Polygons layer</li>
+									<li>Heat map layer</li>
+									<li>Clusters layer</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="machine-learning" class="space-y-8">
+					<h3 class="text-2xl font-bold">Machine Learning</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Anomaly Detection</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Single Metric Jobs</h5>
+								<pre><code># Job configuration
+Job ID: response_time_anomaly
+Description: Detect response time anomalies
+Datafeed: web_logs_datafeed
+Bucket span: 15m
+Analysis: response_time (avg)
+
+# Detector configuration
+Detector function: mean
+Field: response_time
+By field: status
+Over field: client_ip</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Multi Metric Jobs</h5>
+								<pre><code># Multiple metrics
+Metrics:
+  - response_time (avg)
+  - error_count (sum)
+  - request_count (count)
+
+# Population analysis
+Population field: client_ip
+Over field: status</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Advanced Analysis</h5>
+								<pre><code># Influencer analysis
+Influencers:
+  - client_ip
+  - user_agent
+  - status
+
+# Categorization
+Categorization field: error_message
+Max categories: 10
+
+# Forecasting
+Forecast duration: 7d
+Forecast confidence: 95%</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Data Frame Analytics</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Outlier Detection</h5>
+								<pre><code># Configuration
+Analysis type: Outlier detection
+Source: web_logs
+Destination: web_logs_outliers
+
+# Feature importance
+Features:
+  - response_time
+  - bytes
+  - status_code
+
+# Training settings
+Training percent: 80
+Randomize seed: 42</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Classification</h5>
+								<pre><code># Binary classification
+Dependent variable: is_error
+Features:
+  - response_time
+  - request_size
+  - user_agent
+
+# Multi-class classification
+Dependent variable: status_category
+Classes: success, client_error, server_error</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="dev-tools" class="space-y-8">
+					<h3 class="text-2xl font-bold">Dev Tools - Elasticsearch Console</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Query Console</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Search Queries</h5>
+								<pre><code># Basic search
+GET /web_logs/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+# Match query
+GET /web_logs/_search
+{
+  "query": {
+    "match": {
+      "message": "error"
+    }
+  }
+}
+
+# Range query
+GET /web_logs/_search
+{
+  "query": {
+    "range": {
+      "response_time": {
+        "gte": 1000
+      }
+    }
+  }
+}</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Aggregations</h5>
+								<pre><code># Terms aggregation
+GET /web_logs/_search
+{
+  "size": 0,
+  "aggs": {
+    "status_codes": {
+      "terms": {
+        "field": "status"
+      }
+    }
+  }
+}
+
+# Date histogram
+GET /web_logs/_search
+{
+  "size": 0,
+  "aggs": {
+    "requests_over_time": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "calendar_interval": "1h"
+      }
+    }
+  }
+}</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Index Management</h5>
+								<pre><code># Create index
+PUT /web_logs
+{
+  "mappings": {
+    "properties": {
+      "timestamp": { "type": "date" },
+      "status": { "type": "keyword" },
+      "response_time": { "type": "integer" }
+    }
+  }
+}
+
+# Get index mapping
+GET /web_logs/_mapping
+
+# Delete index
+DELETE /web_logs</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Console Features</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Auto-completion</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Index names</li>
+									<li>Field names</li>
+									<li>Query parameters</li>
+									<li>Aggregation types</li>
+									<li>Elasticsearch API methods</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Query History</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li>Save frequently used queries</li>
+									<li>Load saved queries</li>
+									<li>Share queries with team</li>
+									<li>Export/import queries</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="management" class="space-y-8">
+					<h3 class="text-2xl font-bold">Management - Konfigurasi & Monitoring</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Index Management</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Index Lifecycle Management</h5>
+								<pre><code># ILM Policy
+PUT _ilm/policy/logs_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_size": "50GB",
+            "max_age": "7d"
+          }
+        }
+      },
+      "warm": {
+        "min_age": "7d",
+        "actions": {
+          "allocate": {
+            "number_of_replicas": 0
+          }
+        }
+      },
+      "cold": {
+        "min_age": "30d",
+        "actions": {
+          "allocate": {
+            "number_of_replicas": 0
+          }
+        }
+      },
+      "delete": {
+        "min_age": "90d"
+      }
+    }
+  }
+}</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Index Templates</h5>
+								<pre><code># Component template
+PUT _component_template/logs_mapping
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "message": { "type": "text" },
+        "level": { "type": "keyword" }
+      }
+    }
+  }
+}
+
+# Index template
+PUT _index_template/logs_template
+{
+  "index_patterns": ["logs-*"],
+  "composed_of": ["logs_mapping"],
+  "priority": 200
+}</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Security & Users</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">User Management</h5>
+								<pre><code># Create user
+POST _security/user/kibana_user
+{
+  "password": "password123",
+  "roles": ["kibana_user"],
+  "full_name": "Kibana User",
+  "email": "user@example.com"
+}
+
+# Create role
+POST _security/role/kibana_readonly
+{
+  "indices": [
+    {
+      "names": ["logs-*"],
+      "privileges": ["read"]
+    }
+  ],
+  "kibana": [
+    {
+      "base": ["read"],
+      "feature": {
+        "discover": ["read"],
+        "dashboard": ["read"]
+      }
+    }
+  ]
+}</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">API Keys</h5>
+								<pre><code># Create API key
+POST _security/api_key
+{
+  "name": "kibana_api_key",
+  "expiration": "1d",
+  "role_descriptors": {
+    "kibana_role": {
+      "cluster": ["monitor"],
+      "index": [
+        {
+          "names": ["logs-*"],
+          "privileges": ["read"]
+        }
+      ]
+    }
+  }
+}</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Monitoring & Alerts</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Watcher Alerts</h5>
+								<pre><code># Create watcher
+PUT _watcher/watch/error_alert
+{
+  "trigger": {
+    "schedule": {
+      "interval": "1m"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "search_type": "query_then_fetch",
+        "indices": ["logs-*"],
+        "body": {
+          "query": {
+            "bool": {
+              "must": [
+                { "match": { "level": "ERROR" } },
+                { "range": { "@timestamp": { "gte": "now-1m" } } }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "gt": 10
+      }
+    }
+  },
+  "actions": {
+    "send_email": {
+      "email": {
+        "to": ["admin@example.com"],
+        "subject": "High Error Rate Alert",
+        "body": "Error count: {{ctx.payload.hits.total}}"
+      }
+    }
+  }
+}</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="cta" class="mb-10">
+					<div class="rounded-lg border border-red-200 bg-red-50 p-6">
+						<h4 class="text-lg font-semibold text-red-900">Siap Menggunakan Kibana?</h4>
+						<p class="mt-2 text-red-900/80">Kibana adalah tool yang powerful untuk data visualization dan analysis. Mulai dengan setup sederhana dan eksplorasi fitur-fitur yang tersedia untuk mendapatkan insights dari data Anda.</p>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-t border-slate-200 bg-white">
+		<div class="max-w-6xl mx-auto px-4 py-6 text-sm text-slate-500">
+			<p>Dibuat untuk memberikan panduan lengkap Kibana. Semua fitur dan konfigurasi telah diuji dan siap digunakan.</p>
+		</div>
+	</footer>
+
+	<!-- Back to Top Button -->
+	<button class="back-to-top" id="backToTop" title="Kembali ke atas">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="m18 15-6-6-6 6"/>
+		</svg>
+	</button>
+
+	<script>
+		// Sidebar active state + smooth scroll
+		document.getElementById('navigation').addEventListener('click', (e) => {
+			if (e.target.matches('.nav-link')) {
+				document.querySelectorAll('#navigation .nav-link').forEach(a => a.classList.remove('active'));
+				e.target.classList.add('active');
+			}
+		});
+		document.querySelectorAll('a.nav-link[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+				const target = document.querySelector(this.getAttribute('href'));
+				if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			});
+		});
+
+		// Back to top functionality
+		const backToTopButton = document.getElementById('backToTop');
+		
+		// Show/hide back to top button based on scroll position
+		window.addEventListener('scroll', () => {
+			if (window.pageYOffset > 300) {
+				backToTopButton.classList.add('visible');
+			} else {
+				backToTopButton.classList.remove('visible');
+			}
+		});
+
+		// Scroll to top when button is clicked
+		backToTopButton.addEventListener('click', () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+
+		// Auto-highlight active navigation based on scroll position
+		window.addEventListener('scroll', () => {
+			const sections = document.querySelectorAll('section[id]');
+			const navLinks = document.querySelectorAll('.nav-link');
+			
+			let current = '';
+			sections.forEach(section => {
+				const sectionTop = section.offsetTop - 100;
+				if (window.pageYOffset >= sectionTop) {
+					current = section.getAttribute('id');
+				}
+			});
+
+			navLinks.forEach(link => {
+				link.classList.remove('active');
+				if (link.getAttribute('href') === `#${current}`) {
+					link.classList.add('active');
+				}
+			});
+		});
+	</script>
+</body>
+</html>

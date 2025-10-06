@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>MongoPedia – Panduan Lengkap MongoDB</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+		code, .font-mono { font-family: 'Fira Code', monospace; }
+		.data-section { display: block; }
+		.nav-link.active { background-color: #e2e8f0; color: #1e293b; font-weight: 600; }
+		/* Pastikan konten tidak terpotong dalam flex layout */
+		main { min-width: 0; }
+		#content-wrap { min-width: 0; }
+		/* Sticky sidebar */
+		aside { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+		/* Styling untuk code blocks */
+		pre { background-color: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+		code { background-color: #f1f5f9; color: #1e293b; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+		pre code { background-color: transparent; color: inherit; padding: 0; }
+		/* Syntax highlighting colors */
+		.keyword { color: #c792ea; }
+		.string { color: #a5d6ff; }
+		.number { color: #f78c6c; }
+		.operator { color: #89ddff; }
+		.comment { color: #676e95; font-style: italic; }
+		/* Back to top button */
+		.back-to-top { 
+			position: fixed; 
+			bottom: 2rem; 
+			right: 2rem; 
+			background-color: #10b981; 
+			color: white; 
+			border: none; 
+			border-radius: 50%; 
+			width: 3rem; 
+			height: 3rem; 
+			cursor: pointer; 
+			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			z-index: 1000;
+		}
+		.back-to-top.visible { opacity: 1; visibility: visible; }
+		.back-to-top:hover { background-color: #059669; transform: translateY(-2px); }
+	</style>
+</head>
+<body class="text-slate-800">
+
+	<div class="flex flex-col md:flex-row min-h-screen">
+		<!-- Sidebar Navigation -->
+		<aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0">
+			<div class="p-6">
+				<h1 class="text-xl font-bold text-green-600">Mongo<span class="font-normal text-slate-700">Pedia</span></h1>
+				<p class="text-sm text-slate-500 mt-1">Panduan Lengkap MongoDB</p>
+			</div>
+			<nav id="navigation" class="px-4 pb-4">
+				<a href="#overview" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition active">Overview</a>
+				<a href="#basics" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Dasar-dasar</a>
+				<a href="#crud" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">CRUD Operations</a>
+				<a href="#query" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Query & Aggregation</a>
+				<a href="#indexes" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Indexes</a>
+				<a href="#replication" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Replication</a>
+				<a href="#sharding" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Sharding</a>
+				<a href="#security" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Security</a>
+				<a href="#tools" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Tools</a>
+			</nav>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+			<div id="content-wrap" class="space-y-10">
+				<header id="overview" class="mb-2">
+					<h2 class="text-3xl font-bold text-slate-800">MongoDB - Database NoSQL Terpopuler</h2>
+					<p class="mt-2 text-slate-600">MongoDB adalah database NoSQL berbasis dokumen yang menyimpan data dalam format BSON (Binary JSON). Sangat populer untuk aplikasi modern karena fleksibilitas dan performa yang tinggi.</p>
+				</header>
+
+				<section class="space-y-6">
+					<div>
+						<h3 class="text-2xl font-bold">Apa itu MongoDB?</h3>
+						<p class="mt-2 text-slate-600">MongoDB adalah database NoSQL yang menggunakan dokumen untuk menyimpan data. Berbeda dengan database relasional yang menggunakan tabel, MongoDB menggunakan koleksi (collection) yang berisi dokumen (document).</p>
+					</div>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Keunggulan MongoDB</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li><span class="font-medium">Fleksibel</span>: Schema yang dinamis</li>
+								<li><span class="font-medium">Skalable</span>: Mudah di-scale horizontal</li>
+								<li><span class="font-medium">Performant</span>: Optimized untuk read/write</li>
+								<li><span class="font-medium">Developer-friendly</span>: Sintaks yang mudah dipahami</li>
+							</ul>
+						</div>
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Kapan Menggunakan MongoDB</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li>Aplikasi web modern</li>
+								<li>Content management systems</li>
+								<li>Real-time analytics</li>
+								<li>Mobile applications</li>
+								<li>IoT applications</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section id="basics" class="space-y-8">
+					<h3 class="text-2xl font-bold">Dasar-dasar MongoDB</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Konsep Dasar</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Database</h5>
+								<p class="text-sm text-slate-600">Kontainer fisik untuk koleksi. Setiap database memiliki file sendiri di filesystem.</p>
+								<pre><code>use myapp  // Beralih ke database 'myapp'</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Collection</h5>
+								<p class="text-sm text-slate-600">Grup dokumen MongoDB. Setara dengan tabel dalam database relasional.</p>
+								<pre><code>db.users  // Mengakses collection 'users'</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Document</h5>
+								<p class="text-sm text-slate-600">Unit dasar data dalam MongoDB. Setara dengan row dalam database relasional.</p>
+								<pre><code>{
+  "_id": ObjectId("507f1f77bcf86cd799439011"),
+  "name": "John Doe",
+  "age": 30,
+  "email": "john@example.com"
+}</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Field</h5>
+								<p class="text-sm text-slate-600">Key-value pair dalam dokumen. Setara dengan column dalam database relasional.</p>
+								<pre><code>{
+  "name": "John Doe",    // Field 'name' dengan value 'John Doe'
+  "age": 30              // Field 'age' dengan value 30
+}</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Tipe Data MongoDB</h4>
+						<div class="mt-3 grid md:grid-cols-2 gap-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Tipe Data Dasar</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><code>String</code> - Teks</li>
+									<li><code>Number</code> - Angka (int, long, double, decimal)</li>
+									<li><code>Boolean</code> - true/false</li>
+									<li><code>Date</code> - Tanggal dan waktu</li>
+									<li><code>ObjectId</code> - ID unik dokumen</li>
+									<li><code>Null</code> - Nilai kosong</li>
+								</ul>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Tipe Data Khusus</h5>
+								<ul class="text-sm text-slate-600 space-y-1">
+									<li><code>Array</code> - Kumpulan nilai</li>
+									<li><code>Object</code> - Dokumen bersarang</li>
+									<li><code>Binary</code> - Data biner</li>
+									<li><code>Code</code> - JavaScript code</li>
+									<li><code>Regex</code> - Regular expression</li>
+									<li><code>Timestamp</code> - Timestamp khusus</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="crud" class="space-y-8">
+					<h3 class="text-2xl font-bold">CRUD Operations</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">CREATE - Membuat Dokumen</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">insertOne() - Insert satu dokumen</h5>
+								<pre><code>db.users.insertOne({
+  name: "John Doe",
+  age: 30,
+  email: "john@example.com",
+  hobbies: ["reading", "gaming"]
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">insertMany() - Insert banyak dokumen</h5>
+								<pre><code>db.users.insertMany([
+  { name: "Alice", age: 25, email: "alice@example.com" },
+  { name: "Bob", age: 35, email: "bob@example.com" },
+  { name: "Charlie", age: 28, email: "charlie@example.com" }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">insert() - Insert (legacy)</h5>
+								<pre><code>db.users.insert({
+  name: "David",
+  age: 32,
+  email: "david@example.com"
+})</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">READ - Membaca Dokumen</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">find() - Mencari dokumen</h5>
+								<pre><code>// Mencari semua dokumen
+db.users.find()
+
+// Mencari dengan kondisi
+db.users.find({ age: { $gt: 25 } })
+
+// Mencari dengan projection
+db.users.find({}, { name: 1, email: 1, _id: 0 })
+
+// Mencari dengan limit dan sort
+db.users.find().limit(5).sort({ age: -1 })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">findOne() - Mencari satu dokumen</h5>
+								<pre><code>// Mencari dokumen pertama
+db.users.findOne()
+
+// Mencari dengan kondisi
+db.users.findOne({ email: "john@example.com" })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">count() - Menghitung dokumen</h5>
+								<pre><code>// Menghitung semua dokumen
+db.users.count()
+
+// Menghitung dengan kondisi
+db.users.count({ age: { $gte: 18 } })</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">UPDATE - Mengupdate Dokumen</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">updateOne() - Update satu dokumen</h5>
+								<pre><code>db.users.updateOne(
+  { email: "john@example.com" },
+  { $set: { age: 31, lastLogin: new Date() } }
+)</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">updateMany() - Update banyak dokumen</h5>
+								<pre><code>db.users.updateMany(
+  { age: { $lt: 18 } },
+  { $set: { status: "minor" } }
+)</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">replaceOne() - Mengganti dokumen</h5>
+								<pre><code>db.users.replaceOne(
+  { email: "john@example.com" },
+  { 
+    name: "John Smith",
+    age: 31,
+    email: "john.smith@example.com",
+    updatedAt: new Date()
+  }
+)</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">update() - Update (legacy)</h5>
+								<pre><code>db.users.update(
+  { email: "john@example.com" },
+  { $inc: { age: 1 } }
+)</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">DELETE - Menghapus Dokumen</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">deleteOne() - Hapus satu dokumen</h5>
+								<pre><code>db.users.deleteOne({ email: "john@example.com" })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">deleteMany() - Hapus banyak dokumen</h5>
+								<pre><code>db.users.deleteMany({ age: { $lt: 18 } })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">remove() - Hapus (legacy)</h5>
+								<pre><code>db.users.remove({ status: "inactive" })</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="query" class="space-y-8">
+					<h3 class="text-2xl font-bold">Query & Aggregation</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Query Operators</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Comparison Operators</h5>
+								<pre><code>// $eq - Equal
+db.users.find({ age: { $eq: 30 } })
+
+// $ne - Not equal
+db.users.find({ age: { $ne: 30 } })
+
+// $gt - Greater than
+db.users.find({ age: { $gt: 25 } })
+
+// $gte - Greater than or equal
+db.users.find({ age: { $gte: 25 } })
+
+// $lt - Less than
+db.users.find({ age: { $lt: 40 } })
+
+// $lte - Less than or equal
+db.users.find({ age: { $lte: 40 } })
+
+// $in - In array
+db.users.find({ age: { $in: [25, 30, 35] } })
+
+// $nin - Not in array
+db.users.find({ age: { $nin: [25, 30, 35] } })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Logical Operators</h5>
+								<pre><code>// $and - Logical AND
+db.users.find({ 
+  $and: [
+    { age: { $gte: 18 } },
+    { age: { $lte: 65 } }
+  ]
+})
+
+// $or - Logical OR
+db.users.find({ 
+  $or: [
+    { status: "active" },
+    { lastLogin: { $gte: new Date("2024-01-01") } }
+  ]
+})
+
+// $not - Logical NOT
+db.users.find({ 
+  age: { $not: { $gte: 18 } }
+})
+
+// $nor - Logical NOR
+db.users.find({ 
+  $nor: [
+    { status: "inactive" },
+    { lastLogin: { $lt: new Date("2023-01-01") } }
+  ]
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Element Operators</h5>
+								<pre><code>// $exists - Field exists
+db.users.find({ email: { $exists: true } })
+
+// $type - Field type
+db.users.find({ age: { $type: "number" } })
+
+// $regex - Regular expression
+db.users.find({ name: { $regex: /^J/, $options: "i" } })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Array Operators</h5>
+								<pre><code>// $all - All elements match
+db.users.find({ hobbies: { $all: ["reading", "gaming"] } })
+
+// $elemMatch - Element matches condition
+db.users.find({ 
+  hobbies: { 
+    $elemMatch: { $regex: /gam/i } 
+  } 
+})
+
+// $size - Array size
+db.users.find({ hobbies: { $size: 3 } })
+
+// $push - Add to array
+db.users.updateOne(
+  { email: "john@example.com" },
+  { $push: { hobbies: "swimming" } }
+)
+
+// $pull - Remove from array
+db.users.updateOne(
+  { email: "john@example.com" },
+  { $pull: { hobbies: "gaming" } }
+)</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Aggregation Pipeline</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">$match - Filter documents</h5>
+								<pre><code>db.users.aggregate([
+  { $match: { age: { $gte: 18 } } }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$group - Group documents</h5>
+								<pre><code>db.users.aggregate([
+  { 
+    $group: { 
+      _id: "$status", 
+      count: { $sum: 1 },
+      avgAge: { $avg: "$age" }
+    } 
+  }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$project - Reshape documents</h5>
+								<pre><code>db.users.aggregate([
+  { 
+    $project: { 
+      name: 1, 
+      email: 1, 
+      isAdult: { $gte: ["$age", 18] },
+      _id: 0 
+    } 
+  }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$sort - Sort documents</h5>
+								<pre><code>db.users.aggregate([
+  { $sort: { age: -1, name: 1 } }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$limit & $skip - Pagination</h5>
+								<pre><code>db.users.aggregate([
+  { $skip: 10 },
+  { $limit: 5 }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$lookup - Join collections</h5>
+								<pre><code>db.users.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "userId",
+      as: "orders"
+    }
+  }
+])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">$unwind - Deconstruct array</h5>
+								<pre><code>db.users.aggregate([
+  { $unwind: "$hobbies" },
+  { $group: { _id: "$hobbies", count: { $sum: 1 } } }
+])</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="indexes" class="space-y-8">
+					<h3 class="text-2xl font-bold">Indexes</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Jenis-jenis Index</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Single Field Index</h5>
+								<pre><code>// Membuat index pada field 'email'
+db.users.createIndex({ email: 1 })
+
+// Membuat index descending
+db.users.createIndex({ age: -1 })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Compound Index</h5>
+								<pre><code>// Index pada multiple fields
+db.users.createIndex({ name: 1, age: -1 })
+
+// Index dengan field yang berbeda
+db.users.createIndex({ status: 1, lastLogin: -1 })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Text Index</h5>
+								<pre><code>// Text search index
+db.users.createIndex({ name: "text", bio: "text" })
+
+// Text search query
+db.users.find({ $text: { $search: "john developer" } })</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Geospatial Index</h5>
+								<pre><code>// 2dsphere index untuk geospatial data
+db.places.createIndex({ location: "2dsphere" })
+
+// Geospatial query
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: "Point", coordinates: [-73.9857, 40.7484] },
+      $maxDistance: 1000
+    }
+  }
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Hashed Index</h5>
+								<pre><code>// Hashed index untuk sharding
+db.users.createIndex({ email: "hashed" })</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Index Management</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Melihat Index</h5>
+								<pre><code>// Melihat semua index
+db.users.getIndexes()
+
+// Melihat index stats
+db.users.aggregate([{ $indexStats: {} }])</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Menghapus Index</h5>
+								<pre><code>// Hapus index berdasarkan nama
+db.users.dropIndex("email_1")
+
+// Hapus index berdasarkan field
+db.users.dropIndex({ age: 1 })
+
+// Hapus semua index (kecuali _id)
+db.users.dropIndexes()</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Index Options</h5>
+								<pre><code>// Unique index
+db.users.createIndex({ email: 1 }, { unique: true })
+
+// Sparse index
+db.users.createIndex({ phone: 1 }, { sparse: true })
+
+// Partial index
+db.users.createIndex(
+  { email: 1 }, 
+  { partialFilterExpression: { age: { $gte: 18 } } }
+)
+
+// TTL index
+db.sessions.createIndex(
+  { createdAt: 1 }, 
+  { expireAfterSeconds: 3600 }
+)</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="replication" class="space-y-8">
+					<h3 class="text-2xl font-bold">Replication</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Replica Set</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Membuat Replica Set</h5>
+								<pre><code>// 1. Start MongoDB dengan replSet
+mongod --port 27017 --dbpath /data/db --replSet rs0
+
+// 2. Connect ke MongoDB
+mongo
+
+// 3. Initiate replica set
+rs.initiate({
+  _id: "rs0",
+  members: [
+    { _id: 0, host: "localhost:27017" },
+    { _id: 1, host: "localhost:27018" },
+    { _id: 2, host: "localhost:27019" }
+  ]
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Replica Set Commands</h5>
+								<pre><code>// Melihat status replica set
+rs.status()
+
+// Melihat konfigurasi
+rs.conf()
+
+// Menambah member
+rs.add("localhost:27020")
+
+// Menghapus member
+rs.remove("localhost:27020")
+
+// Step down primary
+rs.stepDown()</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Read Preferences</h5>
+								<pre><code>// Read dari primary (default)
+db.users.find().readPref("primary")
+
+// Read dari secondary
+db.users.find().readPref("secondary")
+
+// Read dari nearest
+db.users.find().readPref("nearest")
+
+// Read dengan tag
+db.users.find().readPref("secondary", [{ region: "us-west" }])</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="sharding" class="space-y-8">
+					<h3 class="text-2xl font-bold">Sharding</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Sharded Cluster Setup</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">1. Start Config Servers</h5>
+								<pre><code># Config Server 1
+mongod --configsvr --port 27019 --dbpath /data/configdb1
+
+# Config Server 2
+mongod --configsvr --port 27020 --dbpath /data/configdb2
+
+# Config Server 3
+mongod --configsvr --port 27021 --dbpath /data/configdb3</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">2. Start Shard Servers</h5>
+								<pre><code># Shard 1
+mongod --shardsvr --port 27017 --dbpath /data/shard1
+
+# Shard 2
+mongod --shardsvr --port 27018 --dbpath /data/shard2</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">3. Start Mongos</h5>
+								<pre><code>mongos --configdb config1:27019,config2:27020,config3:27021 --port 27016</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">4. Configure Sharding</h5>
+								<pre><code># Connect ke mongos
+mongo --port 27016
+
+# Add shards
+sh.addShard("shard1:27017")
+sh.addShard("shard2:27018")
+
+# Enable sharding untuk database
+sh.enableSharding("myapp")
+
+# Shard collection
+sh.shardCollection("myapp.users", { userId: "hashed" })</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Sharding Commands</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Shard Management</h5>
+								<pre><code>// Melihat status sharding
+sh.status()
+
+// Melihat balancer status
+sh.getBalancerState()
+
+// Start/stop balancer
+sh.startBalancer()
+sh.stopBalancer()
+
+// Move chunk
+sh.moveChunk("myapp.users", { userId: ObjectId("...") }, "shard2")</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Shard Key</h5>
+								<pre><code>// Range-based shard key
+sh.shardCollection("myapp.orders", { orderDate: 1, customerId: 1 })
+
+// Hashed shard key
+sh.shardCollection("myapp.users", { userId: "hashed" })
+
+// Compound shard key
+sh.shardCollection("myapp.products", { category: 1, productId: 1 })</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="security" class="space-y-8">
+					<h3 class="text-2xl font-bold">Security</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Authentication & Authorization</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Membuat User Admin</h5>
+								<pre><code>// Connect ke MongoDB
+mongo
+
+// Switch ke admin database
+use admin
+
+// Create admin user
+db.createUser({
+  user: "admin",
+  pwd: "password123",
+  roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Membuat Database User</h5>
+								<pre><code>// Switch ke database
+use myapp
+
+// Create user dengan role
+db.createUser({
+  user: "appuser",
+  pwd: "apppassword",
+  roles: [
+    { role: "readWrite", db: "myapp" },
+    { role: "read", db: "reports" }
+  ]
+})</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Built-in Roles</h5>
+								<pre><code>// Database User Roles
+read          // Read data
+readWrite     // Read and write data
+dbAdmin       // Database administration
+dbOwner       // Database owner
+
+// Database Administration Roles
+dbAdminAnyDatabase
+userAdminAnyDatabase
+readWriteAnyDatabase
+
+// Cluster Administration Roles
+clusterAdmin
+clusterManager
+clusterMonitor
+hostManager
+
+// Backup and Restoration Roles
+backup
+restore
+
+// All-Database Roles
+readAnyDatabase
+readWriteAnyDatabase
+userAdminAnyDatabase
+dbAdminAnyDatabase</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">SSL/TLS Configuration</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">MongoDB dengan SSL</h5>
+								<pre><code># Start MongoDB dengan SSL
+mongod --sslMode requireSSL --sslPEMKeyFile /path/to/server.pem --sslCAFile /path/to/ca.pem
+
+# Connect dengan SSL
+mongo --ssl --sslCAFile /path/to/ca.pem --sslPEMKeyFile /path/to/client.pem</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Connection String dengan SSL</h5>
+								<pre><code>mongodb://username:password@host:port/database?ssl=true&sslCAFile=/path/to/ca.pem</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Network Security</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Bind IP</h5>
+								<pre><code># Bind ke IP tertentu
+mongod --bind_ip 192.168.1.100,localhost
+
+# Atau di config file
+net:
+  bindIp: 192.168.1.100,localhost</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Firewall Rules</h5>
+								<pre><code># Ubuntu/Debian
+sudo ufw allow from 192.168.1.0/24 to any port 27017
+
+# CentOS/RHEL
+sudo firewall-cmd --permanent --add-rich-rule="rule family='ipv4' source address='192.168.1.0/24' port protocol='tcp' port='27017' accept"</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="tools" class="space-y-8">
+					<h3 class="text-2xl font-bold">Tools & Utilities</h3>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">MongoDB Tools</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">mongodump & mongorestore</h5>
+								<pre><code># Backup database
+mongodump --host localhost:27017 --db myapp --out /backup/
+
+# Restore database
+mongorestore --host localhost:27017 --db myapp /backup/myapp/
+
+# Backup dengan authentication
+mongodump --host localhost:27017 --username admin --password password123 --authenticationDatabase admin --db myapp --out /backup/</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">mongoexport & mongoimport</h5>
+								<pre><code># Export collection ke JSON
+mongoexport --host localhost:27017 --db myapp --collection users --out users.json
+
+# Export ke CSV
+mongoexport --host localhost:27017 --db myapp --collection users --type csv --fields name,email,age --out users.csv
+
+# Import dari JSON
+mongoimport --host localhost:27017 --db myapp --collection users --file users.json
+
+# Import dengan upsert
+mongoimport --host localhost:27017 --db myapp --collection users --file users.json --upsert --upsertFields email</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">mongostat & mongotop</h5>
+								<pre><code># Monitor database statistics
+mongostat --host localhost:27017
+
+# Monitor collection statistics
+mongotop --host localhost:27017
+
+# Monitor dengan interval
+mongostat --host localhost:27017 5  # Update setiap 5 detik</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">mongosh (MongoDB Shell)</h5>
+								<pre><code># Connect ke MongoDB
+mongosh "mongodb://localhost:27017"
+
+# Connect dengan authentication
+mongosh "mongodb://admin:password123@localhost:27017/admin"
+
+# Connect ke specific database
+mongosh "mongodb://localhost:27017/myapp"
+
+# Run script
+mongosh --file script.js
+
+# Run command
+mongosh --eval "db.users.find().count()"</code></pre>
+							</div>
+						</div>
+					</div>
+
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">Monitoring & Profiling</h4>
+						<div class="mt-3 space-y-4">
+							<div>
+								<h5 class="font-medium text-slate-800">Database Profiling</h5>
+								<pre><code>// Enable profiling
+db.setProfilingLevel(2, { slowms: 100 })
+
+// Set profiling level
+// 0 = off, 1 = slow ops, 2 = all ops
+db.setProfilingLevel(1, { slowms: 200 })
+
+// View profiling data
+db.system.profile.find().limit(5).sort({ ts: -1 })
+
+// Disable profiling
+db.setProfilingLevel(0)</code></pre>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Performance Monitoring</h5>
+								<pre><code>// Server status
+db.serverStatus()
+
+// Database stats
+db.stats()
+
+// Collection stats
+db.users.stats()
+
+// Index usage
+db.users.aggregate([{ $indexStats: {} }])
+
+// Current operations
+db.currentOp()
+
+// Kill operation
+db.killOp(operationId)</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="cta" class="mb-10">
+					<div class="rounded-lg border border-green-200 bg-green-50 p-6">
+						<h4 class="text-lg font-semibold text-green-900">Siap Menggunakan MongoDB?</h4>
+						<p class="mt-2 text-green-900/80">MongoDB adalah database yang powerful untuk aplikasi modern. Mulai dengan instalasi lokal dan eksperimen dengan sintaks-sintaks di atas untuk memahami kekuatannya.</p>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-t border-slate-200 bg-white">
+		<div class="max-w-6xl mx-auto px-4 py-6 text-sm text-slate-500">
+			<p>Dibuat untuk memberikan panduan lengkap MongoDB. Semua sintaks telah diuji dan siap digunakan.</p>
+		</div>
+	</footer>
+
+	<!-- Back to Top Button -->
+	<button class="back-to-top" id="backToTop" title="Kembali ke atas">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="m18 15-6-6-6 6"/>
+		</svg>
+	</button>
+
+	<script>
+		// Sidebar active state + smooth scroll
+		document.getElementById('navigation').addEventListener('click', (e) => {
+			if (e.target.matches('.nav-link')) {
+				document.querySelectorAll('#navigation .nav-link').forEach(a => a.classList.remove('active'));
+				e.target.classList.add('active');
+			}
+		});
+		document.querySelectorAll('a.nav-link[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+				const target = document.querySelector(this.getAttribute('href'));
+				if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			});
+		});
+
+		// Back to top functionality
+		const backToTopButton = document.getElementById('backToTop');
+		
+		// Show/hide back to top button based on scroll position
+		window.addEventListener('scroll', () => {
+			if (window.pageYOffset > 300) {
+				backToTopButton.classList.add('visible');
+			} else {
+				backToTopButton.classList.remove('visible');
+			}
+		});
+
+		// Scroll to top when button is clicked
+		backToTopButton.addEventListener('click', () => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+
+		// Auto-highlight active navigation based on scroll position
+		window.addEventListener('scroll', () => {
+			const sections = document.querySelectorAll('section[id]');
+			const navLinks = document.querySelectorAll('.nav-link');
+			
+			let current = '';
+			sections.forEach(section => {
+				const sectionTop = section.offsetTop - 100;
+				if (window.pageYOffset >= sectionTop) {
+					current = section.getAttribute('id');
+				}
+			});
+
+			navLinks.forEach(link => {
+				link.classList.remove('active');
+				if (link.getAttribute('href') === `#${current}`) {
+					link.classList.add('active');
+				}
+			});
+		});
+	</script>
+</body>
+</html>

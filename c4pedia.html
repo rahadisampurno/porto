@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>C4Pedia – Memahami C4 Model</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+		code, .font-mono { font-family: 'Fira Code', monospace; }
+		.data-section { display: block; }
+		.nav-link.active { background-color: #e2e8f0; color: #1e293b; font-weight: 600; }
+		/* Pastikan konten tidak terpotong dalam flex layout */
+		main { min-width: 0; }
+		#content-wrap { min-width: 0; }
+		/* Batasi lebar diagram agar tidak mendorong layout */
+		pre.mermaid, .mermaid { max-width: 100%; overflow: auto; }
+	</style>
+	<script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			if (window.mermaid) {
+				mermaid.initialize({ startOnLoad: true, theme: 'default' });
+			}
+		});
+	</script>
+</head>
+<body class="text-slate-800">
+
+	<div class="flex flex-col md:flex-row min-h-screen">
+		<!-- Sidebar Navigation -->
+		<aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0">
+			<div class="p-6">
+				<h1 class="text-xl font-bold text-indigo-600">C4<span class="font-normal text-slate-700">Pedia</span></h1>
+				<p class="text-sm text-slate-500 mt-1">Catatan Agar Tak Luput Dari Ingatan</p>
+			</div>
+			<nav id="navigation" class="px-4 pb-4">
+				<a href="#overview" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition active">Overview</a>
+				<a href="#levels" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Level C4</a>
+				<a href="#tools" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Tools</a>
+				<a href="#workflow" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Workflow</a>
+			</nav>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+			<div id="content-wrap" class="space-y-10">
+				<header id="overview" class="mb-2">
+					<h2 class="text-3xl font-bold text-slate-800">Memahami C4 Model Arsitektur</h2>
+					<p class="mt-2 text-slate-600">C4 Model adalah cara sistematis untuk menggambarkan arsitektur sistem dengan 4 level detail yang berbeda: Context, Container, Component, dan Code. Setiap level ditujukan untuk audiens yang berbeda, dari manajer bisnis hingga developer.</p>
+				</header>
+
+				<section class="space-y-6">
+					<div>
+						<h3 class="text-2xl font-bold">Apa itu C4 Model?</h3>
+						<p class="mt-2 text-slate-600">C4 Model adalah metodologi yang dikembangkan oleh Simon Brown untuk membuat dokumentasi arsitektur perangkat lunak yang mudah dipahami. Model ini menggunakan 4 level diagram yang semakin detail:</p>
+						<ul class="mt-3 list-disc pl-5 text-slate-600 space-y-1">
+							<li><span class="font-medium">C1 - Context</span>: Gambaran besar sistem dan penggunanya</li>
+							<li><span class="font-medium">C2 - Container</span>: Aplikasi dan database yang membentuk sistem</li>
+							<li><span class="font-medium">C3 - Component</span>: Komponen-komponen dalam setiap aplikasi</li>
+							<li><span class="font-medium">C4 - Code</span>: Detail implementasi (opsional)</li>
+						</ul>
+					</div>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Mengapa Perlu C4 Model?</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li><span class="font-medium">Komunikasi yang efektif</span>: Setiap level untuk audiens yang tepat</li>
+								<li><span class="font-medium">Menghindari kebingungan</span>: Tidak terlalu teknis atau terlalu abstrak</li>
+								<li><span class="font-medium">Dokumentasi yang hidup</span>: Bisa diupdate bersama dengan kode</li>
+								<li><span class="font-medium">Onboarding yang cepat</span>: Developer baru mudah memahami sistem</li>
+							</ul>
+						</div>
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="font-semibold text-slate-800">Prinsip Dasar C4</h4>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li><span class="font-medium">Hierarki</span>: Mulai dari yang umum ke yang spesifik</li>
+								<li><span class="font-medium">Konsistensi</span>: Gunakan notasi dan istilah yang sama</li>
+								<li><span class="font-medium">Konteks</span>: Selalu jelaskan siapa yang menggunakan sistem</li>
+								<li><span class="font-medium">Simplicity</span>: Fokus pada hal penting, abaikan detail teknis</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section id="levels" class="space-y-8">
+					<h3 class="text-2xl font-bold">4 Level C4 Model</h3>
+					<p class="text-slate-600">Setiap level C4 memiliki tujuan dan audiens yang berbeda. Diagram di bawah menggunakan Mermaid untuk menunjukkan contoh sistem e-commerce sederhana.</p>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">C1 – System Context (Gambaran Besar)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Audiens:</strong> Manajer bisnis, stakeholder, investor<br>
+						<strong>Tujuan:</strong> Menunjukkan sistem apa yang dibangun dan siapa yang menggunakannya</p>
+						<pre class="mermaid">flowchart TB
+actor((Pengguna)):::actor
+extA([Sistem Pembayaran Eksternal]):::external
+system[[Sistem E-Commerce]]:::system
+actor -- Membeli barang --> system
+system -- Konfirmasi pembayaran --> extA
+classDef actor fill:#fff7ed,stroke:#fb923c,color:#7c2d12
+classDef external fill:#eef2ff,stroke:#6366f1,color:#312e81
+classDef system fill:#ecfeff,stroke:#06b6d4,color:#164e63</pre>
+						<div class="mt-3 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+							<p class="text-sm text-blue-800"><strong>Pertanyaan yang dijawab:</strong> Apa yang dilakukan sistem? Siapa yang menggunakannya? Sistem eksternal apa yang berinteraksi?</p>
+						</div>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">C2 – Container (Aplikasi & Database)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Audiens:</strong> Developer, DevOps, arsitek teknis<br>
+						<strong>Tujuan:</strong> Menunjukkan aplikasi dan database apa saja yang membentuk sistem</p>
+						<pre class="mermaid">flowchart LR
+subgraph Web[Web App]
+  ui[Next.js Frontend]
+end
+subgraph API[API]
+  svc[(REST API Service)]
+end
+subgraph Data[Data Layer]
+  db[(PostgreSQL)]
+  cache[(Redis Cache)]
+end
+mq[[Kafka]]
+ui -->|HTTP/HTTPS| svc
+svc -->|JDBC| db
+svc -->|Cache| cache
+svc --- mq</pre>
+						<div class="mt-3 p-3 bg-green-50 rounded border-l-4 border-green-400">
+							<p class="text-sm text-green-800"><strong>Pertanyaan yang dijawab:</strong> Aplikasi apa yang ada? Database apa yang digunakan? Bagaimana mereka berkomunikasi? Teknologi apa yang dipakai?</p>
+						</div>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">C3 – Component (Komponen dalam Aplikasi)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Audiens:</strong> Developer senior, arsitek perangkat lunak<br>
+						<strong>Tujuan:</strong> Menunjukkan komponen-komponen utama dalam setiap aplikasi</p>
+						<pre class="mermaid">flowchart TB
+subgraph API Service
+  controller[OrderController]
+  service[OrderService]
+  repo[OrderRepository]
+  mapper[DTO/Entity Mapper]
+end
+controller --> service
+service --> repo
+service --> mapper
+repo -->|SQL| DB[(PostgreSQL)]</pre>
+						<div class="mt-3 p-3 bg-yellow-50 rounded border-l-4 border-yellow-400">
+							<p class="text-sm text-yellow-800"><strong>Pertanyaan yang dijawab:</strong> Komponen apa saja dalam aplikasi? Bagaimana mereka berinteraksi? Apa tanggung jawab setiap komponen?</p>
+						</div>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">C4 – Code (Detail Implementasi)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Audiens:</strong> Developer yang akan mengerjakan kode<br>
+						<strong>Tujuan:</strong> Menunjukkan detail implementasi seperti class diagram, sequence diagram</p>
+						<div class="p-4 bg-gray-50 rounded">
+							<p class="text-slate-600">Level ini opsional dan biasanya dibuat hanya untuk area yang kompleks. Contohnya:</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600">
+								<li>Diagram kelas untuk menunjukkan struktur kode</li>
+								<li>Sequence diagram untuk alur bisnis yang rumit</li>
+								<li>Database schema untuk tabel yang kompleks</li>
+							</ul>
+						</div>
+						<div class="mt-3 p-3 bg-purple-50 rounded border-l-4 border-purple-400">
+							<p class="text-sm text-purple-800"><strong>Kapan dibuat:</strong> Hanya untuk bagian yang benar-benar kompleks dan perlu dokumentasi detail implementasi.</p>
+						</div>
+					</div>
+				</section>
+
+				<section id="tools" class="space-y-6">
+					<h3 class="text-2xl font-bold">Tools untuk Membuat Diagram C4</h3>
+					<p class="text-slate-600">Ada beberapa cara untuk membuat diagram C4, dari yang paling mudah hingga yang paling powerful. Pilih sesuai kebutuhan tim Anda.</p>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">1. Structurizr (Rekomendasi Utama)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Keunggulan:</strong> Dibuat khusus untuk C4, mendukung semua level, diagram-as-code, auto-layout</p>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Contoh Structurizr DSL (C1–C3)</summary>
+							<pre class="overflow-auto text-sm p-3 bg-slate-50 text-slate-800"><code>// file: workspace.dsl
+workspace "E-Commerce" "Contoh C4 dengan Structurizr" {
+  model {
+    // C1: Context
+    user = person "Customer" "Pengguna yang membeli produk"
+    system = softwareSystem "E-Commerce System" "Menjual produk online"
+    user -> system "Membeli barang"
+    
+    // C2: Container
+    web = container system "Web App" "Next.js" "UI untuk pelanggan"
+    api = container system "API" "Spring Boot" "Business logic"
+    db = container system "Database" "PostgreSQL" "Data transaksi"
+    cache = container system "Cache" "Redis" "Caching data"
+    
+    user -> web "Mengakses UI"
+    web -> api "HTTP"
+    api -> db "JDBC"
+    api -> cache "Cache"
+    
+    // C3: Component
+    component api "OrderController" "HTTP Controller"
+    component api "OrderService" "Business Logic"
+    component api "OrderRepository" "Persistence"
+  }
+  
+  views {
+    systemContext system "Context" { include * autoLayout }
+    container system "Container" { include * autoLayout }
+    component api "API Components" { include * autoLayout }
+  }
+}</code></pre>
+						</details>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Install & Render (Windows PowerShell)</summary>
+							<pre class="overflow-auto p-2 bg-white border border-slate-200 text-sm"><code># Install Scoop (jika belum ada)
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+irm get.scoop.sh | iex
+
+# Install Java dan Structurizr CLI
+scoop install openjdk
+scoop bucket add extras
+scoop install structurizr-cli
+
+# Render diagram ke PNG/SVG
+structurizr-cli export -w workspace.dsl -o out -f plantuml -c workspace</code></pre>
+						</details>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">2. C4-PlantUML (Familiar dengan PlantUML)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Keunggulan:</strong> Sintaks PlantUML yang familiar, library C4 yang lengkap, integrasi dengan banyak tools</p>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Contoh C4-PlantUML</summary>
+							<pre class="overflow-auto text-sm p-3 bg-slate-50 text-slate-800"><code>@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(customer, "Customer", "Pengguna yang membeli produk")
+System(system, "E-Commerce System", "Menjual produk online")
+
+Rel(customer, system, "Membeli barang")
+
+Container(web, "Web App", "Next.js", "UI")
+Container(api, "API", "Spring Boot", "Business logic")
+ContainerDb(db, "Database", "PostgreSQL", "Data transaksi")
+
+Rel(customer, web, "Mengakses UI")
+Rel(web, api, "HTTP")
+Rel(api, db, "JDBC")
+@enduml</code></pre>
+						</details>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Install & Render (Windows PowerShell)</summary>
+							<pre class="overflow-auto p-2 bg-white border border-slate-200 text-sm"><code># Install Java, Graphviz, dan PlantUML
+scoop install openjdk graphviz plantuml
+
+# Render file.puml ke PNG
+plantuml -tpng -o out .\file.puml</code></pre>
+						</details>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">3. Mermaid (Untuk Dokumentasi Ringan)</h4>
+						<p class="mt-1 text-slate-600 mb-3"><strong>Keunggulan:</strong> Mudah dipelajari, terintegrasi dengan GitHub/GitLab, tidak perlu library khusus C4</p>
+						<div class="mt-3 p-3 bg-orange-50 rounded border-l-4 border-orange-400">
+							<p class="text-sm text-orange-800"><strong>Catatan:</strong> Mermaid tidak memiliki tipe diagram C4 resmi, tapi bisa digunakan untuk merepresentasikan ide C4 dengan flowchart/graph.</p>
+						</div>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Contoh Mermaid untuk C2</summary>
+							<pre class="overflow-auto text-sm p-3 bg-slate-50 text-slate-800"><code>flowchart LR
+  subgraph Web[Web App]
+    UI[Next.js Frontend]
+  end
+  subgraph API[API Layer]
+    SVC[Spring Boot API]
+  end
+  subgraph Data[Data Layer]
+    DB[(PostgreSQL)]
+    CACHE[(Redis)]
+  end
+  
+  UI -->|HTTP| SVC
+  SVC -->|JDBC| DB
+  SVC -->|Cache| CACHE</code></pre>
+						</details>
+						<details class="mt-2 rounded border border-slate-200">
+							<summary class="cursor-pointer select-none px-3 py-2 font-medium">Install Mermaid CLI (Windows)</summary>
+							<pre class="overflow-auto p-2 bg-white border border-slate-200 text-sm"><code># Install Node.js dan Mermaid CLI
+scoop install nodejs-lts
+npm i -g @mermaid-js/mermaid-cli
+
+# Render file.mmd ke PNG
+mmdc -i .\file.mmd -o .\out.png</code></pre>
+						</details>
+					</div>
+					
+					<div class="rounded-lg border border-slate-200 bg-white p-4">
+						<h4 class="text-lg font-semibold">4. Tools Lainnya</h4>
+						<div class="grid md:grid-cols-2 gap-4 mt-3">
+							<div>
+								<h5 class="font-medium text-slate-800">Draw.io / Diagrams.net</h5>
+								<p class="text-sm text-slate-600">Gratis, berbasis web, template C4 tersedia</p>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Lucidchart</h5>
+								<p class="text-sm text-slate-600">Berbayar, kolaborasi real-time, template C4</p>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Visio</h5>
+								<p class="text-sm text-slate-600">Microsoft Office, stencil C4 tersedia</p>
+							</div>
+							<div>
+								<h5 class="font-medium text-slate-800">Figma</h5>
+								<p class="text-sm text-slate-600">Design tool, template C4 komunitas</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="workflow" class="space-y-6">
+					<h3 class="text-2xl font-bold">Langkah-langkah Membuat Diagram C4</h3>
+					<p class="text-slate-600">Ikuti workflow ini untuk membuat dokumentasi arsitektur yang efektif dengan C4 Model.</p>
+					
+					<div class="space-y-4">
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="text-lg font-semibold text-slate-800">1. Mulai dari C1 - System Context</h4>
+							<p class="mt-1 text-slate-600">Identifikasi sistem utama dan semua pihak yang berinteraksi dengannya.</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600 space-y-1">
+								<li>Siapa pengguna sistem? (customer, admin, developer)</li>
+								<li>Sistem eksternal apa yang berinteraksi? (payment gateway, email service)</li>
+								<li>Apa tujuan utama sistem?</li>
+								<li>Fitur utama apa yang disediakan?</li>
+							</ul>
+						</div>
+						
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="text-lg font-semibold text-slate-800">2. Lanjut ke C2 - Container</h4>
+							<p class="mt-1 text-slate-600">Pecah sistem menjadi aplikasi dan database yang membentuknya.</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600 space-y-1">
+								<li>Aplikasi apa saja yang ada? (web app, mobile app, API)</li>
+								<li>Database apa yang digunakan? (PostgreSQL, MongoDB, Redis)</li>
+								<li>Bagaimana mereka berkomunikasi? (HTTP, gRPC, message queue)</li>
+								<li>Teknologi apa yang dipakai? (Next.js, Spring Boot, Docker)</li>
+							</ul>
+						</div>
+						
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="text-lg font-semibold text-slate-800">3. Turun ke C3 - Component</h4>
+							<p class="mt-1 text-slate-600">Untuk setiap aplikasi, identifikasi komponen-komponen utamanya.</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600 space-y-1">
+								<li>Controller/API layer (menangani request HTTP)</li>
+								<li>Service layer (business logic)</li>
+								<li>Repository layer (akses data)</li>
+								<li>Utility/Helper classes</li>
+							</ul>
+						</div>
+						
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="text-lg font-semibold text-slate-800">4. Opsional C4 - Code</h4>
+							<p class="mt-1 text-slate-600">Hanya untuk area yang benar-benar kompleks dan perlu dokumentasi detail.</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600 space-y-1">
+								<li>Class diagram untuk struktur kode yang rumit</li>
+								<li>Sequence diagram untuk alur bisnis yang kompleks</li>
+								<li>Database schema untuk tabel yang rumit</li>
+							</ul>
+						</div>
+						
+						<div class="rounded-lg border border-slate-200 bg-white p-4">
+							<h4 class="text-lg font-semibold text-slate-800">5. Simpan sebagai Diagram-as-Code</h4>
+							<p class="mt-1 text-slate-600">Simpan file diagram di repository dan setup auto-render.</p>
+							<ul class="mt-2 list-disc pl-5 text-slate-600 space-y-1">
+								<li>Simpan file .dsl/.puml/.mmd di folder docs/</li>
+								<li>Setup CI/CD untuk auto-render diagram</li>
+								<li>Update diagram setiap kali ada perubahan arsitektur</li>
+								<li>Gunakan version control untuk tracking perubahan</li>
+							</ul>
+						</div>
+					</div>
+					
+					<div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+						<h4 class="font-semibold text-blue-900">Tips Sukses</h4>
+						<ul class="mt-2 list-disc pl-5 text-blue-800 space-y-1">
+							<li><strong>Mulai sederhana:</strong> Jangan over-engineering di awal</li>
+							<li><strong>Update rutin:</strong> Diagram harus selalu up-to-date dengan kode</li>
+							<li><strong>Kolaborasi:</strong> Libatkan tim dalam review diagram</li>
+							<li><strong>Fokus pada yang penting:</strong> Abaikan detail teknis yang tidak relevan</li>
+						</ul>
+					</div>
+				</section>
+
+				<section id="cta" class="mb-10">
+					<div class="rounded-lg border border-indigo-200 bg-indigo-50 p-6">
+						<h4 class="text-lg font-semibold text-indigo-900">Butuh Bantuan Membuat Diagram C4?</h4>
+						<p class="mt-2 text-indigo-900/80">Berikan deskripsi singkat sistem Anda (fitur utama, pengguna, teknologi), saya bisa bantu membuatkan diagram C1–C3 yang siap digunakan dengan Structurizr DSL atau PlantUML.</p>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-t border-slate-200 bg-white">
+		<div class="max-w-6xl mx-auto px-4 py-6 text-sm text-slate-500">
+			<p>Dibuat untuk memperkenalkan C4 Model. Diagram Mermaid di halaman ini adalah representasi sederhana untuk memudahkan pemahaman.</p>
+		</div>
+	</footer>
+
+	<script>
+		// Sidebar active state + smooth scroll
+		document.getElementById('navigation').addEventListener('click', (e) => {
+			if (e.target.matches('.nav-link')) {
+				document.querySelectorAll('#navigation .nav-link').forEach(a => a.classList.remove('active'));
+				e.target.classList.add('active');
+			}
+		});
+		document.querySelectorAll('a.nav-link[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+				const target = document.querySelector(this.getAttribute('href'));
+				if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RD. M. RAHADI SAMPURNA - Backend Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, .font-mono { font-family: 'Fira Code', monospace; }
+        .print-hidden { display: block; }
+        @media print {
+            .print-hidden { display: none !important; }
+            body { font-size: 12px; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <!-- Print Button -->
+    <div class="print-hidden fixed top-4 right-4 z-50">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors">
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Print CV
+        </button>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-white shadow-lg">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">RD. M. RAHADI SAMPURNA</h1>
+                    <h2 class="text-xl font-medium mb-4">Backend Engineer</h2>
+                    <div class="space-y-1 text-blue-100">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Bandung, West Java
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
+                            rahadi.rahasia@gmail.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-3 3a4 4 0 000 5.656 1 1 0 101.414-1.414 2 2 0 000-2.828l3-3z" clip-rule="evenodd"></path>
+                            </svg>
+                            linkedin.com/in/rahadi-sampurno
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.01 1.01l-1.5 2.5a1 1 0 01-.8.4H2a1 1 0 01-1-1V3z"></path>
+                                <path d="M6 3a1 1 0 000 2h3a1 1 0 100-2H6zM14 3a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V7h-1a1 1 0 110-2h1V4a1 1 0 011-1z"></path>
+                            </svg>
+                            (+62) 812-9857-9746
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">WORK PORTFOLIO</h3>
+                        <p class="text-sm text-blue-100">Available upon request</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Professional Summary -->
+        <section class="p-8 border-b border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                PROFESSIONAL SUMMARY
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+                Backend Engineer with over 10 years of experience in the IT industry, specializing in system integration, microservices architecture, and API development. Proficient in Golang, Java, Python, and AI-powered backend solutions. Demonstrated success in leading backend teams, improving transaction stability for digital payment platforms, and delivering scalable backend services for enterprise and government projects. Adept at problem-solving, technical leadership, and collaboration to ensure high-performance and reliable backend systems.
+            </p>
+        </section>
+
+        <!-- Work Experience -->
+        <section class="p-8 border-b border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                WORK EXPERIENCE
+            </h3>
+            
+            <div class="space-y-8">
+                <!-- Current Position -->
+                <div class="border-l-4 border-blue-500 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-blue-600 font-medium">2024 – Present</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Digital Service Digitization Tribe • Backend Developer</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        FABD is an internal product of Telkom that manages fulfillment, assurance, billing, and digitization for all digital products sold by Telkom across Indonesia. At the beginning of this project, I joined the Product and Fulfillment squad as a supporting developer. After three months, I was entrusted with full responsibility for managing the Order Service. My role in the Order squad was to deliver all backend requirements related to order features. The Order Service consisted of three main components: order management, billing, and invoicing. As the only backend engineer in the squad, I was responsible for overseeing the entire infrastructure and ensuring service reliability. During this project, I deepened my expertise in Golang and enhanced my project management skills.
+                    </p>
+                </div>
+
+                <!-- Indibiz Pay -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-gray-600">April 2022 - February 2024</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Indibiz Pay • Backend Developer • Technical Lead</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Indibiz Pay is a digital payment application that uses QR-based payment as its main feature, along with PPOB services. The application is available on both iOS and Android, while merchants can access a dashboard to monitor their payment activities. In this project, I served as both Backend Engineer and Technical Lead, responsible for ensuring all development requirements were met and aligned with business needs. I managed and maintained 14 backend services, each supporting different application features. I also frequently collaborated with Product Owners and infrastructure teams in technical discussions, while directly contributing as a backend engineer to build and improve application functions. Through this project, I gained deeper expertise in microservices architecture, event-driven design, queue management tools, and creating a robust ecosystem capable of handling high traffic and low-latency performance.
+                    </p>
+                </div>
+
+                <!-- Q Ren -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-gray-600">April 2018 - April 2022</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Q Ren • Backend Developer • Technical Lead</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Qren is a nationwide QR-based payment application that enables seamless digital transactions. As a Backend Developer and Technical Lead, I was responsible for designing and maintaining scalable backend services to support payment processing and related features. My role focused on building microservices, improving API performance, and ensuring system reliability to handle high transaction volumes across Indonesia. During the Qren project, I deepened my technical expertise in Java, JavaScript, MongoDB, Kafka, Redis, agile, scrum, microservices, Docker, Jenkins, AWS S3, notification systems, authentication, security, VAPT, and monitoring tools, including APM and Datadog, as well as RDBMS. Additionally, I refined my soft skills, including communication, time management, team collaboration, and leadership.
+                    </p>
+                </div>
+
+                <!-- Umeetme.id -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-gray-600">October 2019 - August 2021</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Umeetme.id • Backend Developer • Maintainer</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        I contributed to building and maintaining backend services for Umeetme.id, an online communication platform with integrated payment features. At the beginning of this project, I was assigned as a maintainer, but due to the urgent need to complete the application during the 2020 pandemic, I also served as the sole Backend Developer and maintainer. My responsibilities included setting up the backend codebase, preparing repositories and services, and developing features required for integration with the frontend. Through this project, I enhanced my skills in JavaScript and MongoDB, while also gaining new knowledge in building applications based on WebRTC technology.
+                    </p>
+                </div>
+
+                <!-- DTP-Visit and Knowledge Repository -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-gray-600">April 2019 - July 2020</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">DTP-Visit and Knowledge Repository • Lead Backend Engineer • Maintainer</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        DTP Visit is an internal Telkom application used to manage external visits to the company, such as digital industry introductions for students and university groups, as well as institutional study visits. Meanwhile, Knowledge Repository is a document management application for storing and organizing company resources. In these projects, I served as a code reviewer, ensuring code quality before deployment to the main repository. Through these experiences, I strengthened my understanding of ES6, clean code practices, Jenkins, and leadership.
+                    </p>
+                </div>
+
+                <!-- Smart City Nusantara -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Telkom Indonesia</h4>
+                        <span class="text-gray-600">October 2018 - March 2019</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Smart City Nusantara • Facilitator Initiative Backend Service</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        In this project, I was responsible for developing the backend to support Telkom Indonesia's digital service transformation initiatives. My role included preparing all backend requirements, such as setting up repositories, backend services, and codebases for the development team. I designed and implemented scalable backend solutions that enhanced system performance and reduced API response latency through optimized request handling and database queries. Additionally, I collaborated closely with product and frontend teams to ensure smooth integration across digital services. Throughout this experience, I strengthened my technical expertise in ES6, clean code practices, Jenkins, and effective communication.
+                    </p>
+                </div>
+
+                <!-- Padepokan Tujuh Sembilan -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">Padepokan Tujuh Sembilan</h4>
+                        <span class="text-gray-600">March 2017 - February 2018</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Backend Developer</p>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Padepokan 79 was my first experience working as a full-time developer, where I served as a Backend Developer. I worked on several projects:
+                    </p>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                        <li><strong>SIM-Gaji:</strong> Developed and maintained a payroll system backend to support accurate and efficient salary processing.</li>
+                        <li><strong>H-RIS:</strong> Built and optimized a Human Resource Information System (HRIS) backend to streamline employee data management.</li>
+                        <li><strong>Extra Module:</strong> Designed and delivered modular backend components to enhance system functionality and scalability.</li>
+                    </ul>
+                    <p class="text-gray-700 leading-relaxed mt-4">
+                        During this period, I gained proficiency in Java programming and database implementation using MySQL. I also learned about REST API development and monolithic framework architecture.
+                    </p>
+                </div>
+
+                <!-- Teaching Experience -->
+                <div class="border-l-4 border-gray-300 pl-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h4 class="text-xl font-semibold text-gray-800">SMK Bintang Harapan</h4>
+                        <span class="text-gray-600">June 2014 - June 2016</span>
+                    </div>
+                    <p class="text-gray-600 mb-2">Software Engineering Teacher</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Taught fundamentals of software engineering and mentored students in technology projects.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section class="p-8 border-b border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.482 0z"></path>
+                </svg>
+                EDUCATION
+            </h3>
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-800">Universitas Nasional Pasim, Bandung</h4>
+                    <p class="text-gray-600">Bachelor of Computer Science</p>
+                </div>
+                <span class="text-gray-600 font-medium">2012-2017</span>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="p-8 border-b border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                CERTIFICATIONS
+            </h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">From Fundamentals to Advanced AI Engineering</h4>
+                        <p class="text-gray-600">Udemy • June 2025</p>
+                        <p class="text-sm text-gray-700">Fine-Tuning, RAG, AI Agents, Vector Databases & Real-World Projects</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">Go Programming: From Beginner to Advanced</h4>
+                        <p class="text-gray-600">Udemy • June 2025</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">Database Elasticsearch: Newbie to Advanced</h4>
+                        <p class="text-gray-600">Udemy • April 2025</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">Software Quality Assurance</h4>
+                        <p class="text-gray-600">Arutala Lab • January 2023</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">Professional Scrum Developer I</h4>
+                        <p class="text-gray-600">Scrum.org • November 2020</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-semibold text-gray-800">AWS Technical Essentials and Developing</h4>
+                        <p class="text-gray-600">Trainocate Indonesia • July 2020</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+                </svg>
+                SKILLS
+            </h3>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Technical Skills -->
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">TECHNICAL SKILLS</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Programming Languages</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Golang</span>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Java</span>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Python</span>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">PHP</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Backend Development</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">RESTful API</span>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Microservices</span>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Event-driven</span>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Monolithic</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Databases</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">MySQL</span>
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">PostgreSQL</span>
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">MongoDB</span>
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Redis</span>
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Elasticsearch</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">DevOps & Tools</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Docker</span>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Kubernetes</span>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Jenkins</span>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Git</span>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">AWS S3</span>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">Kafka</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Monitoring & Security</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">Kibana</span>
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">Datadog</span>
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">APM</span>
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">VAPT</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">AI & Automation</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">AI-powered Backend</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">RAG Implementation</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Automation Scripting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">SOFT SKILLS</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Technical leadership and mentoring
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Project management and task prioritization
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Effective communication and cross-team collaboration
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Problem-solving and analytical thinking
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Time management under high-pressure deadlines
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Continuous learning and adaptability
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Print functionality
+        function printCV() {
+            window.print();
+        }
+
+        // Add smooth scrolling for any internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

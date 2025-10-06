@@ -1,0 +1,38 @@
+{
+  "name": "rahadisampurna-portfolio",
+  "version": "1.0.0",
+  "description": "Professional portfolio website for Rahadi Sampurna - Backend Engineer",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "dev": "npx live-server . --port=3000 --open=/index.html",
+    "build": "echo 'Static HTML site - no build process needed'",
+    "deploy": "echo 'Deploy to GitHub Pages'"
+  },
+  "keywords": [
+    "portfolio",
+    "backend-engineer",
+    "golang",
+    "java",
+    "microservices",
+    "api-development",
+    "rahadi-sampurna"
+  ],
+  "author": "Rahadi Sampurna",
+  "license": "MIT",
+  "homepage": "https://rahadisampurna.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/portopolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/portopolio/issues"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

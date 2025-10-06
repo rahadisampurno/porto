@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahadi Sampurna - Character Profile: The Backend Architect (Pixel Village)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js for Sound Effects and BGM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        /* Custom font import for a classic RPG feel (Cinzel for titles, VT323 for body/pixel feel) */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=VT323&display=swap');
+        
+        /* Define RPG Village Theme Colors and Fonts */
+        :root {
+            --bg-light: #f8f0e3; /* Light parchment/paper background */
+            --text-dark: #3a2a1a; /* Dark brown/sepia text */
+            --primary-accent: #38761d; /* Deep Forest Green (Nature/Main Accent) */
+            --secondary-accent: #a58c3a; /* Old Gold/Brown (Wood/Highlight) */
+            --border-color-light: #4a3321; /* Dark wood border color */
+            --font-display: 'Cinzel', serif;
+            --font-body: 'VT323', monospace; /* Pixel/Monospace Font */
+        }
+
+        /* --- PIXEL CURSOR STYLING (The ultimate final touch) --- */
+        html {
+            /* Default Pixel Arrow Cursor */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill="none" stroke="%233A2A1A" stroke-width="1.5" d="M1.5 1.5l13 6.5-13 6.5V1.5z"/><path fill="%23FFFFFF" d="M2 2v12l12-6-12-6z"/></svg>'), default;
+        }
+
+        /* Sword/Hand Icon for Interactive Elements */
+        a, button, .skill-badge, .experience-header, .filter-btn, .modal-close-btn {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill="%2338761D" d="M6 14L8 8l5-5l-2-2L6 6L0 8z"/><path fill="%23FFD700" d="M7 13L8 9l4-4l-1-1L7 8L3 9z"/></svg>'), pointer !important;
+        }
+
+        /* --- END CURSOR STYLING --- */
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            font-size: 1rem; /* Base font size suitable for VT323 */
+            
+            /* --- PARALLAX BACKGROUND BASE --- */
+            /* Layer 1: Parchment/Paper texture (scrolls normally) */
+            background-color: var(--bg-light);
+            background-image: repeating-linear-gradient(45deg, #f8f0e3 0, #f8f0e3 1px, #f0e6d6 1px, #f0e6d6 2px);
+            background-size: 8px 8px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* --- PARALLAX BACKGROUND LAYER 2 (FIXED/PIXEL GRASS) --- */
+        body::before {
+            content: '';
+            position: fixed; /* Fixed position simulates slower scrolling (parallax) */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place behind content */
+            opacity: 0.2; /* Subtle opacity */
+            
+            /* Pixel Grass Pattern */
+            background-image: linear-gradient(0deg, transparent 50%, rgba(56, 118, 29, 0.4) 50%),
+                              linear-gradient(90deg, transparent 50%, rgba(56, 118, 29, 0.4) 50%);
+            background-size: 16px 16px; 
+        }
+
+
+        /* RPG Panel Style - Looks like a rigid, classic menu window */
+        .mmorpg-panel {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: 4px solid var(--border-color-light); /* Thicker, dark border */
+            box-shadow: 6px 6px 0px var(--primary-accent); /* Stronger offset shadow for retro 3D feel */
+            border-radius: 0px; /* Square and rigid */
+            /* Padding inside is applied to the content wrapper, not the panel itself */
+            transition: box-shadow 0.1s;
+            overflow: hidden; /* Important for containing header bar */
+        }
+        
+        /* Animation: Subtle Panel Shake/Jiggle on Hover */
+        .mmorpg-panel:hover {
+            box-shadow: 6px 6px 0px var(--primary-accent); /* Keeps original shadow */
+            transform: translate(1px, 1px);
+        }
+
+        /* NEW: Distinct RPG Panel Header Bar */
+        .panel-header {
+            background-color: var(--primary-accent); /* Deep Green background */
+            color: white; /* White text for contrast */
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--border-color-light);
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Unique styling for headings (now inside panel-header) */
+        .mmorpg-title {
+            font-family: var(--font-display);
+            /* Color now handled by panel-header */
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25); 
+            padding: 0;
+            margin: 0;
+            border-bottom: none; 
+            text-transform: uppercase;
+        }
+
+        /* Skill badge styling */
+        .skill-badge {
+            font-size: 0.8rem; /* Slightly larger for VT323 legibility */
+            padding: 0.25rem 0.6rem;
+            margin: 0.25rem;
+            border-radius: 2px; 
+            border: 1px solid var(--text-dark);
+            display: inline-flex;
+            align-items: center;
+            font-weight: 400;
+            cursor: pointer; 
+            transition: all 0.2s, text-shadow 0s, opacity 0.3s;
+            transform: scale(1);
+        }
+
+        /* Animation: Flicker/Glow on Hover for Badges */
+        .skill-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+            background-color: #ffffe0; /* Light hover effect */
+            animation: flicker 0.2s infinite alternate; /* Applied here */
+        }
+        
+        @keyframes flicker {
+            0% { text-shadow: none; opacity: 1; }
+            50% { text-shadow: 0 0 5px rgba(255, 255, 0, 0.7); opacity: 0.95; }
+            100% { text-shadow: none; opacity: 1; }
+        }
+
+        /* Filtered out/faded skill badge */
+        .skill-badge.filtered {
+            opacity: 0.3;
+            pointer-events: none;
+            filter: grayscale(100%);
+            transform: scale(0.9);
+        }
+
+        /* Specific colors for skill types - adjusted for high contrast */
+        .skill-prog { background-color: #9CCC65; color: #1b5e20; border-color: #1b5e20; } /* Program (Lime) */
+        .skill-db { background-color: #64B5F6; color: #0D47A1; border-color: #0D47A1; } /* Database (Sky Blue) */
+        .skill-ops { background-color: #FFB300; color: #E65100; border-color: #E65100; } /* Ops/Infra (Amber) */
+        .skill-lead { background-color: #E0B0FF; color: #4A148C; border-color: #4A148C; } /* Leadership (Lavender) */
+        .skill-api { background-color: #FFF176; color: #F57F17; border-color: #F57F17; } /* API/Integration (Light Yellow) */
+        
+        /* Skill Filter Button Styling */
+        .filter-btn {
+            background-color: var(--secondary-accent);
+            color: var(--text-dark);
+            border: 3px solid var(--border-color-light);
+            padding: 0.4rem 0.8rem;
+            margin: 0.2rem;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-color-light);
+            transition: all 0.1s;
+        }
+        
+        /* Add a visible focus state for keyboard navigation */
+        .filter-btn:focus {
+            outline: 2px solid #D32F2F; /* Red outline for focus */
+            outline-offset: 2px;
+            transform: scale(1.05);
+        }
+
+        .filter-btn:hover {
+            background-color: #f0e6d6;
+            box-shadow: 1px 1px 0px var(--border-color-light);
+            transform: translate(2px, 2px);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary-accent);
+            color: white;
+            box-shadow: inset 2px 2px 0px var(--border-color-light);
+            transform: translate(0, 0);
+        }
+
+        /* Experience item styling */
+        .experience-item {
+            transition: background-color 0.3s, border-color 0.3s;
+            border-left: 6px solid var(--secondary-accent); /* Thicker indicator bar */
+            padding-left: 1rem;
+        }
+        .experience-item:hover {
+            background-color: rgba(56, 118, 29, 0.08); /* Light green tint on hover */
+            border-left-color: var(--primary-accent); /* Darker green on hover */
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* NEW: Experience Item Header (Clickable part) */
+        .experience-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px dashed var(--secondary-accent);
+        }
+        
+        /* NEW: Experience Detail Content (Hidden by default) */
+        .experience-detail-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding-top: 0;
+        }
+        
+        .experience-detail-content.open {
+            max-height: 1000px; /* Large value to accommodate content */
+            padding-top: 1rem;
+        }
+        
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-icon.open {
+            transform: rotate(90deg); /* Rotate for a close icon effect */
+        }
+
+
+        /* Status Bar specific CSS */
+        .status-bar {
+            height: 18px;
+            background-color: var(--text-dark);
+            border: 2px solid var(--border-color-light);
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            padding: 1px;
+        }
+        .xp-fill {
+            height: 100%;
+            width: 85%; /* Simulating 85% progress to next level */
+            background-color: #4CAF50; /* Green XP bar */
+            position: relative;
+        }
+        
+        /* New HP/MP Bar Styling */
+        .hp-fill { background-color: #F44336; } /* Red for HP */
+        .mp-fill { background-color: #2196F3; } /* Blue for MP */
+
+        .status-bar-small {
+            height: 14px;
+            background-color: #E0E0E0;
+            border: 1px solid var(--border-color-light);
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+            margin-top: 0.2rem;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            width: 100%;
+        }
+        .status-bar-small > div {
+            height: 100%;
+            position: relative;
+            transition: width 0.3s ease-out;
+        }
+        .status-bar-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.7rem;
+            font-family: var(--font-body);
+            white-space: nowrap;
+        }
+        
+        .xp-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.8rem;
+            font-family: var(--font-body);
+        }
+
+        /* Skill Progress Bar Styling */
+        .skill-progress-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+            height: 14px;
+        }
+        .progress-bar-base {
+            flex-grow: 1;
+            height: 100%;
+            background-color: #e0e0e0; /* Light gray base */
+            border: 1px solid var(--border-color-light);
+            position: relative;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #FF5722; /* Orange/Red for Skill Bar */
+            transition: width 0.5s ease-out;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+        }
+        .progress-bar-level {
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            width: 45px;
+            text-align: right;
+            padding-left: 0.5rem;
+        }
+
+
+        /* Modal Specific Styling (Inventory Window) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 400px;
+            min-height: 200px;
+            padding: 0; /* Remove padding from content wrapper */
+            border: 4px solid var(--border-color-light);
+            background-color: var(--bg-light);
+            box-shadow: 8px 8px 0px var(--primary-accent);
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+            font-family: var(--font-body);
+        }
+        
+        .modal-body {
+            padding: 1rem;
+            color: var(--text-dark);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background-color: #D32F2F; /* Red for close button */
+            color: white;
+            border: 3px solid #790e0e;
+            cursor: pointer;
+            line-height: 1;
+            font-size: 1.5rem;
+            box-shadow: 3px 3px 0px #790e0e;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* New: Typing cursor style for modal text */
+        .typing-text {
+            border-right: 3px solid var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            letter-spacing: normal;
+        }
+        
+        /* NEW: Social Link Interaction Glow */
+        .social-link {
+            transition: color 0.2s, text-shadow 0.2s;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .social-link:hover {
+            color: var(--primary-accent); /* Green highlight */
+            text-shadow: 0 0 5px rgba(56, 118, 29, 0.8); /* Glow effect */
+            animation: pulse-glow 1s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 5px rgba(56, 118, 29, 0.5); }
+            to { text-shadow: 0 0 8px rgba(56, 118, 29, 1); }
+        }
+
+        /* === NEW: NOTIFICATION BANNER STYLING === */
+        #notification-banner {
+            transition: opacity 0.3s ease-out;
+            z-index: 2000; /* Ensure it's above everything */
+            display: none;
+        }
+
+        #notification-content {
+            border: 6px solid #FFD700 !important; /* Gold border */
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 6px 6px 0px var(--border-color-light) !important;
+            background-color: #fff8e1; /* Lighter background for pop */
+            transform-origin: center;
+            padding: 1.5rem 2rem;
+            transition: transform 0.3s ease-out;
+        }
+        
+        @keyframes scale-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .notification-show {
+            animation: scale-in 0.3s ease-out forwards;
+        }
+
+        /* === MINI-MAP STYLING === */
+        #mini-map-container {
+            width: 150px;
+            z-index: 50;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease-out; /* Smooth toggle movement */
+        }
+
+        #mini-map-toggle {
+            background-color: var(--primary-accent);
+            color: white;
+            border: 3px solid var(--border-color-light);
+            border-bottom: none;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-color-light);
+            transition: transform 0.1s;
+        }
+
+        #mini-map-toggle:hover {
+            transform: translate(1px, 1px);
+        }
+
+        #mini-map-content {
+            /* This is the panel that slides in/out */
+            border-top: none;
+            padding: 0.5rem 0.5rem;
+            transform-origin: top;
+        }
+
+        /* State for Hidden Map (Slide out) */
+        #mini-map-container.hidden-map {
+            transform: translate(150px, -50%); /* Slide right */
+        }
+        #mini-map-container.hidden-map #mini-map-toggle {
+            box-shadow: 3px 3px 0px var(--border-color-light); /* Resets button shadow */
+        }
+
+        .map-link {
+            border: 1px dashed transparent;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-decoration: none; /* Remove underline */
+            color: var(--text-dark);
+        }
+        .map-link:hover {
+            background-color: #f0e6d6;
+        }
+        .map-link.active-map {
+            background-color: rgba(56, 118, 29, 0.2); /* Light green highlight */
+            border: 1px dashed var(--primary-accent);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- === RPG NOTIFICATION BANNER (NEW FEATURE) === -->
+    <div id="notification-banner" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="width: 80%; max-width: 500px;">
+        <div class="mmorpg-panel text-center p-6 transform scale-0" id="notification-content">
+            <h3 class="text-3xl font-extrabold" style="color: #FFD700; text-shadow: 1px 1px 0px var(--text-dark); font-family: var(--font-display);"></h3>
+            <p class="text-xl mt-2" id="notification-message"></p>
+        </div>
+    </div>
+    <!-- === END NOTIFICATION BANNER === -->
+
+
+    <!-- === MINI-MAP SCROLL INDICATOR (NEW FEATURE) === -->
+    <div id="mini-map-container" class="fixed hidden lg:block">
+        <!-- Toggle Button -->
+        <button id="mini-map-toggle" class="mmorpg-panel p-2 text-center text-sm w-full font-bold" onclick="toggleMiniMap()">
+            M-MAP <span id="map-icon">▲</span>
+        </button>
+
+        <div id="mini-map-content" class="mmorpg-panel p-2 space-y-2 text-sm">
+            <h4 class="font-bold text-center border-b border-dashed pb-1" style="color: var(--primary-accent);">MINI-MAP</h4>
+            <!-- Links will be added dynamically by JS to handle smooth scroll -->
+        </div>
+    </div>
+    <!-- END MINI-MAP -->
+
+
+    <div id="app" class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
+        
+        <!-- === LEFT SIDEBAR: PROFILE & SKILL TREE (Character Info & Stats) === -->
+        <div class="lg:col-span-1 space-y-8">
+            
+            <!-- Character Profile -->
+            <div class="mmorpg-panel" id="profile">
+                <div class="panel-header text-center">
+                    <div class="flex items-center justify-center space-x-2">
+                        <!-- Dynamic Icon changes based on active filter -->
+                        <span id="dynamic-avatar-icon" class="text-4xl" style="color: white; transition: transform 0.3s ease-out;">⚙️</span>
+                        <h1 class="text-4xl mmorpg-title">RAHADI SAMPURNA</h1>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <p class="text-xl font-semibold text-center mb-1" style="color: var(--primary-accent);">
+                        <span class="text-sm" style="color: var(--text-dark); font-family: var(--font-body);">CLASS:</span> BACKEND ARCHITECT 
+                    </p>
+                    
+                    <!-- EXP BAR -->
+                    <div class="text-center mb-3 text-sm font-bold">
+                        <span style="color: var(--secondary-accent);">[ LVL 10+ ]</span>
+                        <div class="status-bar">
+                            <div class="xp-fill">
+                                <span class="xp-text">EXP 85% TO LVL 11</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- HP & MP BARS -->
+                    <div class="space-y-2 text-base pt-2 border-t-2 border-dashed" style="border-color: var(--secondary-accent);">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-12 font-semibold">HP 🛡️</span>
+                            <div class="status-bar-small">
+                                <div class="hp-fill" style="width: 100%;">
+                                    <span class="status-bar-text">PROBLEM SOLVING: MAX</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-12 font-semibold">MP ⚡</span>
+                            <div class="status-bar-small">
+                                <div class="mp-fill" style="width: 100%;">
+                                    <span class="status-bar-text">INNOVATION: MAX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END HP/MP BARS -->
+                    
+                    <div class="space-y-2 text-base pt-4 border-t-2 border-dashed" style="border-color: var(--secondary-accent);">
+                        <div class="flex items-center space-x-2"><span style="color: var(--secondary-accent);">🗺️</span><span class="font-semibold">LOCATION:</span> Bandung, West Java</div>
+                        <div class="flex items-center space-x-2">
+                            <span style="color: var(--secondary-accent);">✉️</span>
+                            <a href="mailto:rahadi.rahasia@gmail.com" class="social-link font-semibold">COMMS: rahadi.rahasia@gmail.com</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span style="color: var(--secondary-accent);">🔗</span>
+                            <a href="https://linkedin.com/in/rahadi-sampurno" target="_blank" class="social-link font-semibold">NETWORK: linkedin.com/in/rahadi-sampurno</a>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span style="color: var(--secondary-accent);">📞</span>
+                            <span class="font-semibold">CONTACT: (+62) 812-9857-9746</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span style="color: var(--secondary-accent);">📚</span>
+                            <a href="https://github.com/rahadisampurno" target="_blank" class="social-link font-semibold">CODE VAULT: github.com/rahadisampurno</a>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Music Toggle Button -->
+                    <button id="music-toggle-btn" class="filter-btn text-sm mt-4 w-full" onclick="toggleBGM()">🎵 BGM: OFF</button>
+                    <!-- END Music Toggle Button -->
+                </div>
+            </div>
+
+            <!-- Background Lore (Professional Summary) -->
+            <div class="mmorpg-panel" id="lore">
+                <div class="panel-header">
+                    <h2 class="text-2xl mmorpg-title">📜 BACKGROUND LORE</h2>
+                </div>
+                <div class="p-4">
+                    <p class="text-base leading-relaxed" style="color: var(--text-dark);">
+                        Backend Engineer with more than 10 years of experience in software development and system integration. Proficient in Golang, Java, Python, and AI-powered backend solutions. Skilled at building scalable microservices, designing APIs, and leading backend teams to improve performance and reliability. Experienced in delivering secure digital payment platforms, enterprise applications, and government systems. Strong problem solver with a proven record of improving backend efficiency, transaction stability, and cross-functional collaboration.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Skill Filter Menu (New Feature) -->
+            <div class="mmorpg-panel">
+                <div class="panel-header">
+                    <h2 class="text-2xl mmorpg-title">🔍 FILTER SKILL CLASS</h2>
+                </div>
+                <div id="skill-filter-menu" class="flex flex-wrap gap-2 text-sm p-4">
+                    <!-- Buttons rendered by JS -->
+                </div>
+            </div>
+            
+            <!-- NEW: Analysis Report Panel -->
+            <div class="mmorpg-panel" id="analysis">
+                <div class="panel-header">
+                    <h2 class="text-2xl mmorpg-title">📊 ANALYSIS REPORT</h2>
+                </div>
+                <div class="p-4">
+                    <div id="analysis-report-content">
+                        <!-- Content rendered by JS -->
+                    </div>
+                </div>
+            </div>
+            <!-- END NEW PANEL -->
+
+            <!-- Skill Tree (Technical Skills) -->
+            <div class="mmorpg-panel" id="mastery">
+                <div class="panel-header">
+                    <h2 class="text-2xl mmorpg-title">✨ SKILL TREE MASTERY</h2>
+                </div>
+                <!-- Skills list container to house the new progress bars -->
+                <div class="p-4" id="skill-tree-mastery">
+                    <!-- Skills and Progress Bars will be rendered by JS below -->
+                </div>
+            </div>
+
+            <!-- Achievements & Mastery (Education/Certifications) -->
+            <div class="mmorpg-panel">
+                <div class="panel-header">
+                    <h2 class="text-2xl mmorpg-title">🏆 ACHIEVEMENTS & MASTERY</h2>
+                </div>
+                <div class="space-y-4 text-sm p-4">
+                    <!-- Education -->
+                    <div>
+                        <p class="font-semibold" style="color: var(--primary-accent);">🎓 UNIVERSITAS NASIONAL PASIM</p>
+                        <p class="text-base" style="color: var(--text-dark);">BACHELOR OF COMPUTER SCIENCE • 2012 – 2017</p>
+                    </div>
+
+                    <!-- Certifications -->
+                    <h3 class="font-semibold text-lg" style="color: var(--secondary-accent);">📜 CERTIFICATIONS:</h3>
+                    <ul class="list-none space-y-1 text-base ml-0">
+                        <li>- FROM FUNDAMENTALS TO ADVANCED AI ENGINEERING (...)</li>
+                        <li>- ELASTICSEARCH: BEGINNER TO ADVANCED</li>
+                        <li>- PROFESSIONAL SCRUM DEVELOPER I</li>
+                        <li>- CURRICULUM 2013 TEACHER TRAINING</li>
+                        <li>- GRAPHIC FUNDAMENTALS</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div> <!-- End of Left Sidebar -->
+
+        <!-- === MAIN CONTENT: ADVENTURE LOG (Work Experience) === -->
+        <div class="lg:col-span-2">
+            <div class="mmorpg-panel h-full" id="adventure">
+                <div class="panel-header">
+                    <h2 class="text-3xl mmorpg-title">⚔️ ADVENTURE LOG (WORK EXPERIENCE)</h2>
+                </div>
+                <div class="p-4">
+                    <p class="text-sm" style="color: var(--secondary-accent); margin-bottom: 1.5rem;">[ TIP: KLIK PADA NAMA QUEST UNTUK DETAIL & SKILL BADGE UNTUK INFO ITEM ]</p>
+                    <div id="adventure-log" class="space-y-8">
+                        <!-- Experience items will be rendered here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- === SKILL DETAIL MODAL (Inventory Pop-up) === -->
+    <div id="skill-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <!-- Close Button -->
+            <button class="modal-close-btn" onclick="closeModal()">X</button>
+            
+            <div class="panel-header">
+                <h3 id="modal-skill-name" class="text-2xl mmorpg-title"></h3>
+            </div>
+            
+            <div class="modal-body">
+                <p id="modal-skill-category" class="text-base italic mb-4" style="color: var(--primary-accent);"></p>
+                
+                <h4 class="text-lg font-bold mb-2 uppercase" style="color: var(--secondary-accent);">ITEM DESCRIPTION:</h4>
+                <!-- Typing effect wrapper -->
+                <p id="modal-skill-description" class="text-base leading-relaxed typing-text"></p> 
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data in Indonesian for the MMORPG CV
+        const characterData = [
+            {
+                title: "DIGITAL SERVICE DIGITIZATION TRIBE",
+                role: "BACKEND DEVELOPER",
+                location: "BANDUNG, INDONESIA",
+                duration: "2024 – PRESENT",
+                id: "quest-telkom",
+                outcomes: [
+                    "DITUGASKAN PADA PENGEMBANGAN BACKEND UNTUK INISIATIF TRANSFORMASI LAYANAN DIGITAL TELKOM INDONESIA.",
+                    "MERANCANG DAN MENGIMPLEMENTASIKAN SOLUSI BACKEND YANG SCALABLE UNTUK MENDUKUNG INOVASI LAYANAN DIGITAL.",
+                    "MENGURANGI LATENSI RESPONS API DENGAN MENGOPTIMALKAN PENANGANAN REQUEST DAN KUERI DATABASE.",
+                    "BERKOLABORASI DENGAN TIM PRODUK DAN FRONTEND UNTUK MEMASTIKAN INTEGRASI LAYANAN YANG MULUS.",
+                ],
+                skills_acquired: [
+                    { name: "Golang", type: "prog" },
+                    { name: "API Optimization", type: "api" },
+                    { name: "Database Queries", type: "db" },
+                    { name: "Frontend Collaboration", type: "lead" },
+                ],
+            },
+            {
+                title: "INDIBIZ PAY",
+                role: "BACKEND DEVELOPER & TECHNICAL LEAD",
+                location: "BANDUNG, INDONESIA",
+                duration: "2022 – 2024",
+                id: "quest-indibiz",
+                outcomes: [
+                    "MEMIMPIN TIM BACKEND UNTUK PLATFORM PEMBAYARAN DIGITAL YANG MELAYANI RIBUAN PENGGUNA AKTIF HARIAN.",
+                    "MENINGKATKAN STABILITAS TRANSAKSI SEBESAR 30% MELALUI MONITORING DAN OPTIMASI SISTEM.",
+                    "MERANCANG LAYANAN BACKEND FAULT-TOLERANT YANG MAMPU MENANGANI TRANSAKSI KEUANGAN Bervolume TINGGI.",
+                    "MEMPERKENALKAN PRAKTIK TERBAIK DALAM CODE REVIEWS, MENINGKATKAN PRODUKTIVITAS TIM SECARA KESELURUHAN.",
+                    "MENGIMPLEMENTASIKAN CI/CD PIPELINES YANG MEMPERCEPAT SIKLUS RILIS SEBESAR 40%.",
+                ],
+                skills_acquired: [
+                    { name: "Technical Leadership", type: "lead" },
+                    { name: "Transaction Stability", type: "api" },
+                    { name: "Fault Tolerance", type: "ops" },
+                    { name: "CI/CD", type: "ops" },
+                    { name: "Code Reviews", type: "lead" },
+                ],
+            },
+            {
+                title: "QREN",
+                role: "BACKEND DEVELOPER & TECHNICAL LEAD",
+                location: "BANDUNG, INDONESIA",
+                duration: "2018 – 2022",
+                id: "quest-qren",
+                outcomes: [
+                    "BERTANGGUNG JAWAB ATAS ARSITEKTUR BACKEND DAN SKALABILITAS SOLUSI PEMBAYARAN NASIONAL BERBASIS QR.",
+                    "MERANCANG DAN MENERAPKAN ARSITEKTUR MICROSERVICES, MENINGKATKAN MODULARITAS DAN SKALABILITAS SISTEM.",
+                    "MENINGKATKAN PERFORMA API SEBESAR 40% MELALUI STRATEGI CACHING DAN ALGORITMA YANG DIOPTIMALKAN.",
+                    "MENGAWASI PROYEK INTEGRASI DENGAN SISTEM PERBANKAN DAN MITRA EKSTERNAL.",
+                    "MENGOTOMATISASI DEPLOYMENT MENGGUNAKAN DOCKER & KUBERNETES, MENGURANGI DOWNTIME RILIS SEBESAR 50%.",
+                ],
+                skills_acquired: [
+                    { name: "Microservices", type: "ops" },
+                    { name: "Caching Strategy", type: "db" },
+                    { name: "Docker & Kubernetes", type: "ops" },
+                    { name: "Banking Integration", type: "api" },
+                    { name: "Python/Java", type: "prog" },
+                ],
+            },
+            {
+                title: "UMEETME.ID",
+                role: "BACKEND DEVELOPER",
+                location: "BANDUNG, INDONESIA",
+                duration: "2019 – 2021",
+                id: "quest-umeetme",
+                outcomes: [
+                    "BERKONTRIBUSI PADA PENGEMBANGAN PLATFORM KOMUNIKASI DAN KOLABORASI ONLINE.",
+                    "MEMBANGUN MODUL BACKEND YANG MENDUKUNG CHAT, KONFERENSI VIDEO, DAN PEMBAYARAN TERINTEGRASI.",
+                    "MENGEMBANGKAN INTEGRASI PAYMENT GATEWAY YANG AMAN UNTUK PENGALAMAN PENGGUNA YANG MULUS.",
+                    "BERKOLABORASI DENGAN TIM QA DAN FRONTEND UNTUK MEMASTIKAN STABILITAS LINTAS PLATFORM.",
+                ],
+                skills_acquired: [
+                    { name: "Chat/Video Backend", type: "prog" },
+                    { name: "Payment Gateway", type: "api" },
+                    { name: "QA Collaboration", type: "lead" },
+                ],
+            },
+            {
+                title: "KNOWLEDGE REPOSITORY & DTP VISIT",
+                role: "LEAD BACKEND ENGINEER",
+                location: "BANDUNG, INDONESIA",
+                duration: "2019 – 2020",
+                id: "quest-knowledge",
+                outcomes: [
+                    "MEMIMPIN REKAYASA BACKEND UNTUK REPOSITORI PENGETAHUAN TINGKAT ENTERPRISE DAN PLATFORM PELACAKAN KUNJUNGAN.",
+                    "MENGARAHKAN TIM PENGEMBANGAN BACKEND UNTUK MEMBANGUN SISTEM YANG ANDAL DAN SCALABLE.",
+                    "MENINGKATKAN ALUR KERJA DATA, MENINGKATKAN EFISIENSI APLIKASI SEBESAR 20%.",
+                    "MEMASTIKAN KEPATUHAN SISTEM DENGAN STANDAR ENTERPRISE DAN PRAKTIK TERBAIK.",
+                ],
+                skills_acquired: [
+                    { name: "Team Leadership", type: "lead" },
+                    { name: "Data Workflows", type: "db" },
+                    { name: "Enterprise Compliance", type: "api" },
+                ],
+            },
+            {
+                title: "SMART CITY NUSANTARA & PADEPOKAN TUJUH SEMBILAN",
+                role: "BACKEND SERVICE FACILITATOR",
+                location: "BANDUNG, INDONESIA",
+                duration: "2018 – 2019",
+                id: "quest-smartcity",
+                outcomes: [
+                    "MEMBANGUN LAYANAN BACKEND UNTUK MENDUKUNG APLIKASI SMART CITY UNTUK KLIEN ENTERPRISE DAN PEMERINTAH.",
+                    "SIM-GAJI: MERANCANG SISTEM BACKEND PENGGAJIAN YANG MENJAMIN PEMROSESAN GAJI YANG AKURAT DAN EFISIEN.",
+                    "HRIS: MENGEMBANGKAN DAN MENGOPTIMALKAN BACKEND SISTEM HR UNTUK MERAMPINGKAN MANAJEMEN KARYAWAN.",
+                    "EXTRA MODULE: MEMBUAT KOMPONEN BACKEND MODULAR UNTUK FUNGSIONALITAS YANG DAPAT DIPERLUAS.",
+                    "BEKERJA ERAT DENGAN MITRA PEMERINTAH UNTUK MEMASTIKAN KEPATUHAN TERHADAP STANDAR REGULASI.",
+                ],
+                skills_acquired: [
+                    { name: "Government Systems", type: "api" },
+                    { name: "SIM-Gaji/HRIS", type: "prog" },
+                    { name: "Modular Backend", type: "prog" },
+                    { name: "Regulatory Compliance", type: "lead" },
+                ],
+            },
+            {
+                title: "SMK BINTANG HARAPAN CIMAHI",
+                role: "SOFTWARE ENGINEERING TEACHER",
+                location: "BANDUNG, INDONESIA",
+                duration: "2014 – 2016",
+                id: "quest-teacher",
+                outcomes: [
+                    "MENGAJAR DASAR-DASAR REKAYASA PERANGKAT LUNAK DAN MEMBIMBING SISWA DALAM PROYEK TEKNOLOGI.",
+                    "MENYAMPAIKAN PELAJARAN DALAM JAVA, PHP, DAN PRINSIP-PRINSIP BACKEND.",
+                    "MENGAWASI PROYEK AKHIR TAHUN DAN MEMBIMBING SISWA TENTANG PRAKTIK TERBAIK PERANGKAT LUNAK.",
+                    "MEMPERKENALKAN SISWA PADA GIT DAN ALUR KERJA PERANGKAT LUNAK KOLABORATIF.",
+                ],
+                skills_acquired: [
+                    { name: "Teaching/Mentoring", type: "lead" },
+                    { name: "Java/PHP", type: "prog" },
+                    { name: "Software Fundamentals", type: "prog" },
+                    { name: "Git Workflow", type: "ops" },
+                ],
+            },
+        ];
+
+        // NEW: Add a 'mastery' level (1-5) to each skill for the progress bar visualization
+        const allSkills = [
+            // Programming & Frameworks
+            { name: "Golang", type: "prog", mastery: 5, description: "Mahir dalam kinerja tinggi dan konkurensi, ideal untuk microservices dan sistem real-time." },
+            { name: "Java", type: "prog", mastery: 5, description: "Pengalaman luas dalam aplikasi enterprise, arsitektur berbasis objek, dan sistem yang membutuhkan stabilitas tinggi." },
+            { name: "Python", type: "prog", mastery: 4, description: "Keahlian dalam scripting, otomatisasi, dan pengembangan solusi backend yang didukung AI/Data Science." },
+            { name: "PHP", type: "prog", mastery: 3, description: "Kemampuan untuk memelihara dan mengembangkan aplikasi web yang telah ada dengan standar modern." },
+            { name: "JavaScript", type: "prog", mastery: 3, description: "Digunakan untuk backend (Node.js/Express) dan interaksi frontend untuk integrasi penuh." },
+            { name: "AI Implementation", type: "prog", mastery: 4, description: "Mengintegrasikan model AI, Fine-Tuning, RAG, dan Vector Databases ke dalam solusi backend." },
+
+            // Databases
+            { name: "MySQL", type: "db", mastery: 5, description: "Administrasi dan optimasi kueri untuk database relasional skala besar." },
+            { name: "PostgreSQL", type: "db", mastery: 4, description: "Keahlian dalam fitur database relasional tingkat lanjut, termasuk JSONB dan performa query kompleks." },
+            { name: "MongoDB", type: "db", mastery: 3, description: "Pengembangan dan pemeliharaan database NoSQL fleksibel untuk data yang terstruktur longgar." },
+            { name: "Elasticsearch", type: "db", mastery: 4, description: "Implementasi mesin pencari canggih untuk pencarian teks penuh dan analisis log." },
+            { name: "Database Queries", type: "db", mastery: 5, description: "Profisiensi dalam menulis kueri efisien dan desain skema untuk kecepatan dan skalabilitas." },
+            { name: "Caching Strategy", type: "db", mastery: 4, description: "Menerapkan lapisan caching (Redis/Memcached) untuk mengurangi beban database dan latensi." },
+            { name: "Data Workflows", type: "db", mastery: 4, description: "Merancang pipeline ETL/data processing untuk mengalirkan dan memproses data secara efisien." },
+
+            // Tools & Platforms (Ops/Infra)
+            { name: "Docker", type: "ops", mastery: 5, description: "Mengemas aplikasi dalam kontainer untuk konsistensi lingkungan dan portabilitas antar server." },
+            { name: "Kubernetes", type: "ops", mastery: 4, description: "Orkestrasi kontainer untuk deployment, scaling, dan manajemen aplikasi yang sangat skalabel." },
+            { name: "Git", type: "ops", mastery: 5, description: "Manajemen versi yang ketat dan kolaborasi kode menggunakan Git dan platform terkait." },
+            { name: "CI/CD", type: "ops", mastery: 4, description: "Menerapkan alur kerja otomatis (Jenkins/GitLab CI) untuk integrasi, pengujian, dan deployment yang cepat." },
+            { name: "Fault Tolerance", type: "ops", mastery: 4, description: "Desain sistem yang dapat menangani kegagalan komponen tanpa mengganggu ketersediaan layanan." },
+            { name: "Git Workflow", type: "ops", mastery: 5, description: "Penggunaan alur kerja Git yang terstruktur untuk kolaborasi tim yang lancar." },
+            { name: "Microservices", type: "ops", mastery: 5, description: "Membangun arsitektur terdistribusi dari layanan-layanan independen dan terkelola." },
+
+            // Specializations (API/Integration)
+            { name: "REST", type: "api", mastery: 5, description: "Merancang API RESTful yang bersih, intuitif, dan sesuai standar untuk komunikasi data yang efisien." },
+            { name: "gRPC", type: "api", mastery: 4, description: "Pengembangan API berkinerja tinggi, berbasis HTTP/2, ideal untuk komunikasi microservices internal." },
+            { name: "API Optimization", type: "api", mastery: 5, description: "Spesialisasi dalam meningkatkan throughput dan mengurangi waktu respons API." },
+            { name: "Transaction Stability", type: "api", mastery: 4, description: "Memastikan integritas dan keandalan operasi keuangan dan data kritis." },
+            { name: "Banking Integration", type: "api", mastery: 4, description: "Mengintegrasikan sistem backend dengan API perbankan dan layanan keuangan eksternal secara aman." },
+            { name: "Payment Gateway", type: "api", mastery: 4, description: "Implementasi dan pengelolaan integrasi gateway pembayaran pihak ketiga yang aman (PCI DSS)." },
+            { name: "Enterprise Compliance", type: "api", mastery: 3, description: "Memastikan sistem memenuhi standar keamanan dan arsitektur korporat yang ketat." },
+            { name: "Government Systems", type: "api", mastery: 3, description: "Pengalaman dengan persyaratan keamanan dan regulasi untuk platform sektor publik." },
+
+            // Soft Skills (Leadership)
+            { name: "Technical Leadership", type: "lead", mastery: 5, description: "Memimpin tim engineer, menyediakan panduan teknis, dan mendorong inovasi arsitektur." },
+            { name: "Problem-Solving", type: "lead", mastery: 5, description: "Keterampilan analitis yang kuat untuk mendiagnosis masalah kompleks dan merancang solusi yang efisien." },
+            { name: "Collaboration", type: "lead", mastery: 5, description: "Bekerja secara efektif dengan tim lintas fungsi (Product, QA, Frontend) untuk mencapai tujuan bersama." },
+            { name: "Frontend Collaboration", type: "lead", mastery: 4, description: "Memastikan API dirancang agar mudah dikonsumsi oleh tim frontend, mempercepat pengembangan UI." },
+            { name: "Code Reviews", type: "lead", mastery: 4, description: "Melakukan tinjauan kode kritis untuk meningkatkan kualitas, keamanan, dan pemeliharaan kode." },
+            { name: "QA Collaboration", type: "lead", mastery: 3, description: "Bekerja sama dengan QA untuk mengotomatisasi pengujian dan memastikan stabilitas lintas platform." },
+            { name: "Team Leadership", type: "lead", mastery: 4, description: "Mengelola proyek, mendelegasikan tugas, dan memastikan delivery tepat waktu." },
+            { name: "Regulatory Compliance", type: "lead", mastery: 3, description: "Memastikan semua pengembangan mematuhi peraturan hukum dan industri yang berlaku." },
+            { name: "Teaching/Mentoring", type: "lead", mastery: 3, description: "Mentransfer pengetahuan teknis dan membimbing engineer muda dalam praktik terbaik." },
+            { name: "Software Fundamentals", type: "lead", mastery: 4, description: "Pemahaman mendalam tentang teori CS yang mendukung praktik rekayasa perangkat lunak yang solid." }
+        ];
+        
+        // Dynamic Icon Map
+        const iconMap = {
+            'ALL': '⚙️',   // Backend Architect / Gear
+            'prog': '💻',  // Programming / Laptop
+            'db': '🗄️',   // Database / Cabinet
+            'ops': '☁️',   // Ops/Infra / Cloud
+            'api': '🔗',   // API/Integration / Link
+            'lead': '👑'   // Leadership / Crown
+        };
+
+        const filterMap = [
+            { key: 'ALL', label: 'SEMUA SKILL 🌟', icon: '🌟' },
+            { key: 'prog', label: 'PROGRAMMING 💻', icon: '💻' },
+            { key: 'db', label: 'DATABASE 🗄️', icon: '🗄️' },
+            { key: 'ops', label: 'OPS/INFRA ⚙️', icon: '⚙️' },
+            { key: 'api', label: 'API/INTEGRATION 🔗', icon: '🔗' },
+            { key: 'lead', label: 'LEADERSHIP 👑', icon: '👑' },
+        ];
+        
+        // Initial state for filtering
+        let currentFilter = 'ALL';
+
+        // Function to determine badge class
+        function getBadgeClass(type) {
+            switch (type) {
+                case 'prog': return 'skill-prog';
+                case 'db': return 'skill-db';
+                case 'ops': return 'skill-ops';
+                case 'lead': return 'skill-lead';
+                case 'api': return 'skill-api';
+                default: return 'bg-gray-400 text-gray-800 border-gray-800';
+            }
+        }
+
+        // Variable to hold the typing animation interval
+        let typingInterval = null;
+
+        // --- TONE.JS AUDIO SETUP ---
+        let synth = null;
+        let notificationSynth = null;
+        let bgmLoop = null; // New BGM loop variable
+        let isBGMPlaying = false; // New BGM state
+
+        // Initialize Tone.js when user interacts (required by browsers)
+        function initializeAudio() {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+            if (!synth) {
+                // Simple PolySynth for modal/hover sounds
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "square" },
+                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.0, release: 0.1 },
+                }).toDestination();
+                synth.volume.value = -10; 
+            }
+            if (!notificationSynth) {
+                // Brighter Synth for level up notification
+                 notificationSynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.05, decay: 0.4, sustain: 0.1, release: 0.5 },
+                }).toDestination();
+                notificationSynth.volume.value = -5;
+            }
+        }
+
+        // Sound effect functions
+        function playOpenSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease(["C5", "E5"], "16n");
+        }
+
+        function playCloseSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease(["E5", "C5"], "16n");
+        }
+        
+        function playHoverSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease("C4", "64n"); // Very short chime
+        }
+
+        // Keyboard Navigation Sound (Menu Select)
+        function playNavSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease("G4", "32n");
+        }
+
+        // Level Up/Notification Sound
+        function playLevelUpSound() {
+            initializeAudio();
+            if (notificationSynth) notificationSynth.triggerAttackRelease(["C6", "E6", "G6"], "4n");
+        }
+        
+        // Map Toggle Sound
+        function playMapOpenSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease(["C5", "G5"], "16n");
+        }
+        function playMapCloseSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease(["G5", "C5"], "16n");
+        }
+        
+        // Quest Toggle Sound
+        function playQuestOpenSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease("C4", "32n");
+        }
+        function playQuestCloseSound() {
+            initializeAudio();
+            if (synth) synth.triggerAttackRelease("A3", "32n");
+        }
+        
+        // --- NEW BGM LOGIC ---
+        function startBGM() {
+            if (isBGMPlaying) return;
+            
+            // Use a simpler Synth for BGM
+            const bgmSynth = new Tone.Synth({
+                oscillator: { type: "square" },
+                envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.5 },
+            }).toDestination();
+            bgmSynth.volume.value = -18; // Set volume lower than sound effects
+
+            // Simple 8-bit melody (A minor arpeggio)
+            const melody = ["A4", "C5", "E5", "A5", "G4", "B4", "D5", "G5"];
+            let index = 0;
+
+            // Create the looping sequence
+            bgmLoop = new Tone.Loop(time => {
+                const note = melody[index % melody.length];
+                bgmSynth.triggerAttackRelease(note, "8n", time);
+                index++;
+            }, "4n").start(0);
+
+            Tone.Transport.start();
+            isBGMPlaying = true;
+            document.getElementById('music-toggle-btn').textContent = '🎵 BGM: ON';
+        }
+
+        function stopBGM() {
+            if (bgmLoop) {
+                bgmLoop.stop();
+                // Dispose the loop and synth if needed, but stopping the loop is often sufficient
+                // bgmLoop.dispose();
+                bgmLoop = null; 
+            }
+            // Stop transport only if no other active loops/sequences are running
+            // For simplicity, we stop it here.
+            Tone.Transport.stop(); 
+            isBGMPlaying = false;
+            document.getElementById('music-toggle-btn').textContent = '🎵 BGM: OFF';
+        }
+
+        function toggleBGM() {
+            initializeAudio(); // Ensure context is running
+            if (isBGMPlaying) {
+                stopBGM();
+                playCloseSound(); 
+            } else {
+                startBGM();
+                playOpenSound();
+            }
+        }
+        // --- END AUDIO SETUP ---
+
+        // --- NOTIFICATION BANNER FUNCTIONS ---
+        function showNotification(title, message) {
+            playLevelUpSound();
+            const banner = document.getElementById('notification-banner');
+            const content = document.getElementById('notification-content');
+            
+            content.querySelector('h3').textContent = title;
+            document.getElementById('notification-message').textContent = message;
+            
+            banner.style.display = 'block';
+            content.classList.add('notification-show');
+
+            setTimeout(() => {
+                content.classList.remove('notification-show');
+                // Use opacity transition to hide smoothly, then set display: none
+                banner.style.opacity = '0';
+                setTimeout(() => {
+                    banner.style.display = 'none';
+                    banner.style.opacity = '1';
+                }, 300);
+            }, 2500); // Display for 2.5 seconds
+        }
+
+        // --- MODAL FUNCTIONS ---
+
+        function openModal(skillName) {
+            playOpenSound();
+            const skill = allSkills.find(s => s.name === skillName);
+            const modal = document.getElementById('skill-modal');
+            const descriptionElement = document.getElementById('modal-skill-description');
+            
+            if (skill) {
+                // Clear any previous typing animation
+                if (typingInterval) {
+                    clearInterval(typingInterval);
+                }
+
+                // Determine category display name
+                let categoryName;
+                switch(skill.type) {
+                    case 'prog': categoryName = 'CATEGORY: PROGRAMMING & FRAMEWORKS'; break;
+                    case 'db': categoryName = 'CATEGORY: DATA & DATABASE'; break;
+                    case 'ops': categoryName = 'CATEGORY: INFRASTRUCTURE & OPS'; break;
+                    case 'lead': categoryName = 'CATEGORY: LEADERSHIP & SOFT SKILL'; break;
+                    case 'api': categoryName = 'CATEGORY: API & INTEGRATION'; break;
+                    default: categoryName = 'CATEGORY: UNKNOWN';
+                }
+
+                document.getElementById('modal-skill-name').textContent = `✨ ${skill.name}`;
+                document.getElementById('modal-skill-category').textContent = categoryName;
+                
+                // Start the typing animation
+                startTypingAnimation(descriptionElement, skill.description);
+
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            playCloseSound();
+            // Stop typing animation when modal closes
+            if (typingInterval) {
+                clearInterval(typingInterval);
+                typingInterval = null;
+            }
+            document.getElementById('skill-modal').style.display = 'none';
+        }
+
+        function startTypingAnimation(element, text) {
+            let i = 0;
+            element.textContent = ''; // Clear previous text
+            
+            // Add blinking cursor effect via CSS class when typing starts
+            element.classList.add('typing-text'); 
+
+            typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    typingInterval = null;
+                    // Remove blinking cursor when typing finishes
+                    element.classList.remove('typing-text'); 
+                }
+            }, 30); // Speed of typing (30ms per character)
+        }
+        
+        // --- FILTERING LOGIC ---
+        function filterSkills(filterType) {
+            
+            // 1. Check if filter is actually changing
+            const filterChanged = currentFilter !== filterType;
+            const previousFilter = currentFilter;
+
+            currentFilter = filterType;
+
+            // 2. Update filter buttons UI
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === filterType) {
+                    btn.classList.add('active');
+                    // Get the label for notification
+                    if (filterChanged && previousFilter !== null) { // Only show notification if not initial load
+                        const label = filterMap.find(f => f.key === filterType)?.label.split(' ')[0] || 'FOKUS';
+                        showNotification('FOKUS KARAKTER DIUBAH', `PILIH CLASS: ${label}`);
+                    }
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // 3. Rerender the Skill Tree Mastery with the new filter
+            renderSkillTree();
+
+            // 4. Update the dynamic avatar icon
+            document.getElementById('dynamic-avatar-icon').textContent = iconMap[filterType];
+
+
+            // 5. Highlight/filter the skills in the Adventure Log
+            document.querySelectorAll('.skill-badge').forEach(badge => {
+                const skillType = badge.dataset.skillType;
+                const isFiltered = filterType !== 'ALL' && skillType !== filterType;
+
+                if (isFiltered) {
+                    badge.classList.add('filtered');
+                } else {
+                    badge.classList.remove('filtered');
+                }
+            });
+        }
+
+
+        // --- KEYBOARD NAVIGATION LOGIC ---
+        
+        let hrCodeSequence = [];
+        const HR_CODE = ['h', 'r']; // Hidden Gem: HR Code Sequence
+
+        function handleFilterNavigation(direction) {
+            const filterKeys = filterMap.map(f => f.key);
+            const currentIndex = filterKeys.indexOf(currentFilter);
+            let newIndex = currentIndex;
+
+            if (direction === 'next') {
+                newIndex = (currentIndex + 1) % filterKeys.length;
+            } else if (direction === 'prev') {
+                newIndex = (currentIndex - 1 + filterKeys.length) % filterKeys.length;
+            }
+
+            const newFilterKey = filterKeys[newIndex];
+            
+            // If the filter actually changes, play sound and apply filter
+            if (newFilterKey !== currentFilter) {
+                playNavSound();
+                filterSkills(newFilterKey);
+
+                // Optional: set focus to the newly activated button for accessibility/visual feedback
+                const newActiveButton = document.querySelector(`.filter-btn[data-filter="${newFilterKey}"]`);
+                if (newActiveButton) {
+                    newActiveButton.focus();
+                }
+            }
+        }
+        
+        // Main keyboard event listener
+        document.addEventListener('keydown', (event) => {
+            // Check if the focus is inside the modal (to prevent navigation when typing)
+            if (document.getElementById('skill-modal').style.display === 'flex') {
+                // Allow ESCAPE key to close modal
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+                return; 
+            }
+            
+            // Handle arrow keys and number keys for filter navigation
+            if (event.key === 'ArrowRight') {
+                handleFilterNavigation('next');
+                event.preventDefault(); // Prevent page scrolling
+            } else if (event.key === 'ArrowLeft') {
+                handleFilterNavigation('prev');
+                event.preventDefault(); // Prevent page scrolling
+            } else if (event.key >= '1' && event.key <= '6') {
+                const index = parseInt(event.key, 10) - 1;
+                if (index >= 0 && index < filterMap.length) {
+                    const newFilterKey = filterMap[index].key;
+                    if (newFilterKey !== currentFilter) {
+                        playNavSound();
+                        filterSkills(newFilterKey);
+                    }
+                    event.preventDefault();
+                }
+            } else if (event.key === 'm' || event.key === 'M') {
+                // Toggle Mini-Map using 'M' key
+                toggleMiniMap();
+                event.preventDefault();
+            } else if (event.key === 'b' || event.key === 'B') {
+                // Toggle BGM using 'B' key
+                toggleBGM();
+                event.preventDefault();
+            }
+
+            // NEW HIDDEN GEM LOGIC
+            const key = event.key.toLowerCase();
+            
+            // Hidden Gem 1: Developer Console Joke (Ctrl + Shift + D)
+            const isCtrlShiftD = event.ctrlKey && event.shiftKey && key === 'd';
+            if (isCtrlShiftD) {
+                console.log("-----------------------------------------");
+                console.log("CHEAT UNLOCKED: DEVELOPER MODE");
+                console.log("CONSOLE LOG: If you're reading this, you've found a secret. As a Backend Engineer, I appreciate a good system bypass. Thanks for checking the logs! (Hint: Another secret exists: press H then R!)");
+                console.log("-----------------------------------------");
+                playLevelUpSound();
+                event.preventDefault();
+            }
+
+            // Hidden Gem 2: HR Secret Code (Sequence 'h' then 'r')
+            if (!event.ctrlKey && !event.altKey && !event.shiftKey) {
+                if (key === HR_CODE[hrCodeSequence.length]) {
+                    hrCodeSequence.push(key);
+                    if (hrCodeSequence.length === HR_CODE.length) {
+                        // HR Code Activated!
+                        showNotification(
+                            "ACHIEVEMENT UNLOCKED: HR RECRUITER!",
+                            "Terima kasih, HR! Semoga petualangan ini menyenangkan. Silakan rekrut saya untuk misi berikutnya! Kode cheat: HR-APPROVED."
+                        );
+                        hrCodeSequence = []; // Reset sequence
+                    }
+                } else {
+                    // Only reset if the key pressed wasn't the start of the sequence
+                    if (key !== HR_CODE[0]) {
+                         hrCodeSequence = [];
+                    }
+                }
+            }
+        });
+        
+        // Quest/Adventure Log Toggle Function
+        function toggleQuestDetail(id) {
+            const content = document.getElementById(`detail-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+
+            if (content.classList.contains('open')) {
+                // Close Quest
+                playQuestCloseSound();
+                content.classList.remove('open');
+                icon.classList.remove('open');
+                icon.textContent = '▶'; // Right arrow/close icon
+            } else {
+                // Open Quest
+                playQuestOpenSound();
+                content.classList.add('open');
+                icon.classList.add('open');
+                icon.textContent = '▼'; // Down arrow/open icon
+            }
+        }
+
+
+        // --- MINI-MAP SCROLL LOGIC ---
+        const sections = [
+            { id: 'profile', label: 'PROFILE 👤' },
+            { id: 'lore', label: 'LORE 📜' },
+            { id: 'analysis', label: 'ANALYSIS 📊' }, 
+            { id: 'mastery', label: 'MASTERY ✨' },
+            { id: 'adventure', label: 'ADVENTURE ⚔️' }
+        ];
+
+        function highlightMiniMap() {
+            // Only highlight if the map is currently visible
+            const mapContainer = document.getElementById('mini-map-container');
+            if (mapContainer.classList.contains('hidden-map')) return;
+
+            const viewportHeight = window.innerHeight;
+            let bestMatch = sections[0].id;
+            let smallestDistance = Infinity;
+
+            sections.forEach(section => {
+                const element = document.getElementById(section.id);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    // Check if the section is visible in the viewport's top half
+                    if (rect.top >= 0 && rect.top < viewportHeight / 2) {
+                        const distance = rect.top;
+                        if (distance < smallestDistance) {
+                            smallestDistance = distance;
+                            bestMatch = section.id;
+                        }
+                    } else if (rect.top < 0 && rect.bottom > viewportHeight / 2) {
+                        // If the element spans most of the screen, prioritize it
+                        bestMatch = section.id;
+                    }
+                }
+            });
+
+            document.querySelectorAll('.map-link').forEach(link => {
+                link.classList.remove('active-map');
+            });
+            const activeLink = document.querySelector(`.map-link[data-section="${bestMatch}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active-map');
+            }
+        }
+
+        function setupMiniMap() {
+            const mapContainer = document.getElementById('mini-map-container');
+            const mapContent = document.getElementById('mini-map-content');
+
+            // Set initial hidden state for desktop views
+            mapContainer.classList.add('hidden-map');
+            document.getElementById('map-icon').textContent = '◀';
+
+            // Dynamically create map links
+            const mapLinksHtml = sections.map(section => `
+                <a 
+                    href="#${section.id}" 
+                    data-section="${section.id}" 
+                    class="map-link block p-1 text-center"
+                    onclick="smoothScrollTo(event, '${section.id}')"
+                >
+                    ${section.label}
+                </a>
+            `).join('');
+            
+            const titleHtml = mapContent.querySelector('h4').outerHTML;
+            mapContent.innerHTML = titleHtml + mapLinksHtml;
+
+            window.addEventListener('scroll', highlightMiniMap);
+            highlightMiniMap(); // Initial highlight
+        }
+
+        function toggleMiniMap() {
+            const mapContainer = document.getElementById('mini-map-container');
+            const mapIcon = document.getElementById('map-icon');
+            
+            if (mapContainer.classList.contains('hidden-map')) {
+                // Open Map
+                playMapOpenSound();
+                mapContainer.classList.remove('hidden-map');
+                mapIcon.textContent = '▲';
+                highlightMiniMap(); // Ensure highlight runs immediately upon opening
+            } else {
+                // Close Map
+                playMapCloseSound();
+                mapContainer.classList.add('hidden-map');
+                mapIcon.textContent = '◀';
+            }
+        }
+
+        function smoothScrollTo(event, id) {
+            event.preventDefault();
+            const element = document.getElementById(id);
+            if (element) {
+                window.scrollTo({
+                    top: element.offsetTop - 20, // Offset for better visual focus
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // --- ANALYSIS REPORT LOGIC (NEW) ---
+        function calculateAnalysis() {
+            let totalMastery = 0;
+            const categoryScores = {};
+
+            // Initialize category scores
+            for (const key of filterMap.map(f => f.key).filter(k => k !== 'ALL')) {
+                categoryScores[key] = { score: 0, count: 0, label: filterMap.find(f => f.key === key).label.split(' ')[0] };
+            }
+
+            // Calculate total mastery and category scores
+            allSkills.forEach(skill => {
+                totalMastery += skill.mastery;
+                if (categoryScores[skill.type]) {
+                    categoryScores[skill.type].score += skill.mastery;
+                    categoryScores[skill.type].count += 1;
+                }
+            });
+
+            // Determine Rank and Title
+            const maxScorePossible = allSkills.length * 5;
+            const percentage = (totalMastery / maxScorePossible) * 100;
+
+            let rank = 'APPRENTICE';
+            let rankColor = '#4a3321'; // Dark Brown
+            
+            if (percentage >= 85) {
+                rank = 'LEGENDARY ARTISAN 💎';
+                rankColor = '#FFD700'; // Gold
+            } else if (percentage >= 70) {
+                rank = 'MASTER ARCHITECT 👑';
+                rankColor = '#FF5722'; // Orange
+            } else if (percentage >= 50) {
+                rank = 'JOURNEYMAN ENGINEER ⭐';
+                rankColor = '#38761d'; // Green
+            }
+
+            // Determine Top 3 Categories
+            const sortedCategories = Object.values(categoryScores).sort((a, b) => b.score - a.score);
+            const topCategories = sortedCategories.slice(0, 3).map(c => 
+                `${c.label} (${c.score} PTS)`
+            );
+
+            return {
+                totalMastery: totalMastery,
+                rank: rank,
+                rankColor: rankColor,
+                topCategories: topCategories
+            };
+        }
+
+        function renderAnalysisReport() {
+            const report = calculateAnalysis();
+            const container = document.getElementById('analysis-report-content');
+            
+            const html = `
+                <div class="space-y-3 text-base">
+                    <p class="font-bold uppercase" style="color: var(--text-dark);">
+                        CURRENT RANK: 
+                        <span style="font-family: var(--font-display); color: ${report.rankColor}; text-shadow: 1px 1px 0px rgba(0,0,0,0.2);">
+                            ${report.rank}
+                        </span>
+                    </p>
+                    <p class="font-bold uppercase" style="color: var(--text-dark);">
+                        TOTAL MASTERY SCORE: 
+                        <span style="color: var(--primary-accent);">${report.totalMastery} POINTS</span>
+                    </p>
+                    <h4 class="font-bold uppercase border-t pt-2 mt-4" style="color: var(--secondary-accent); border-color: var(--secondary-accent);">
+                        TOP SKILL FOCI (TOP 3):
+                    </h4>
+                    <ul class="space-y-1 list-none pl-0">
+                        ${report.topCategories.map(cat => `<li>- ${cat}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        
+        // --- RENDERING FUNCTIONS ---
+        
+        // Function to render the Adventure Log
+        function renderAdventureLog() {
+            const logContainer = document.getElementById('adventure-log');
+            logContainer.innerHTML = ''; // Clear existing content
+            
+            characterData.forEach(item => {
+                // 1. Create Outcomes List
+                const outcomesHtml = item.outcomes.map(outcome => 
+                    `<li class="mb-1">- 🗡️ ${outcome}</li>`
+                ).join('');
+
+                // 2. Create Skills Acquired Badges (Loot) - ADDING ONCLICK & ONHOVER
+                const skillsHtml = item.skills_acquired.map(skill => 
+                    `<span 
+                        class="skill-badge ${getBadgeClass(skill.type)}" 
+                        data-skill-type="${skill.type}" 
+                        onclick="openModal('${skill.name}')"
+                        onmouseenter="playHoverSound()"
+                    >
+                        ✨ ${skill.name}
+                    </span>`
+                ).join('');
+
+                // 3. Assemble the Adventure/Experience Item
+                const itemHtml = `
+                    <div class="experience-item transition duration-300">
+                        <!-- Clickable Header/Summary -->
+                        <div class="experience-header p-2" onclick="toggleQuestDetail('${item.id}')">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full pr-4">
+                                <div>
+                                    <h3 class="text-xl font-bold" style="color: var(--primary-accent);">
+                                        ${item.title}
+                                    </h3>
+                                    <p class="text-base font-semibold" style="color: var(--secondary-accent);">
+                                        ${item.role} <span class="font-normal ml-2" style="color: var(--text-dark); opacity: 0.8;">(${item.location})</span>
+                                    </p>
+                                </div>
+                                <p class="text-base text-right mt-1 md:mt-0" style="color: var(--text-dark);">${item.duration}</p>
+                            </div>
+                            <span id="icon-${item.id}" class="toggle-icon flex-shrink-0" style="color: var(--text-dark);">▶</span>
+                        </div>
+                        
+                        <!-- Collapsible Detail Content -->
+                        <div id="detail-${item.id}" class="experience-detail-content">
+                            <h4 class="text-lg font-semibold mt-4 mb-2 uppercase" style="color: var(--text-dark);">📜 QUEST OUTCOMES:</h4>
+                            <ul class="list-none text-base space-y-2 mb-4 pl-0" style="color: var(--text-dark);">
+                                ${outcomesHtml}
+                            </ul>
+
+                            <h4 class="text-lg font-semibold mt-4 mb-2 uppercase" style="color: var(--text-dark);">💎 LOOT ACQUIRED / SKILLS GAINED:</h4>
+                            <div class="flex flex-wrap">
+                                ${skillsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                logContainer.innerHTML += itemHtml;
+            });
+        }
+        
+        // Function to render the overall Skill Tree Mastery (for the left panel)
+        function renderSkillTree() {
+            const skillTreeContainer = document.getElementById('skill-tree-mastery');
+            let filteredSkills = allSkills;
+
+            if (currentFilter !== 'ALL') {
+                filteredSkills = allSkills.filter(skill => skill.type === currentFilter);
+            }
+            
+            // Render skill with progress bar
+            const skillsHtml = filteredSkills.map(skill => {
+                const masteryPercentage = (skill.mastery / 5) * 100; // Mastery out of 5
+                return `
+                    <div class="mb-3">
+                        <div class="flex items-center justify-between text-base">
+                            <span 
+                                class="font-semibold cursor-pointer" 
+                                style="color: var(--primary-accent);"
+                                onclick="openModal('${skill.name}')"
+                                onmouseenter="playHoverSound()"
+                            >
+                                ${skill.name}
+                            </span>
+                        </div>
+                        <div class="skill-progress-container">
+                            <div class="progress-bar-base">
+                                <div class="progress-bar-fill" style="width: ${masteryPercentage}%;"></div>
+                            </div>
+                            <span class="progress-bar-level">LVL ${skill.mastery}/5</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            skillTreeContainer.innerHTML = skillsHtml;
+        }
+        
+        // Function to render filter buttons
+        function renderSkillFilterMenu() {
+            const menuContainer = document.getElementById('skill-filter-menu');
+            const buttonsHtml = filterMap.map((item, index) => `
+                <button 
+                    class="filter-btn ${item.key === currentFilter ? 'active' : ''}" 
+                    data-filter="${item.key}"
+                    onclick="filterSkills('${item.key}')"
+                    onmouseenter="playHoverSound()"
+                    title="Press ${index + 1}"
+                >
+                    ${index + 1}. ${item.label}
+                </button>
+            `).join('');
+
+            menuContainer.innerHTML = buttonsHtml;
+        }
+
+
+        // Run the rendering function when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial calls
+            renderSkillFilterMenu();
+            renderSkillTree();
+            renderAdventureLog();
+            renderAnalysisReport(); // Render the new analysis report
+            setupMiniMap(); 
+            
+            // Set initial icon
+            document.getElementById('dynamic-avatar-icon').textContent = iconMap[currentFilter];
+
+            // Initialize audio context on first click interaction
+            document.addEventListener('click', initializeAudio, { once: true });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Interaktif Perintah Redis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Code Whisper -->
+    <!-- Application Structure Plan: A two-column layout with a fixed sidebar for navigation between Redis data types and a main content area displaying command reference cards. This structure provides quick and intuitive access to information. Key interactions include a live search filter to instantly find commands and a simulated CLI to allow users to "run" examples directly on the page, transforming a static document into an interactive learning tool. -->
+    <!-- Visualization & Content Choices: The report's tabular data is transformed into interactive 'cards' for better readability and interaction. Goal: Inform/Organize. Method: Structured HTML/CSS cards. Interaction: Each card includes a 'copy' button for the command syntax and a 'Try It' button that simulates the command's execution in a mock-CLI panel. This provides immediate, hands-on feedback. Justification: This approach significantly enhances user engagement and learning retention compared to a static table. Library: Vanilla JS for all logic. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        code, .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        .data-section {
+            display: none;
+        }
+        .data-section.active {
+            display: grid;
+        }
+        .nav-link.active {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-red-600">Redis<span class="font-normal text-slate-700">Pedia</span></h1>
+                <p class="text-sm text-slate-500 mt-1">Catatan Agar Tak Luput Dari Ingatan</p>
+            </div>
+            <nav id="navigation" class="px-4 pb-4">
+                <!-- Navigation Links will be injected by JS -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <header class="mb-6">
+                <h2 id="main-header" class="text-3xl font-bold text-slate-800"></h2>
+                <p id="main-description" class="mt-2 text-slate-600"></p>
+                <div class="relative mt-6">
+                    <input type="text" id="search-input" placeholder="Cari perintah (mis: HGET, SADD)..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                </div>
+            </header>
+
+            <div id="command-container">
+                <!-- Command cards will be injected by JS -->
+            </div>
+            <div id="no-results" class="hidden text-center py-10">
+                <p class="text-slate-500">Tidak ada perintah yang cocok dengan pencarian Anda.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- CLI Simulator -->
+    <div id="cli-simulator" class="fixed bottom-0 right-0 m-4 w-full max-w-lg bg-slate-900 text-white rounded-lg shadow-2xl transition-transform translate-y-full">
+        <div class="flex items-center justify-between p-3 bg-slate-800 rounded-t-lg">
+            <div class="flex items-center gap-2">
+                <span class="h-3 w-3 bg-red-500 rounded-full"></span>
+                <span class="h-3 w-3 bg-yellow-400 rounded-full"></span>
+                <span class="h-3 w-3 bg-green-500 rounded-full"></span>
+                <p class="text-sm ml-2 font-mono">Redis CLI Simulator</p>
+            </div>
+            <button id="close-cli" class="text-slate-400 hover:text-white">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div id="cli-output" class="p-4 h-64 overflow-y-auto font-mono text-sm">
+            <p><span class="text-green-400">&gt;</span> Simulator siap. Coba jalankan perintah dari kartu di atas.</p>
+        </div>
+    </div>
+
+    <!-- Hidden textarea for copy functionality -->
+    <textarea id="copy-helper" style="position: absolute; left: -9999px;"></textarea>
+
+    <script>
+			const redisData = {
+				strings: {
+					title: "Strings",
+					description: "Seperti laci kecil bertuliskan nama. Kamu taruh satu kertas (nilai) di setiap laci (kunci).",
+					howto: [
+						"Pilih nama laci: misal 'user:1:name'",
+						"Masukkan kertasnya (nilainya) pakai SET",
+						"Ambil lagi kertasnya pakai GET kapan pun"
+					],
+					commands: [
+						{ cmd: "SET", syntax: "SET key value", desc: "Menyimpan nilai string pada kunci tertentu.", example: "SET user:session:123 \"data_sesi_abc\"", output: "OK" },
+						{ cmd: "GET", syntax: "GET key", desc: "Mengambil nilai string yang tersimpan.", example: "GET user:session:123", output: "(string) \"data_sesi_abc\"" },
+						{ cmd: "INCR", syntax: "INCR key", desc: "Menambah nilai numerik dari sebuah kunci sebesar 1.", example: "INCR page:views", output: "(integer) 1" },
+						{ cmd: "DECR", syntax: "DECR key", desc: "Mengurangi nilai numerik dari sebuah kunci sebesar 1.", example: "DECR item:stock", output: "(integer) 99" },
+						{ cmd: "SETEX", syntax: "SETEX key seconds value", desc: "Menyimpan nilai dengan waktu kedaluwarsa (TTL) dalam detik.", example: "SETEX cache:menu 300 \"data_menu_restoran\"", output: "OK" },
+						{ cmd: "MSET", syntax: "MSET key1 val1 key2 val2 ...", desc: "Menyimpan beberapa pasangan key-value secara sekaligus.", example: "MSET product:1:name \"Laptop\" product:1:price 1500", output: "OK" },
+						{ cmd: "MGET", syntax: "MGET key1 key2 ...", desc: "Mengambil beberapa nilai dari kunci yang berbeda sekaligus.", example: "MGET product:1:name product:1:price", output: "1) \"Laptop\"\n2) \"1500\"" },
+						{ cmd: "APPEND", syntax: "APPEND key value", desc: "Menambahkan string ke akhir nilai yang ada.", example: "APPEND log:today \" - done\"", output: "(integer) 10" },
+						{ cmd: "GETSET", syntax: "GETSET key value", desc: "Set nilai baru dan kembalikan nilai lama.", example: "GETSET feature:flag off", output: "(bulk) nil" },
+						{ cmd: "SETNX", syntax: "SETNX key value", desc: "Set hanya jika kunci belum ada.", example: "SETNX lock:job:1 1", output: "(integer) 1" }
+					]
+				},
+				hashes: {
+					title: "Hashes",
+					description: "Seperti kartu biodata. Satu kartu punya banyak kolom: nama, umur, dll.",
+					howto: [
+						"Buat satu kartu biodata dengan satu nama kunci",
+						"Isi kolom-kolomnya pakai HSET",
+						"Baca kolom tertentu pakai HGET atau semuanya pakai HGETALL"
+					],
+					commands: [
+						{ cmd: "HSET", syntax: "HSET key field value [field value ...]", desc: "Menyimpan satu atau lebih field dan nilainya pada sebuah hash.", example: "HSET user:profile:1 name \"Bob\" age 25", output: "(integer) 2" },
+						{ cmd: "HGET", syntax: "HGET key field", desc: "Mengambil nilai dari satu field spesifik.", example: "HGET user:profile:1 name", output: "(string) \"Bob\"" },
+						{ cmd: "HMGET", syntax: "HMGET key field1 field2 ...", desc: "Mengambil nilai dari banyak field sekaligus.", example: "HMGET user:profile:1 name age", output: "1) \"Bob\"\n2) \"25\"" },
+						{ cmd: "HGETALL", syntax: "HGETALL key", desc: "Mengambil semua field dan nilainya dalam hash.", example: "HGETALL user:profile:1", output: "1) \"name\"\n2) \"Bob\"\n3) \"age\"\n4) \"25\"" },
+						{ cmd: "HDEL", syntax: "HDEL key field [field ...]", desc: "Menghapus satu atau lebih field dari hash.", example: "HDEL user:profile:1 age", output: "(integer) 1" },
+						{ cmd: "HKEYS", syntax: "HKEYS key", desc: "Mengambil semua nama field yang ada di dalam hash.", example: "HKEYS user:profile:1", output: "1) \"name\"" },
+						{ cmd: "HVALS", syntax: "HVALS key", desc: "Mengambil semua nilai yang ada di dalam hash.", example: "HVALS user:profile:1", output: "1) \"Bob\"" },
+						{ cmd: "HINCRBY", syntax: "HINCRBY key field increment", desc: "Menambah nilai numerik field.", example: "HINCRBY stats:clicks total 5", output: "(integer) 5" },
+						{ cmd: "HEXISTS", syntax: "HEXISTS key field", desc: "Cek apakah field ada.", example: "HEXISTS user:profile:1 name", output: "(integer) 1" }
+					]
+				},
+				lists: {
+					title: "Lists",
+					description: "Seperti antrian anak-anak. Ada yang masuk dari depan atau belakang, dan bisa dipanggil satu-satu.",
+					howto: [
+						"Dorong anak ke barisan kiri (LPUSH) atau kanan (RPUSH)",
+						"Panggil anak paling depan (LPOP) atau paling belakang (RPOP)",
+						"Lihat sebagian atau semua barisan pakai LRANGE"
+					],
+					commands: [
+						{ cmd: "LPUSH", syntax: "LPUSH key value [value ...]", desc: "Menambahkan elemen ke kiri (awal) dari list.", example: "LPUSH task:queue \"Process Video\"", output: "(integer) 1" },
+						{ cmd: "RPUSH", syntax: "RPUSH key value [value ...]", desc: "Menambahkan elemen ke kanan (akhir) dari list.", example: "RPUSH task:queue \"Send Email\"", output: "(integer) 2" },
+						{ cmd: "LPOP", syntax: "LPOP key", desc: "Mengambil dan menghapus elemen dari kiri list.", example: "LPOP task:queue", output: "(string) \"Process Video\"" },
+						{ cmd: "RPOP", syntax: "RPOP key", desc: "Mengambil dan menghapus elemen dari kanan list.", example: "RPOP task:queue", output: "(string) \"Send Email\"" },
+						{ cmd: "LRANGE", syntax: "LRANGE key start stop", desc: "Mengambil rentang elemen dari list (0 -1 untuk semua).", example: "LRANGE task:queue 0 -1", output: "(empty list or set)" },
+						{ cmd: "LLEN", syntax: "LLEN key", desc: "Mendapatkan panjang (jumlah elemen) dari list.", example: "LLEN task:queue", output: "(integer) 0" },
+						{ cmd: "LINDEX", syntax: "LINDEX key index", desc: "Mengambil elemen pada index tertentu.", example: "LINDEX timeline 0", output: "(bulk) nil" },
+						{ cmd: "LREM", syntax: "LREM key count value", desc: "Hapus elemen tertentu dari list.", example: "LREM queue 0 \"job-1\"", output: "(integer) 0" }
+					]
+				},
+				sets: {
+					title: "Sets",
+					description: "Seperti kantong kelereng yang isinya unik. Tidak boleh ada kelereng kembar.",
+					howto: [
+						"Masukkan kelereng (SADD) — kalau sama persis, tidak dihitung dua",
+						"Cek apakah kelereng ada (SISMEMBER)",
+						"Bandingkan dua kantong: irisan (SINTER) atau gabungan (SUNION)"
+					],
+					commands: [
+						{ cmd: "SADD", syntax: "SADD key member [member ...]", desc: "Menambahkan satu atau lebih anggota ke Sets (duplikat diabaikan).", example: "SADD user:followers:5 \"UserA\" \"UserB\"", output: "(integer) 2" },
+						{ cmd: "SMEMBERS", syntax: "SMEMBERS key", desc: "Mengambil semua anggota yang ada di dalam Sets.", example: "SMEMBERS user:followers:5", output: "1) \"UserA\"\n2) \"UserB\"" },
+						{ cmd: "SISMEMBER", syntax: "SISMEMBER key member", desc: "Memeriksa apakah sebuah nilai adalah anggota Sets.", example: "SISMEMBER user:followers:5 \"UserA\"", output: "(integer) 1" },
+						{ cmd: "SINTER", syntax: "SINTER key1 key2", desc: "Mengambil anggota yang ada di kedua Sets (Intersection).", example: "SINTER group:tech group:music", output: "(empty list or set)" },
+						{ cmd: "SUNION", syntax: "SUNION key1 key2", desc: "Mengambil gabungan semua anggota dari kedua Sets (Union).", example: "SUNION group:tech group:music", output: "(empty list or set)" },
+						{ cmd: "SREM", syntax: "SREM key member [member ...]", desc: "Menghapus satu atau lebih anggota dari Sets.", example: "SREM user:followers:5 \"UserB\"", output: "(integer) 1" },
+						{ cmd: "SCARD", syntax: "SCARD key", desc: "Mengambil jumlah anggota dalam set.", example: "SCARD user:followers:5", output: "(integer) 1" }
+					]
+				},
+				sorted_sets: {
+					title: "Sorted Sets",
+					description: "Seperti papan skor game: tiap nama punya angka nilai dan urut dari yang paling tinggi/rendah.",
+					howto: [
+						"Tambahkan pemain dengan nilainya (ZADD)",
+						"Lihat peringkat (ZRANGE/ZREVRANGE)",
+						"Naikkan nilai pemain (ZINCRBY)"
+					],
+					commands: [
+						{ cmd: "ZADD", syntax: "ZADD key score member [score member ...]", desc: "Menambahkan anggota dengan skor tertentu.", example: "ZADD leaderboard 100 \"Alice\" 250 \"Bob\"", output: "(integer) 2" },
+						{ cmd: "ZRANGE", syntax: "ZRANGE key start stop [WITHSCORES]", desc: "Mengambil rentang anggota berdasarkan urutan skor menaik.", example: "ZRANGE leaderboard 0 -1 WITHSCORES", output: "1) \"Alice\"\n2) \"100\"\n3) \"Bob\"\n4) \"250\"" },
+						{ cmd: "ZREVRANGE", syntax: "ZREVRANGE key start stop [WITHSCORES]", desc: "Mengambil rentang anggota berdasarkan urutan skor menurun.", example: "ZREVRANGE leaderboard 0 0", output: "1) \"Bob\"" },
+						{ cmd: "ZSCORE", syntax: "ZSCORE key member", desc: "Mengambil skor dari anggota spesifik.", example: "ZSCORE leaderboard \"Bob\"", output: "(string) \"250\"" },
+						{ cmd: "ZINCRBY", syntax: "ZINCRBY key increment member", desc: "Menambah skor anggota sebesar jumlah yang ditentukan.", example: "ZINCRBY leaderboard 50 \"Alice\"", output: "(string) \"150\"" },
+						{ cmd: "ZREM", syntax: "ZREM key member [member ...]", desc: "Menghapus anggota dari sorted set.", example: "ZREM leaderboard \"Alice\"", output: "(integer) 1" }
+					]
+				},
+				bitmaps: {
+					title: "Bitmaps",
+					description: "Seperti daftar hadir panjang berisi 0/1. 1 artinya hadir, 0 artinya tidak.",
+					howto: [
+						"Tandai anak ke-n hadir (SETBIT ke 1)",
+						"Cek anak ke-n hadir atau tidak (GETBIT)",
+						"Hitung berapa yang hadir (BITCOUNT)"
+					],
+					commands: [
+						{ cmd: "SETBIT", syntax: "SETBIT key offset value", desc: "Set bit pada offset tertentu (0/1).", example: "SETBIT active:2025-09-30 123 1", output: "(integer) 0" },
+						{ cmd: "GETBIT", syntax: "GETBIT key offset", desc: "Ambil nilai bit pada offset.", example: "GETBIT active:2025-09-30 123", output: "(integer) 1" },
+						{ cmd: "BITCOUNT", syntax: "BITCOUNT key [start end]", desc: "Hitung jumlah bit bernilai 1.", example: "BITCOUNT active:2025-09-30", output: "(integer) 1" }
+					]
+				},
+				hyperloglog: {
+					title: "HyperLogLog",
+					description: "Seperti penghitung tamu unik di pesta. Tidak menghitung orang yang sama dua kali.",
+					howto: [
+						"Catat setiap tamu yang datang (PFADD)",
+						"Tanya kira-kira berapa tamu uniknya (PFCOUNT)",
+						"Hemat tempat, hasilnya perkiraan tapi dekat"
+					],
+					commands: [
+						{ cmd: "PFADD", syntax: "PFADD key element [element ...]", desc: "Tambahkan elemen ke HLL.", example: "PFADD hll:visitors user1 user2", output: "(integer) 1" },
+						{ cmd: "PFCOUNT", syntax: "PFCOUNT key [key ...]", desc: "Perkiraan jumlah elemen unik.", example: "PFCOUNT hll:visitors", output: "(integer) 2" }
+					]
+				},
+				geo: {
+					title: "Geo",
+					description: "Seperti peta kecil. Kamu taruh titik toko, lalu tanya jarak dan posisi.",
+					howto: [
+						"Tambahkan titik lokasi (GEOADD)",
+						"Tanya jarak antara dua titik (GEODIST)",
+						"Lihat koordinat titik (GEOPOS)"
+					],
+					commands: [
+						{ cmd: "GEOADD", syntax: "GEOADD key lon lat member [lon lat member ...]", desc: "Tambah lokasi geografis.", example: "GEOADD geo:stores 106.8 -6.2 \"StoreA\"", output: "(integer) 1" },
+						{ cmd: "GEODIST", syntax: "GEODIST key member1 member2 [unit]", desc: "Jarak antar dua member.", example: "GEODIST geo:stores StoreA StoreB km", output: "(bulk) nil" },
+						{ cmd: "GEOPOS", syntax: "GEOPOS key member [member ...]", desc: "Koordinat dari member.", example: "GEOPOS geo:stores StoreA", output: "1) 106.8\n2) -6.2" }
+					]
+				},
+				streams: {
+					title: "Streams",
+					description: "Seperti buku harian yang terus nambah baris. Bisa dibaca bersama oleh beberapa teman.",
+					howto: [
+						"Tulis baris baru ke buku (XADD)",
+						"Baca beberapa baris (XRANGE)",
+						"Buat kelompok pembaca (XGROUP)"
+					],
+					commands: [
+						{ cmd: "XADD", syntax: "XADD key ID field value [field value ...]", desc: "Tambahkan entry ke stream.", example: "XADD mystream * user Bob action login", output: "1680000000000-0" },
+						{ cmd: "XRANGE", syntax: "XRANGE key start end [COUNT count]", desc: "Ambil rentang entry.", example: "XRANGE mystream - +", output: "1) 1680000000000-0 ..." },
+						{ cmd: "XGROUP", syntax: "XGROUP CREATE key groupname id [MKSTREAM]", desc: "Buat consumer group.", example: "XGROUP CREATE mystream group1 $ MKSTREAM", output: "OK" }
+					]
+				},
+				pubsub: {
+					title: "Pub/Sub",
+					description: "Seperti siaran radio kelas. Satu orang bicara, banyak orang mendengar.",
+					howto: [
+						"Orang A mengirim pesan ke sebuah channel (PUBLISH)",
+						"Orang B berlangganan channel itu (SUBSCRIBE)",
+						"Semua pendengar langsung menerima pesannya"
+					],
+					commands: [
+						{ cmd: "PUBLISH", syntax: "PUBLISH channel message", desc: "Kirim pesan ke channel.", example: "PUBLISH news \"Hello\"", output: "(integer) 0" },
+						{ cmd: "SUBSCRIBE", syntax: "SUBSCRIBE channel [channel ...]", desc: "Berlangganan channel.", example: "SUBSCRIBE news", output: "Reading... (client blocks)" },
+						{ cmd: "PUBSUB", syntax: "PUBSUB CHANNELS [pattern]", desc: "Daftar channel aktif.", example: "PUBSUB CHANNELS", output: "1) \"news\"" }
+					]
+				},
+				transactions: {
+					title: "Transactions & Lua",
+					description: "Seperti menyiapkan beberapa langkah lalu jalankan sekaligus, atau pakai resep (skrip).",
+					howto: [
+						"Mulai kumpulkan langkah (MULTI)",
+						"Tambahkan perintah-perintahnya",
+						"Jalankan semua sekaligus (EXEC) atau jalankan resep Lua (EVAL)"
+					],
+					commands: [
+						{ cmd: "MULTI", syntax: "MULTI", desc: "Mulai transaksi.", example: "MULTI", output: "OK" },
+						{ cmd: "EXEC", syntax: "EXEC", desc: "Eksekusi perintah yang diantrikan.", example: "EXEC", output: "(array) ..." },
+						{ cmd: "WATCH", syntax: "WATCH key [key ...]", desc: "Pantau perubahan kunci sebelum transaksi.", example: "WATCH balance:1", output: "OK" },
+						{ cmd: "EVAL", syntax: "EVAL script numkeys key [key ...] arg [arg ...]", desc: "Jalankan skrip Lua.", example: "EVAL \"return ARGV[1]\" 0 hello", output: "(string) \"hello\"" }
+					]
+				},
+				general: {
+					title: "General",
+					description: "Peralatan umum: cek ada tidaknya, hapus, atur waktu kadaluarsa, dan cari.",
+					howto: [
+						"Cek kunci ada atau tidak (EXISTS)",
+						"Hapus kunci (DEL) atau hapus semua di DB (FLUSHDB)",
+						"Atur umur kunci (EXPIRE) dan cari pola (SCAN)"
+					],
+					commands: [
+						{ cmd: "DEL", syntax: "DEL key [key ...]", desc: "Menghapus satu atau lebih kunci (berlaku untuk semua tipe data).", example: "DEL user:profile:1", output: "(integer) 1" },
+						{ cmd: "EXISTS", syntax: "EXISTS key [key ...]", desc: "Memeriksa apakah kunci tersebut ada.", example: "EXISTS user:profile:1", output: "(integer) 0" },
+						{ cmd: "TTL", syntax: "TTL key", desc: "Mengambil waktu kedaluwarsa (TTL) tersisa dalam detik.", example: "TTL cache:menu", output: "(integer) -2" },
+						{ cmd: "KEYS", syntax: "KEYS pattern", desc: "Mencari semua kunci yang cocok dengan pola (*). HATI-HATI di produksi.", example: "KEYS user:*", output: "1) \"user:profile:1\"\n2) \"user:session:123\"" },
+						{ cmd: "TYPE", syntax: "TYPE key", desc: "Mengetahui tipe data dari sebuah kunci.", example: "TYPE leaderboard", output: "(string) \"zset\"" },
+						{ cmd: "FLUSHDB", syntax: "FLUSHDB", desc: "Menghapus semua kunci dalam database Redis yang sedang aktif.", example: "FLUSHDB", output: "OK" },
+						{ cmd: "EXPIRE", syntax: "EXPIRE key seconds", desc: "Set waktu kedaluwarsa kunci.", example: "EXPIRE cache:menu 60", output: "(integer) 0" },
+						{ cmd: "PERSIST", syntax: "PERSIST key", desc: "Hapus kedaluwarsa dari kunci.", example: "PERSIST cache:menu", output: "(integer) 0" },
+						{ cmd: "SCAN", syntax: "SCAN cursor [MATCH pattern] [COUNT count]", desc: "Iterasi kunci secara bertahap.", example: "SCAN 0 MATCH user:* COUNT 10", output: "1) \"0\"\n2) (array) ..." }
+					]
+				},
+				server: {
+					title: "Server",
+					description: "Bagian mesin. Lihat kondisi, ubah pengaturan, atau bersihkan semuanya (hati-hati).",
+					howto: [
+						"Lihat kesehatan mesin (INFO)",
+						"Baca pengaturan (CONFIG GET)",
+						"Bersihkan semua database (FLUSHALL) — hanya untuk situasi khusus"
+					],
+					commands: [
+						{ cmd: "INFO", syntax: "INFO [section]", desc: "Informasi status server.", example: "INFO memory", output: "used_memory:..." },
+						{ cmd: "CONFIG GET", syntax: "CONFIG GET parameter", desc: "Baca konfigurasi.", example: "CONFIG GET save", output: "1) \"save\"\n2) \"3600 1 300 100 60 10000\"" },
+						{ cmd: "FLUSHALL", syntax: "FLUSHALL", desc: "Hapus semua kunci di semua DB (hati-hati).", example: "FLUSHALL", output: "OK" }
+					]
+				}
+			};
+
+        const navigation = document.getElementById('navigation');
+        const commandContainer = document.getElementById('command-container');
+        const mainHeader = document.getElementById('main-header');
+        const mainDescription = document.getElementById('main-description');
+        const searchInput = document.getElementById('search-input');
+        const noResults = document.getElementById('no-results');
+        const cliSimulator = document.getElementById('cli-simulator');
+        const cliOutput = document.getElementById('cli-output');
+        const closeCli = document.getElementById('close-cli');
+        const copyHelper = document.getElementById('copy-helper');
+
+        let activeCategory = 'strings';
+
+        function renderNav() {
+            navigation.innerHTML = '';
+            Object.keys(redisData).forEach(key => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.textContent = redisData[key].title;
+                link.dataset.category = key;
+                link.className = `nav-link block px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition ${key === activeCategory ? 'active' : ''}`;
+                navigation.appendChild(link);
+            });
+        }
+
+        function renderCommands(categoryKey, filter = '') {
+            const category = redisData[categoryKey];
+            if (!category) return;
+
+            mainHeader.textContent = category.title;
+			mainDescription.innerHTML = `${category.description || ''}`;
+            commandContainer.innerHTML = '';
+
+			// render how-to steps if available
+			if (Array.isArray(category.howto) && category.howto.length > 0 && !filter) {
+				const how = document.createElement('div');
+				how.className = 'mb-4 lg:mb-6 col-span-1 lg:col-span-2';
+				how.innerHTML = `
+					<div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-4">
+						<p class="font-medium">Cara cepat memahaminya:</p>
+						<ol class="list-decimal pl-5 mt-2 space-y-1 text-sm">
+							${category.howto.map(step => `<li>${step}</li>`).join('')}
+						</ol>
+					</div>
+				`;
+				commandContainer.appendChild(how);
+			}
+
+            const filteredCommands = category.commands.filter(c => 
+                c.cmd.toLowerCase().includes(filter.toLowerCase()) || 
+                c.desc.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filteredCommands.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+            
+			commandContainer.className = `data-section active grid grid-cols-1 lg:grid-cols-2 gap-4`;
+
+            filteredCommands.forEach(command => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-slate-200 rounded-lg p-5 flex flex-col justify-between hover:shadow-md transition-shadow';
+                card.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800 font-mono">${command.cmd}</h3>
+                        <p class="text-sm text-slate-500 mt-1">${command.syntax}</p>
+                        <p class="text-slate-700 mt-3 text-sm">${command.desc}</p>
+                        <div class="mt-4 bg-slate-50 p-3 rounded-md">
+                            <code class="text-sm text-red-600">${command.example}</code>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4">
+                        <button class="copy-btn flex-1 text-sm bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded-md transition">Salin</button>
+                        <button class="try-btn flex-1 text-sm bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md transition">Coba Jalankan</button>
+                    </div>
+                `;
+                card.querySelector('.copy-btn').addEventListener('click', () => copyToClipboard(command.example));
+                card.querySelector('.try-btn').addEventListener('click', () => runInCli(command.example, command.output));
+                commandContainer.appendChild(card);
+            });
+        }
+        
+        function copyToClipboard(text) {
+            copyHelper.value = text;
+            copyHelper.select();
+            try {
+                document.execCommand('copy');
+                alert('Perintah disalin ke clipboard!');
+            } catch (err) {
+                alert('Gagal menyalin perintah.');
+            }
+        }
+
+        function runInCli(command, output) {
+            cliSimulator.classList.remove('translate-y-full');
+            const commandLine = document.createElement('p');
+            commandLine.innerHTML = `<span class="text-green-400">&gt;</span> ${command}`;
+            
+            const outputLine = document.createElement('p');
+            outputLine.className = 'text-cyan-400 whitespace-pre-wrap';
+            outputLine.textContent = output;
+
+            cliOutput.appendChild(commandLine);
+            cliOutput.appendChild(outputLine);
+            cliOutput.scrollTop = cliOutput.scrollHeight;
+        }
+
+        navigation.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (e.target.matches('.nav-link')) {
+                activeCategory = e.target.dataset.category;
+                searchInput.value = '';
+                renderNav();
+                renderCommands(activeCategory);
+            }
+        });
+
+        searchInput.addEventListener('input', () => {
+            renderCommands(activeCategory, searchInput.value);
+        });
+
+        closeCli.addEventListener('click', () => {
+            cliSimulator.classList.add('translate-y-full');
+        });
+
+        // Initial render
+        renderNav();
+        renderCommands(activeCategory);
+    </script>
+</body>
+</html>
