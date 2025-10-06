@@ -14,6 +14,7 @@
     <meta name="twitter:title" content="Rahadi Sampurna - Project Detail" />
     <meta name="twitter:description" content="Detailed project case studies by Rahadi Sampurna." />
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80" />
+    <script id="ld-json" type="application/ld+json"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -668,6 +669,17 @@
 
             // Populate project overview
             document.getElementById('project-overview').innerHTML = project.overview;
+
+            // Inject JSON-LD for CreativeWork/Project
+            const ld = {
+              "@context": "https://schema.org",
+              "@type": "CreativeWork",
+              "name": project.title,
+              "description": project.overview,
+              "author": { "@type": "Person", "name": "Rahadi Sampurna" },
+              "url": window.location.href
+            };
+            document.getElementById('ld-json').textContent = JSON.stringify(ld);
 
             // Populate project features
             const featuresContainer = document.getElementById('project-features');

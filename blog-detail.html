@@ -14,6 +14,7 @@
     <meta name="twitter:title" content="Rahadi Sampurna - Blog" />
     <meta name="twitter:description" content="Technical articles and guides by Rahadi Sampurna." />
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80" />
+    <script id="ld-json" type="application/ld+json"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,6 +149,7 @@
                 icon: 'fas fa-microservices',
                 gradient: 'from-blue-500 to-indigo-600',
                 tags: ['Golang', 'Microservices', 'Architecture', 'Backend'],
+                cover: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=1200&q=80',
                 content: `
                     <h1>Building Scalable Microservices with Golang</h1>
                     
@@ -272,6 +274,7 @@ func main() {
                 icon: 'fas fa-database',
                 gradient: 'from-green-500 to-emerald-600',
                 tags: ['MongoDB', 'Performance', 'Database', 'Optimization'],
+                cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
                 content: `
                     <h1>MongoDB Performance Optimization Techniques</h1>
                     
@@ -450,6 +453,7 @@ clientOptions.SetMinPoolSize(10)</code></pre>
                 icon: 'fas fa-robot',
                 gradient: 'from-purple-500 to-pink-600',
                 tags: ['AI', 'RAG', 'Backend', 'Machine Learning'],
+                cover: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80',
                 content: `
                     <h1>Integrating AI into Backend Services</h1>
                     
@@ -780,6 +784,7 @@ spec:
                 icon: 'fas fa-chart-line',
                 gradient: 'from-purple-500 to-pink-600',
                 tags: ['JavaScript', 'HTML5', 'Kafka', 'Interactive'],
+                cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
                 content: `
                     <h1>Kafka Simulator - Interactive Learning Tool</h1>
                     
@@ -1023,8 +1028,10 @@ cleanupMessages() {
             const header = document.getElementById('blog-header');
             header.innerHTML = `
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div class="h-64 bg-gradient-to-br ${post.gradient} flex items-center justify-center">
+                    <div class="h-64 bg-cover bg-center" style="background-image:url('${post.cover || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'}');">
+                        <div class="h-full bg-gradient-to-br ${post.gradient} flex items-center justify-center">
                         <i class="${post.icon} text-8xl text-white"></i>
+                        </div>
                     </div>
                     <div class="p-8">
                         <div class="flex items-center justify-between mb-4">
@@ -1045,6 +1052,19 @@ cleanupMessages() {
 
             // Populate blog content
             document.getElementById('blog-content').innerHTML = post.content;
+
+            // Inject JSON-LD for BlogPosting
+            const ld = {
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              "headline": post.title,
+              "image": post.cover,
+              "author": { "@type": "Person", "name": "Rahadi Sampurna" },
+              "publisher": { "@type": "Person", "name": "Rahadi Sampurna" },
+              "datePublished": post.date,
+              "url": window.location.href
+            };
+            document.getElementById('ld-json').textContent = JSON.stringify(ld);
 
             // Populate tags
             document.getElementById('blog-tags').innerHTML = post.tags.map(tag => 
