@@ -359,6 +359,231 @@
             font-style: italic;
         }
 
+        /* Breakdown Container Styling */
+        .breakdown-container {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 12px;
+        }
+
+        .section-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .breakdown-input {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .breakdown-name {
+            flex: 1 1 200px;
+            min-width: 200px;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .breakdown-name:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .breakdown-value {
+            width: 160px;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .breakdown-value:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        .btn-add:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-icon {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .btn-text {
+            font-size: 0.9rem;
+        }
+
+        .breakdown-list {
+            margin-bottom: 16px;
+            min-height: 40px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .breakdown-item:hover {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .breakdown-item-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .breakdown-item-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .breakdown-item-value {
+            color: #28a745;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .breakdown-item-remove {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .breakdown-item-remove:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .breakdown-empty {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 20px;
+            background: white;
+            border: 2px dashed #e9ecef;
+            border-radius: 8px;
+        }
+
+        .breakdown-total {
+            background: white;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .total-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .total-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #28a745;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .total-note {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .breakdown-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .breakdown-name,
+            .breakdown-value {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .btn-add {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .breakdown-item {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            
+            .breakdown-item-info {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+            
+            .breakdown-item-remove {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
         .input-group {
             position: relative;
         }
@@ -1261,7 +1486,7 @@
                         </label>
                         <div class="input-group">
                             <span class="currency-symbol">Rp</span>
-                            <input type="number" id="bbl" placeholder="0" min="0" step="100">
+                            <input type="text" id="bbl" placeholder="0" class="currency-input" data-format="currency">
                         </div>
                         <div class="help-text">Contoh: Bahan baku utama, kemasan primer, bahan penolong yang langsung digunakan untuk membuat produk</div>
                     </div>
@@ -1274,7 +1499,7 @@
                         </label>
                         <div class="input-group">
                             <span class="currency-symbol">Rp</span>
-                            <input type="number" id="btkl" placeholder="0" min="0" step="100">
+                            <input type="text" id="btkl" placeholder="0" class="currency-input" data-format="currency">
                         </div>
                         <div class="help-text">Cara hitung: Total gaji karyawan produksi per bulan ÷ jumlah produk yang dibuat per bulan</div>
                     </div>
@@ -1289,14 +1514,14 @@
                     </label>
                     <div class="input-group">
                         <span class="currency-symbol">Rp</span>
-                        <input type="number" id="bop" placeholder="0" min="0" step="100">
+                        <input type="text" id="bop" placeholder="0" class="currency-input" data-format="currency">
                     </div>
                     <div class="help-text">Termasuk: listrik/air untuk produksi, penyusutan mesin, biaya kemasan primer</div>
                 </div>
 
                 <div class="form-group">
                     <label for="hpp">HPP Inti per Unit (Rp) - Otomatis</label>
-                    <input type="number" id="hpp" readonly style="background: #f8f9fa;">
+                    <input type="text" id="hpp" readonly class="currency-input" data-format="currency" style="background: #f8f9fa;">
                 </div>
 
                 <button class="btn" onclick="calculateHPP()">Hitung HPP</button>
@@ -1313,41 +1538,77 @@
                 <h2 class="section-title">Modul 2: Biaya Operasional Non-Produksi dan Administrasi</h2>
                 
                 <div class="alert alert-info">
-                    <strong>💡 Cara Kerja:</strong> Tambahkan biaya administrasi dan pemasaran yang tidak langsung terkait produksi. Ini akan memberikan gambaran biaya total yang lebih akurat per unit produk.
+                    <strong>💡 Panduan Penggunaan:</strong> Rincikan biaya operasional non-produksi untuk mendapatkan perhitungan COGS yang lebih akurat. Semakin detail rincian, semakin tepat perhitungan harga jual ideal Anda.
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="biaya_admin">Total Biaya Administrasi Bulanan (Rp)</label>
-                        <input type="number" id="biaya_admin" placeholder="0" min="0" step="1000">
-                        <div class="help-text">Contoh: Gaji admin, sewa kantor, internet, software = Rp 5.000.000/bulan</div>
+                        <input type="text" id="biaya_admin" placeholder="0" class="currency-input" data-format="currency">
+                        <div class="help-text">💼 Contoh: Gaji admin, sewa kantor, internet, software = Rp 5.000.000/bulan</div>
                     </div>
                     <div class="form-group">
                         <label for="target_penjualan">Target Penjualan Bulanan (Unit)</label>
-                        <input type="number" id="target_penjualan" placeholder="0" min="1" step="1">
-                        <div class="help-text">Contoh: Target menjual 100 unit produk per bulan</div>
+                        <input type="text" id="target_penjualan" placeholder="0" class="currency-input" data-format="integer">
+                        <div class="help-text">🎯 Contoh: Target menjual 100 unit produk per bulan</div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="biaya_pemasaran">Biaya Pemasaran Non-Marketplace per Unit (Rp)</label>
-                        <input type="number" id="biaya_pemasaran" placeholder="0" min="0" step="100">
-                        <div class="help-text">Contoh: Iklan Facebook, Google Ads = Rp 2.000/unit</div>
+                        <label class="section-label">📢 Biaya Pemasaran Non-Marketplace</label>
+                        <div class="breakdown-container">
+                            <div class="breakdown-input">
+                                <input type="text" id="marketing_item_name" placeholder="Nama biaya (contoh: Iklan Instagram)" class="breakdown-name">
+                                <input type="number" id="marketing_item_value" placeholder="Nominal per unit" min="0" step="100" class="breakdown-value">
+                                <button type="button" class="btn btn-primary btn-add" onclick="addMarketingItem()">
+                                    <span class="btn-icon">+</span>
+                                    <span class="btn-text">Tambah Item</span>
+                                </button>
+                            </div>
+                            <div id="marketing_items_list" class="breakdown-list"></div>
+                            <div class="breakdown-total">
+                                <label class="total-label">Total Pemasaran per Unit</label>
+                                <input type="text" id="biaya_pemasaran" placeholder="0" readonly class="total-input currency-input" data-format="currency">
+                                <div class="total-note">Otomatis dihitung dari rincian di atas</div>
+                            </div>
+                        </div>
+                        <div class="help-text">💡 Contoh: Iklan Facebook, Google Ads, Endorsement mikro, dll.</div>
                     </div>
                     <div class="form-group">
-                        <label for="biaya_pengemasan">Biaya Pengemasan Sekunder per Unit (Rp)</label>
-                        <input type="number" id="biaya_pengemasan" placeholder="0" min="0" step="100">
-                        <div class="help-text">Contoh: Label, bubble wrap, kardus = Rp 1.500/unit</div>
+                        <label class="section-label">📦 Biaya Pengemasan Sekunder</label>
+                        <div class="breakdown-container">
+                            <div class="breakdown-input">
+                                <input type="text" id="packaging_item_name" placeholder="Nama biaya (contoh: Kardus)" class="breakdown-name">
+                                <input type="number" id="packaging_item_value" placeholder="Nominal per unit" min="0" step="100" class="breakdown-value">
+                                <button type="button" class="btn btn-primary btn-add" onclick="addPackagingItem()">
+                                    <span class="btn-icon">+</span>
+                                    <span class="btn-text">Tambah Item</span>
+                                </button>
+                            </div>
+                            <div id="packaging_items_list" class="breakdown-list"></div>
+                            <div class="breakdown-total">
+                                <label class="total-label">Total Pengemasan per Unit</label>
+                                <input type="text" id="biaya_pengemasan" placeholder="0" readonly class="total-input currency-input" data-format="currency">
+                                <div class="total-note">Otomatis dihitung dari rincian di atas</div>
+                            </div>
+                        </div>
+                        <div class="help-text">💡 Contoh: Label, bubble wrap, kardus, stiker, pita, dll.</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="cogs_total">COGS Total per Unit (Rp) - Otomatis</label>
-                    <input type="number" id="cogs_total" readonly style="background: #f8f9fa;">
+                    <label for="cogs_total" class="section-label">💰 Total COGS per Unit</label>
+                    <div class="breakdown-total">
+                        <input type="text" id="cogs_total" readonly class="total-input currency-input" data-format="currency" style="font-size: 1.2rem; color: #007bff;">
+                        <div class="total-note">HPP + Biaya Operasional + Pemasaran + Pengemasan</div>
+                    </div>
                 </div>
 
-                <button class="btn" onclick="calculateCOGS()">Hitung COGS Total</button>
+                <button class="btn btn-primary" onclick="calculateCOGS()" style="margin-top: 20px; padding: 12px 24px; font-size: 1rem; font-weight: 600;">
+                    <span class="btn-icon">🧮</span>
+                    <span class="btn-text">Hitung Total COGS</span>
+                </button>
                 
                 <div id="cogs-summary" class="calculation-summary" style="display: none;">
                     <h4>COGS Total per Unit</h4>
@@ -1407,27 +1668,19 @@
                     </div>
                 </div>
 
-                <div class="marketplace-rates">
-                    <h4>Program Promosi XTRA</h4>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="gratis_ongkir" onchange="updateXTRARates()">
-                        <label for="gratis_ongkir">Gratis Ongkir XTRA (Max 4.0%)</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="cashback_xtra" onchange="updateXTRARates()">
-                        <label for="cashback_xtra">Cashback XTRA (Max 1.4%)</label>
-                    </div>
+                <div class="marketplace-rates" id="promo-container">
+                    <!-- Promo program per marketplace akan di-render oleh JS -->
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="komisi_afiliasi">Estimasi Komisi Afiliasi (%)</label>
-                        <input type="number" id="komisi_afiliasi" placeholder="0" min="0" max="10" step="0.1">
+                        <input type="text" id="komisi_afiliasi" placeholder="0" class="currency-input" data-format="percent">
                         <div class="help-text">Contoh: 5% untuk pembeli setia, 10% untuk pembeli baru</div>
                     </div>
                     <div class="form-group">
                         <label for="persentase_afiliasi">Persentase Transaksi Afiliasi (%)</label>
-                        <input type="number" id="persentase_afiliasi" placeholder="0" min="0" max="100" step="1">
+                        <input type="text" id="persentase_afiliasi" placeholder="0" class="currency-input" data-format="percent">
                         <div class="help-text">Contoh: 30% dari total penjualan berasal dari link afiliasi</div>
                     </div>
                 </div>
@@ -1446,7 +1699,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="omzet_kumulatif">Omzet Kumulatif Tahun Ini (Rp)</label>
-                        <input type="number" id="omzet_kumulatif" placeholder="0" min="0" step="1000000">
+                        <input type="text" id="omzet_kumulatif" placeholder="0" class="currency-input" data-format="currency">
                         <div class="help-text">Contoh: Total penjualan dari Januari sampai sekarang = Rp 300.000.000</div>
                     </div>
                     <div class="form-group">
@@ -1489,7 +1742,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="target_npm">Target Net Profit Margin (%)</label>
-                        <input type="number" id="target_npm" placeholder="15" min="0" max="50" step="0.1">
+                        <input type="number" id="target_npm" placeholder="15" min="0" step="0.1">
                         <div class="help-text">Contoh: 15% = keuntungan bersih 15% dari harga jual</div>
                     </div>
                     <div class="form-group">
@@ -1501,7 +1754,7 @@
 
                 <div class="form-group">
                     <label for="harga_kompetitor">Harga Jual Kompetitor (Rp) - Opsional</label>
-                    <input type="number" id="harga_kompetitor" placeholder="0" min="0" step="1000">
+                    <input type="text" id="harga_kompetitor" placeholder="0" class="currency-input" data-format="currency">
                     <div class="help-text">Contoh: Harga produk serupa di marketplace = Rp 50.000</div>
                 </div>
 
@@ -1642,6 +1895,127 @@
         let komisiAfiliasiRate = 0;
         let pphFinalRate = 0;
         let ppnRate = 0;
+        // Rincian biaya (per unit)
+        let marketingItems = [];
+        let packagingItems = [];
+
+        // Formatter rupiah dan integer
+        const formatRupiah = (num) => {
+            const n = Number(num || 0);
+            return n.toLocaleString('id-ID');
+        };
+        const parseNumber = (str) => {
+            if (typeof str === 'number') return str;
+            if (!str) return 0;
+            // Hapus semua karakter non-digit kecuali titik sebagai pemisah ribuan
+            const cleaned = String(str).replace(/[^0-9]/g, '');
+            return Number(cleaned) || 0;
+        };
+
+        // Apply formatting on inputs with data-format
+        function attachCurrencyFormatters() {
+            document.querySelectorAll('.currency-input[data-format]')
+                .forEach(input => {
+                    const formatType = input.getAttribute('data-format');
+
+                    // On focus: show raw number (unformatted)
+                    input.addEventListener('focus', () => {
+                        const raw = parseNumber(input.value);
+                        input.value = raw ? String(raw) : '';
+                    });
+
+                    // On input: keep only digits
+                    input.addEventListener('input', () => {
+                        const cleaned = input.value.replace(/[^0-9]/g, '');
+                        input.value = cleaned;
+                    });
+
+                    // On blur: format
+                    input.addEventListener('blur', () => {
+                        const raw = parseNumber(input.value);
+                        if (formatType === 'currency') {
+                            input.value = raw ? formatRupiah(raw) : '';
+                        } else if (formatType === 'integer') {
+                            input.value = raw ? formatRupiah(raw) : '';
+                        } else if (formatType === 'percent') {
+                            // keep as plain number without separators for % inputs display
+                            input.value = raw ? String(raw) : '';
+                        }
+                    });
+                });
+        }
+
+        function renderItemList(containerId, items, onRemove) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            if (items.length === 0) {
+                container.innerHTML = '<div class="breakdown-empty">Belum ada rincian. Tambahkan item di atas.</div>';
+                return;
+            }
+            container.innerHTML = items.map((it, idx) => `
+                <div class="breakdown-item">
+                    <div class="breakdown-item-info">
+                        <span class="breakdown-item-name">${it.name || 'Tanpa nama'}</span>
+                        <span class="breakdown-item-value">Rp ${Number(it.value||0).toLocaleString('id-ID')}</span>
+                    </div>
+                    <button type="button" class="breakdown-item-remove" onclick="(${onRemove})(${idx})">Hapus</button>
+                </div>
+            `).join('');
+        }
+
+        function recalcMarketingTotal() {
+            const total = marketingItems.reduce((s, it) => s + (Number(it.value)||0), 0);
+            const field = document.getElementById('biaya_pemasaran');
+            if (field) field.value = total;
+        }
+
+        function recalcPackagingTotal() {
+            const total = packagingItems.reduce((s, it) => s + (Number(it.value)||0), 0);
+            const field = document.getElementById('biaya_pengemasan');
+            if (field) field.value = total;
+        }
+
+        function addMarketingItem() {
+            const name = document.getElementById('marketing_item_name').value.trim();
+            const value = Number(document.getElementById('marketing_item_value').value) || 0;
+            if (!name && value <= 0) return;
+            marketingItems.push({ name, value });
+            document.getElementById('marketing_item_name').value = '';
+            document.getElementById('marketing_item_value').value = '';
+            renderItemList('marketing_items_list', marketingItems, 'removeMarketingItem');
+            recalcMarketingTotal();
+            calculateCOGS();
+            saveDataToLocalStorage();
+        }
+
+        function removeMarketingItem(index) {
+            marketingItems.splice(index, 1);
+            renderItemList('marketing_items_list', marketingItems, 'removeMarketingItem');
+            recalcMarketingTotal();
+            calculateCOGS();
+            saveDataToLocalStorage();
+        }
+
+        function addPackagingItem() {
+            const name = document.getElementById('packaging_item_name').value.trim();
+            const value = Number(document.getElementById('packaging_item_value').value) || 0;
+            if (!name && value <= 0) return;
+            packagingItems.push({ name, value });
+            document.getElementById('packaging_item_name').value = '';
+            document.getElementById('packaging_item_value').value = '';
+            renderItemList('packaging_items_list', packagingItems, 'removePackagingItem');
+            recalcPackagingTotal();
+            calculateCOGS();
+            saveDataToLocalStorage();
+        }
+
+        function removePackagingItem(index) {
+            packagingItems.splice(index, 1);
+            renderItemList('packaging_items_list', packagingItems, 'removePackagingItem');
+            recalcPackagingTotal();
+            calculateCOGS();
+            saveDataToLocalStorage();
+        }
 
         // Fungsi untuk menampilkan notifikasi
         function showNotification(message, type = 'success', duration = 3000) {
@@ -1707,9 +2081,9 @@
 
         // Fungsi untuk validasi data fase 1 (HPP)
         function validatePhase1() {
-            const bbl = parseFloat(document.getElementById('bbl').value) || 0;
-            const btkl = parseFloat(document.getElementById('btkl').value) || 0;
-            const bop = parseFloat(document.getElementById('bop').value) || 0;
+            const bbl = parseNumber(document.getElementById('bbl').value) || 0;
+            const btkl = parseNumber(document.getElementById('btkl').value) || 0;
+            const bop = parseNumber(document.getElementById('bop').value) || 0;
             
             if (bbl === 0 && btkl === 0 && bop === 0) {
                 showNotification('Mohon isi minimal satu komponen biaya (BBL, BTKL, atau BOP)', 'warning');
@@ -1891,12 +2265,12 @@
                 return;
             }
 
-            const bbl = parseFloat(document.getElementById('bbl').value) || 0;
-            const btkl = parseFloat(document.getElementById('btkl').value) || 0;
-            const bop = parseFloat(document.getElementById('bop').value) || 0;
+            const bbl = parseNumber(document.getElementById('bbl').value) || 0;
+            const btkl = parseNumber(document.getElementById('btkl').value) || 0;
+            const bop = parseNumber(document.getElementById('bop').value) || 0;
             
             hpp = bbl + btkl + bop;
-            document.getElementById('hpp').value = hpp.toLocaleString('id-ID');
+            document.getElementById('hpp').value = formatRupiah(hpp);
             
             // Update visual feedback tanpa pop-up
             updateHPPStatus();
@@ -1933,15 +2307,16 @@
                 return;
             }
 
-            const biayaAdmin = parseFloat(document.getElementById('biaya_admin').value) || 0;
-            const targetPenjualan = parseFloat(document.getElementById('target_penjualan').value) || 1;
-            const biayaPemasaran = parseFloat(document.getElementById('biaya_pemasaran').value) || 0;
-            const biayaPengemasan = parseFloat(document.getElementById('biaya_pengemasan').value) || 0;
+            const biayaAdmin = parseNumber(document.getElementById('biaya_admin').value) || 0;
+            const targetPenjualan = parseNumber(document.getElementById('target_penjualan').value) || 1;
+            // Subtotal dari rincian (readonly)
+            const biayaPemasaran = parseNumber(document.getElementById('biaya_pemasaran').value) || 0;
+            const biayaPengemasan = parseNumber(document.getElementById('biaya_pengemasan').value) || 0;
             
             const alokasiAdmin = biayaAdmin / targetPenjualan;
             cogsTotal = hpp + alokasiAdmin + biayaPemasaran + biayaPengemasan;
             
-            document.getElementById('cogs_total').value = cogsTotal.toLocaleString('id-ID');
+            document.getElementById('cogs_total').value = formatRupiah(cogsTotal);
             
             // Update visual feedback tanpa pop-up
             updateCOGSStatus();
@@ -1976,8 +2351,9 @@
             const marketplace = document.getElementById('marketplace').value;
             const kategoriSelect = document.getElementById('kategori_produk');
             
-            // Reset kategori
+            // Reset kategori dan render promo
             kategoriSelect.innerHTML = '<option value="">Pilih Kategori</option>';
+            renderPromoPrograms();
             
             if (marketplace === 'shopee') {
                 kategoriSelect.innerHTML += `
@@ -2074,13 +2450,87 @@
         }
 
         // Fungsi untuk update biaya XTRA
+        function renderPromoPrograms() {
+            const marketplace = document.getElementById('marketplace').value;
+            const promoContainer = document.getElementById('promo-container');
+            if (!promoContainer) return;
+
+            // Default: kosong
+            let html = '';
+            if (marketplace === 'shopee') {
+                html = `
+                    <h4>Program Promosi (Shopee)</h4>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="gratis_ongkir" onchange="updateXTRARates()">
+                        <label for="gratis_ongkir">Gratis Ongkir XTRA (Max 4.0%)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="cashback_xtra" onchange="updateXTRARates()">
+                        <label for="cashback_xtra">Cashback XTRA (Max 1.4%)</label>
+                    </div>`;
+            } else if (marketplace === 'tokopedia') {
+                html = `
+                    <h4>Program Promosi (Tokopedia)</h4>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="bebas_ongkir" onchange="updateXTRARates()">
+                        <label for="bebas_ongkir">Bebas Ongkir (simulasi cap biaya 3.5%)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="topads" onchange="updateXTRARates()">
+                        <label for="topads">TopAds (simulasi biaya 1.0%)</label>
+                    </div>`;
+            } else if (marketplace === 'lazada') {
+                html = `
+                    <h4>Program Promosi (Lazada)</h4>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="free_shipping" onchange="updateXTRARates()">
+                        <label for="free_shipping">Free Shipping (simulasi cap biaya 3.0%)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="coins_cashback" onchange="updateXTRARates()">
+                        <label for="coins_cashback">Coins/Cashback (simulasi biaya 1.0%)</label>
+                    </div>`;
+            } else if (marketplace === 'tiktok') {
+                html = `
+                    <h4>Program Promosi (TikTok Shop)</h4>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="tt_free_shipping" onchange="updateXTRARates()">
+                        <label for="tt_free_shipping">Subsidi Ongkir (simulasi cap biaya 2.5%)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="tt_campaign" onchange="updateXTRARates()">
+                        <label for="tt_campaign">Campaign/Flash Sale (simulasi biaya 1.0%)</label>
+                    </div>`;
+            }
+            promoContainer.innerHTML = html;
+            updateXTRARates();
+        }
+
         function updateXTRARates() {
-            const gratisOngkir = document.getElementById('gratis_ongkir').checked;
-            const cashbackXtra = document.getElementById('cashback_xtra').checked;
-            
+            const marketplace = document.getElementById('marketplace').value;
             biayaXTRA = 0;
-            if (gratisOngkir) biayaXTRA += 4.0;
-            if (cashbackXtra) biayaXTRA += 1.4;
+
+            if (marketplace === 'shopee') {
+                const gratisOngkir = document.getElementById('gratis_ongkir')?.checked;
+                const cashbackXtra = document.getElementById('cashback_xtra')?.checked;
+                if (gratisOngkir) biayaXTRA += 4.0; // cap Shopee
+                if (cashbackXtra) biayaXTRA += 1.4;
+            } else if (marketplace === 'tokopedia') {
+                const bebasOngkir = document.getElementById('bebas_ongkir')?.checked;
+                const topads = document.getElementById('topads')?.checked;
+                if (bebasOngkir) biayaXTRA += 3.5; // asumsi cap simulasi
+                if (topads) biayaXTRA += 1.0;
+            } else if (marketplace === 'lazada') {
+                const freeShipping = document.getElementById('free_shipping')?.checked;
+                const coins = document.getElementById('coins_cashback')?.checked;
+                if (freeShipping) biayaXTRA += 3.0; // asumsi cap simulasi
+                if (coins) biayaXTRA += 1.0;
+            } else if (marketplace === 'tiktok') {
+                const ttFree = document.getElementById('tt_free_shipping')?.checked;
+                const ttCampaign = document.getElementById('tt_campaign')?.checked;
+                if (ttFree) biayaXTRA += 2.5; // asumsi cap simulasi
+                if (ttCampaign) biayaXTRA += 1.0;
+            }
         }
 
         // Fungsi untuk menghitung biaya marketplace
@@ -2093,8 +2543,8 @@
             updateAdminRate();
             updateXTRARates();
             
-            const komisiAfiliasi = parseFloat(document.getElementById('komisi_afiliasi').value) || 0;
-            const persentaseAfiliasi = parseFloat(document.getElementById('persentase_afiliasi').value) || 0;
+            const komisiAfiliasi = parseNumber(document.getElementById('komisi_afiliasi').value) || 0;
+            const persentaseAfiliasi = parseNumber(document.getElementById('persentase_afiliasi').value) || 0;
             
             komisiAfiliasiRate = (komisiAfiliasi * persentaseAfiliasi) / 100;
             
@@ -2122,7 +2572,7 @@
 
         // Fungsi untuk update status PPh
         function updatePPhStatus() {
-            const omzetKumulatif = parseFloat(document.getElementById('omzet_kumulatif').value) || 0;
+            const omzetKumulatif = parseNumber(document.getElementById('omzet_kumulatif').value) || 0;
             const pphStatus = document.getElementById('pph_final_status');
             
             if (omzetKumulatif >= 500000000) {
@@ -2251,7 +2701,7 @@
             showNotification(`Harga jual ideal berhasil dihitung: Rp ${hargaJualKotor.toLocaleString('id-ID')}`, 'success', 5000);
             
             // Cek apakah harga kompetitor ada
-            const hargaKompetitor = parseFloat(document.getElementById('harga_kompetitor').value) || 0;
+            const hargaKompetitor = parseNumber(document.getElementById('harga_kompetitor').value) || 0;
             if (hargaKompetitor > 0) {
                 const selisih = hargaJualKotor - hargaKompetitor;
                 const persentaseSelisih = (selisih / hargaKompetitor) * 100;
@@ -2330,8 +2780,13 @@
         // Fungsi untuk reset semua data
         function resetAllData() {
             if (confirm('Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.')) {
-                // Reset semua input fields
-                document.querySelectorAll('input[type="number"]').forEach(input => {
+                // Hapus notifikasi aktif
+                const existingNotification = document.querySelector('.notification');
+                if (existingNotification) existingNotification.remove();
+
+                // Reset semua input fields (text/number)
+                document.querySelectorAll('input').forEach(input => {
+                    if (input.type === 'checkbox') return; // checkbox di-handle terpisah
                     input.value = '';
                 });
                 
@@ -2353,11 +2808,18 @@
                 komisiAfiliasiRate = 0;
                 pphFinalRate = 0;
                 ppnRate = 0;
+                marketingItems = [];
+                packagingItems = [];
                 
                 // Reset visual feedback
                 document.querySelectorAll('.calculation-summary').forEach(summary => {
                     summary.style.display = 'none';
                 });
+                // Kosongkan subtotal readonly & render ulang list rincian
+                const idsToClear = ['hpp','cogs_total','biaya_pemasaran','biaya_pengemasan'];
+                idsToClear.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                renderItemList('marketing_items_list', marketingItems, 'removeMarketingItem');
+                renderItemList('packaging_items_list', packagingItems, 'removePackagingItem');
                 
                 // Reset results
                 document.getElementById('results').style.display = 'none';
@@ -2367,6 +2829,10 @@
                 showTab('modul1');
                 document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
                 document.querySelector('[onclick="showTab(\'modul1\')"]').classList.add('active');
+                renderPromoPrograms();
+
+                // Hapus data yang tersimpan
+                localStorage.removeItem('kalkulatorHargaJual');
                 
                 showNotification('Semua data telah direset', 'info');
             }
@@ -2419,6 +2885,8 @@ Generated by Kalkulator Harga Jual Ideal UMKM
                 target_penjualan: document.getElementById('target_penjualan').value,
                 biaya_pemasaran: document.getElementById('biaya_pemasaran').value,
                 biaya_pengemasan: document.getElementById('biaya_pengemasan').value,
+                marketing_items: marketingItems,
+                packaging_items: packagingItems,
                 marketplace: document.getElementById('marketplace').value,
                 kategori_produk: document.getElementById('kategori_produk').value,
                 gratis_ongkir: document.getElementById('gratis_ongkir').checked,
@@ -2453,6 +2921,18 @@ Generated by Kalkulator Harga Jual Ideal UMKM
                         }
                     }
                 });
+
+                // Load rincian arrays
+                if (Array.isArray(data.marketing_items)) {
+                    marketingItems = data.marketing_items;
+                    renderItemList('marketing_items_list', marketingItems, 'removeMarketingItem');
+                    recalcMarketingTotal();
+                }
+                if (Array.isArray(data.packaging_items)) {
+                    packagingItems = data.packaging_items;
+                    renderItemList('packaging_items_list', packagingItems, 'removePackagingItem');
+                    recalcPackagingTotal();
+                }
                 
                 // Trigger calculations if data exists
                 if (data.bbl || data.btkl || data.bop) {
@@ -3312,6 +3792,8 @@ Generated by Kalkulator Harga Jual Ideal UMKM
 
         // Auto-calculate saat input berubah
         document.addEventListener('DOMContentLoaded', function() {
+            // Attach currency/integer formatters
+            attachCurrencyFormatters();
             // Load saved data
             loadDataFromLocalStorage();
             
@@ -3335,8 +3817,8 @@ Generated by Kalkulator Harga Jual Ideal UMKM
                 });
             });
             
-            // Auto-calculate COGS saat input berubah
-            ['biaya_admin', 'target_penjualan', 'biaya_pemasaran', 'biaya_pengemasan'].forEach(id => {
+            // Auto-calculate COGS saat input berubah (subtotal readonly dihitung dari rincian)
+            ['biaya_admin', 'target_penjualan'].forEach(id => {
                 const element = document.getElementById(id);
                 element.addEventListener('input', function() {
                     validateInput(this, 0);
@@ -3344,11 +3826,22 @@ Generated by Kalkulator Harga Jual Ideal UMKM
                     saveDataToLocalStorage();
                 });
             });
+
+            // Render awal list rincian
+            renderItemList('marketing_items_list', marketingItems, 'removeMarketingItem');
+            renderItemList('packaging_items_list', packagingItems, 'removePackagingItem');
             
             // Auto-save for other inputs
             ['marketplace', 'kategori_produk', 'komisi_afiliasi', 'persentase_afiliasi', 'omzet_kumulatif', 'target_npm', 'diskon_terencana', 'harga_kompetitor'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
+                    if (id === 'marketplace') {
+                        element.addEventListener('change', () => {
+                            renderPromoPrograms();
+                            saveDataToLocalStorage();
+                        });
+                        return;
+                    }
                     element.addEventListener('change', saveDataToLocalStorage);
                 }
             });
