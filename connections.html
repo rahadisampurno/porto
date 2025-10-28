@@ -1,0 +1,128 @@
+<!-- Connection Info Modal -->
+<div class="connection-info" id="connectionInfo">
+    <h3>Connection Details</h3>
+    <form class="connection-form" id="connectionForm">
+        <input type="text" id="connectionName" placeholder="Connection Name" required>
+        <select id="connectionType">
+            <option value="data">Data Flow</option>
+            <option value="api">API Call</option>
+            <option value="event">Event</option>
+            <option value="sync">Synchronization</option>
+        </select>
+        <textarea id="connectionDescription" placeholder="Description" rows="3"></textarea>
+        <div class="connection-buttons">
+            <button type="button" class="cancel-btn" onclick="closeConnectionInfo()">Cancel</button>
+            <button type="submit" class="save-btn">Save Connection</button>
+        </div>
+    </form>
+</div>
+
+<!-- Arrow Styling Panel -->
+<div class="arrow-styling-panel" id="arrowStylingPanel">
+    <h3>Arrow Styling</h3>
+    
+    <div class="styling-section">
+        <h4>Lebar Guratan</h4>
+        <div class="styling-options">
+            <div class="styling-option stroke-width-option thin" data-width="1">1</div>
+            <div class="styling-option stroke-width-option medium active" data-width="3">3</div>
+            <div class="styling-option stroke-width-option thick" data-width="5">5</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Gaya Guratan</h4>
+        <div class="styling-options">
+            <div class="styling-option stroke-style-option solid active" data-style="solid">—</div>
+            <div class="styling-option stroke-style-option dashed" data-style="dashed">- -</div>
+            <div class="styling-option stroke-style-option dotted" data-style="dotted">· ·</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Kecerobohan</h4>
+        <div class="styling-options">
+            <div class="styling-option roughness-option low active" data-roughness="0">Low</div>
+            <div class="styling-option roughness-option medium" data-roughness="1">Med</div>
+            <div class="styling-option roughness-option high" data-roughness="2">High</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Arrow Type</h4>
+        <div class="styling-options">
+            <div class="styling-option arrow-type-option straight active" data-type="straight">Straight</div>
+            <div class="styling-option arrow-type-option curved" data-type="curved">Curved</div>
+            <div class="styling-option arrow-type-option right-angled" data-type="right-angled">Right Angle</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Mata Panah</h4>
+        <div class="styling-options">
+            <div class="styling-option arrowhead-option triangle active" data-arrowhead="triangle">Triangle</div>
+            <div class="styling-option arrowhead-option circle" data-arrowhead="circle">Circle</div>
+            <div class="styling-option arrowhead-option diamond" data-arrowhead="diamond">Diamond</div>
+        </div>
+    </div>
+
+    <div id="connectionEditorActions" style="display: none;">
+        <div class="styling-options">
+            <button class="styling-option" onclick="resetToGlobalStyle()" style="background: #6b7280; color: white;">
+                Reset ke Global
+            </button>
+            <button class="styling-option" onclick="closeConnectionEditor()" style="background: #ef4444; color: white;">
+                Tutup Editor
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Arrow Style Panel (Excalidraw style) -->
+<div class="floating-arrow-panel" id="floatingArrowPanel">
+    <h4>Style</h4>
+    
+    <div class="styling-section">
+        <h4>Width</h4>
+        <div class="styling-options">
+            <div class="styling-option stroke-width-option thin" data-width="1">1</div>
+            <div class="styling-option stroke-width-option medium active" data-width="3">3</div>
+            <div class="styling-option stroke-width-option thick" data-width="5">5</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Style</h4>
+        <div class="styling-options">
+            <div class="styling-option stroke-style-option solid active" data-style="solid">—</div>
+            <div class="styling-option stroke-style-option dashed" data-style="dashed">- -</div>
+            <div class="styling-option stroke-style-option dotted" data-style="dotted">· ·</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Type</h4>
+        <div class="styling-options">
+            <div class="styling-option arrow-type-option straight active" data-type="straight">↗</div>
+            <div class="styling-option arrow-type-option curved" data-type="curved">⌒</div>
+            <div class="styling-option arrow-type-option right-angled" data-type="right-angled">┐</div>
+        </div>
+    </div>
+
+    <div class="styling-section">
+        <h4>Head</h4>
+        <div class="styling-options">
+            <div class="styling-option arrowhead-option triangle active" data-arrowhead="triangle">▶</div>
+            <div class="styling-option arrowhead-option circle" data-arrowhead="circle">●</div>
+            <div class="styling-option arrowhead-option diamond" data-arrowhead="diamond">◆</div>
+        </div>
+    </div>
+</div>
+
+<!-- Connections List -->
+<div class="connections-list" id="connectionsList">
+    <h4>Connections</h4>
+    <div id="connectionsContainer">
+        <!-- Connections will be added here dynamically -->
+    </div>
+</div>

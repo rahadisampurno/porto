@@ -1,0 +1,141 @@
+<!-- Simulation Panel -->
+<div class="simulation-panel" id="simulationPanel">
+    <div class="simulation-header">
+        <h3>Simulation Progress</h3>
+        <button class="close-btn" onclick="closeSimulation()">×</button>
+    </div>
+    
+    <div class="simulation-content">
+        <div class="simulation-step" id="step1">
+            <div class="step-icon">1</div>
+            <div class="step-content">
+                <h4>Initializing Components</h4>
+                <p>Setting up architecture components...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress1"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulation-step" id="step2">
+            <div class="step-icon">2</div>
+            <div class="step-content">
+                <h4>Establishing Connections</h4>
+                <p>Creating data flow paths...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress2"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulation-step" id="step3">
+            <div class="step-icon">3</div>
+            <div class="step-content">
+                <h4>Calculating Performance</h4>
+                <p>Analyzing throughput and latency...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress3"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulation-step" id="step4">
+            <div class="step-icon">4</div>
+            <div class="step-content">
+                <h4>Cost Analysis</h4>
+                <p>Computing monthly costs...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress4"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulation-step" id="step5">
+            <div class="step-icon">5</div>
+            <div class="step-content">
+                <h4>Generating Report</h4>
+                <p>Creating detailed analysis...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="simulation-results" id="simulationResults" style="display: none;">
+        <h4>Simulation Complete!</h4>
+        <div class="results-grid">
+            <div class="result-card">
+                <h5>Total Cost</h5>
+                <p class="result-value" id="totalCost">$0</p>
+            </div>
+            <div class="result-card">
+                <h5>Performance Score</h5>
+                <p class="result-value" id="performanceScore">0/100</p>
+            </div>
+            <div class="result-card">
+                <h5>Scalability</h5>
+                <p class="result-value" id="scalabilityScore">0/100</p>
+            </div>
+            <div class="result-card">
+                <h5>Security Score</h5>
+                <p class="result-value" id="securityScore">0/100</p>
+            </div>
+        </div>
+        <div class="simulation-actions">
+            <button class="btn btn-primary" onclick="exportSimulation()">Export Report</button>
+            <button class="btn btn-secondary" onclick="closeSimulation()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mini Status Indicator -->
+<div class="mini-status" id="miniStatus">
+    <div class="status-icon">
+        <i class="fas fa-play"></i>
+    </div>
+    <div class="status-text">
+        <span id="statusText">Ready to simulate</span>
+    </div>
+</div>
+
+<!-- Presentation Mode Overlay -->
+<div class="presentation-overlay" id="presentationOverlay">
+    <div class="presentation-header">
+        <h2>Architecture Presentation</h2>
+        <div class="presentation-controls">
+            <button class="presentation-btn" onclick="previousSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="slide-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">1</span>
+            </span>
+            <button class="presentation-btn" onclick="nextSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="presentation-btn" onclick="togglePresentation()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="presentation-content">
+        <div class="presentation-slide active" id="slide1">
+            <h3>Architecture Overview</h3>
+            <div class="slide-content">
+                <!-- Architecture diagram will be shown here -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="presentation-footer">
+        <div class="presentation-notes">
+            <h4>Key Points:</h4>
+            <ul id="presentationNotes">
+                <li>Scalable microservices architecture</li>
+                <li>High availability and fault tolerance</li>
+                <li>Cost-effective cloud deployment</li>
+            </ul>
+        </div>
+    </div>
+</div>

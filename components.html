@@ -1,0 +1,193 @@
+<!-- Component Library Section -->
+<div class="section">
+    <div class="section-header">
+        <h3 class="section-title">Component Library</h3>
+        <span class="section-count" id="componentCount">0</span>
+    </div>
+    
+    <div class="search-box" id="componentSearch" placeholder="Search components..."></div>
+    
+    <div class="component-library" id="componentLibrary">
+        <!-- Cloud Providers -->
+        <div class="component-item" draggable="true" data-type="cloud" data-name="AWS EC2" data-cost="50" data-description="Elastic Compute Cloud">
+            <i class="fab fa-aws"></i>
+            <span>EC2</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cloud" data-name="AWS RDS" data-cost="80" data-description="Relational Database Service">
+            <i class="fas fa-database"></i>
+            <span>RDS</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cloud" data-name="AWS S3" data-cost="20" data-description="Simple Storage Service">
+            <i class="fas fa-cloud"></i>
+            <span>S3</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cloud" data-name="AWS Lambda" data-cost="15" data-description="Serverless Compute">
+            <i class="fas fa-bolt"></i>
+            <span>Lambda</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cloud" data-name="Azure VM" data-cost="45" data-description="Virtual Machine">
+            <i class="fab fa-microsoft"></i>
+            <span>Azure VM</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cloud" data-name="Google Cloud" data-cost="40" data-description="Cloud Platform">
+            <i class="fab fa-google"></i>
+            <span>GCP</span>
+        </div>
+        
+        <!-- Microservices -->
+        <div class="component-item" draggable="true" data-type="service" data-name="API Gateway" data-cost="30" data-description="API Management">
+            <i class="fas fa-door-open"></i>
+            <span>API Gateway</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="service" data-name="Load Balancer" data-cost="25" data-description="Traffic Distribution">
+            <i class="fas fa-balance-scale"></i>
+            <span>Load Balancer</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="service" data-name="Payment Service" data-cost="60" data-description="Payment Processing">
+            <i class="fas fa-credit-card"></i>
+            <span>Payment</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="service" data-name="User Service" data-cost="35" data-description="User Management">
+            <i class="fas fa-users"></i>
+            <span>User Service</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="service" data-name="Notification Service" data-cost="20" data-description="Push Notifications">
+            <i class="fas fa-bell"></i>
+            <span>Notification</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="service" data-name="Analytics Service" data-cost="40" data-description="Data Analytics">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </div>
+        
+        <!-- Databases -->
+        <div class="component-item" draggable="true" data-type="database" data-name="PostgreSQL" data-cost="70" data-description="Relational Database">
+            <i class="fas fa-database"></i>
+            <span>PostgreSQL</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="database" data-name="MongoDB" data-cost="55" data-description="NoSQL Database">
+            <i class="fas fa-leaf"></i>
+            <span>MongoDB</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="database" data-name="Redis" data-cost="30" data-description="In-Memory Cache">
+            <i class="fas fa-memory"></i>
+            <span>Redis</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="database" data-name="Elasticsearch" data-cost="45" data-description="Search Engine">
+            <i class="fas fa-search"></i>
+            <span>Elasticsearch</span>
+        </div>
+        
+        <!-- Message Queues -->
+        <div class="component-item" draggable="true" data-type="queue" data-name="Apache Kafka" data-cost="50" data-description="Message Streaming">
+            <i class="fas fa-stream"></i>
+            <span>Kafka</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="queue" data-name="RabbitMQ" data-cost="35" data-description="Message Broker">
+            <i class="fas fa-rabbit"></i>
+            <span>RabbitMQ</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="queue" data-name="AWS SQS" data-cost="25" data-description="Simple Queue Service">
+            <i class="fas fa-list"></i>
+            <span>SQS</span>
+        </div>
+        
+        <!-- Monitoring -->
+        <div class="component-item" draggable="true" data-type="monitoring" data-name="Prometheus" data-cost="40" data-description="Metrics Collection">
+            <i class="fas fa-chart-bar"></i>
+            <span>Prometheus</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="monitoring" data-name="Grafana" data-cost="30" data-description="Data Visualization">
+            <i class="fas fa-chart-pie"></i>
+            <span>Grafana</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="monitoring" data-name="ELK Stack" data-cost="60" data-description="Log Management">
+            <i class="fas fa-file-alt"></i>
+            <span>ELK Stack</span>
+        </div>
+        
+        <!-- Security -->
+        <div class="component-item" draggable="true" data-type="security" data-name="OAuth 2.0" data-cost="20" data-description="Authentication">
+            <i class="fas fa-shield-alt"></i>
+            <span>OAuth 2.0</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="security" data-name="JWT" data-cost="15" data-description="Token Authentication">
+            <i class="fas fa-key"></i>
+            <span>JWT</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="security" data-name="WAF" data-cost="35" data-description="Web Application Firewall">
+            <i class="fas fa-fire"></i>
+            <span>WAF</span>
+        </div>
+        
+        <!-- CDN & Storage -->
+        <div class="component-item" draggable="true" data-type="cdn" data-name="CloudFront" data-cost="25" data-description="Content Delivery Network">
+            <i class="fas fa-globe"></i>
+            <span>CloudFront</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="cdn" data-name="CloudFlare" data-cost="20" data-description="CDN & Security">
+            <i class="fas fa-cloud-rain"></i>
+            <span>CloudFlare</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="storage" data-name="AWS EBS" data-cost="30" data-description="Elastic Block Store">
+            <i class="fas fa-hdd"></i>
+            <span>EBS</span>
+        </div>
+        
+        <div class="component-item" draggable="true" data-type="storage" data-name="AWS EFS" data-cost="40" data-description="Elastic File System">
+            <i class="fas fa-folder"></i>
+            <span>EFS</span>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Templates Section -->
+<div class="section">
+    <div class="section-header">
+        <h3 class="section-title">Quick Templates</h3>
+        <span class="section-count" id="templateCount">4</span>
+    </div>
+    
+    <div class="template-library">
+        <div class="template-card" onclick="loadTemplate('microservices')">
+            <h4>Microservices Architecture</h4>
+            <p>Complete microservices setup with API Gateway, services, databases, and monitoring</p>
+        </div>
+        
+        <div class="template-card" onclick="loadTemplate('serverless')">
+            <h4>Serverless Architecture</h4>
+            <p>Event-driven serverless architecture with Lambda functions and managed services</p>
+        </div>
+        
+        <div class="template-card" onclick="loadTemplate('monolith')">
+            <h4>Monolithic Architecture</h4>
+            <p>Traditional monolithic application with load balancer and database</p>
+        </div>
+        
+        <div class="template-card" onclick="loadTemplate('event-driven')">
+            <h4>Event-Driven Architecture</h4>
+            <p>Event-driven system with message queues and event processing</p>
+        </div>
+    </div>
+</div>

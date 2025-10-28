@@ -1,0 +1,263 @@
+================================================================================
+                    ARCHITECTURE SIMULATOR - SOLUTION ARCHITECT TOOL
+                              DESKRIPSI LENGKAP FITUR
+================================================================================
+
+OVERVIEW
+--------
+Architecture Simulator adalah aplikasi web interaktif yang dirancang untuk 
+solution architect, developer, dan tim IT untuk merancang, memvisualisasikan, 
+dan mensimulasikan arsitektur perangkat lunak dengan sistem drag-and-drop 
+yang intuitif.
+
+File: architecture-simulator.html
+Ukuran: ~6,842 baris kode
+Teknologi: HTML5, CSS3, JavaScript ES6+, SVG, Font Awesome, Google Fonts
+
+================================================================================
+                                FITUR UTAMA
+================================================================================
+
+1. INTERFACE & LAYOUT
+--------------------
+✓ Header Bar dengan judul aplikasi dan kontrol utama
+✓ Sidebar yang dapat dibuka/tutup (Toggle Sidebar)
+✓ Design responsif untuk desktop, tablet, dan mobile
+✓ UI modern dengan Font Awesome icons dan Google Fonts
+✓ Dukungan tema dark/light
+
+2. COMPONENT LIBRARY (SIDEBAR)
+------------------------------
+✓ 12 Komponen Cloud yang dapat di-drag:
+  • AWS EC2 ($50/mo) - Virtual Machine
+  • AWS RDS ($80/mo) - Database
+  • AWS Lambda ($20/mo) - Serverless Function
+  • Azure VM ($45/mo) - Virtual Machine
+  • Load Balancer ($30/mo) - Load Distribution
+  • API Gateway ($25/mo) - API Management
+  • Redis Cache ($40/mo) - Caching
+  • MongoDB ($60/mo) - NoSQL Database
+  • Apache Kafka ($70/mo) - Message Broker
+  • WAF ($35/mo) - Web Application Firewall
+  • CDN ($15/mo) - Content Delivery Network
+
+✓ Fungsi pencarian komponen real-time
+✓ Modal detail komponen dengan spesifikasi lengkap
+✓ Drag & drop ke canvas utama
+
+3. QUICK TEMPLATES (4 TEMPLATE)
+-------------------------------
+✓ Web App Template:
+  Load Balancer → 2x EC2 → RDS & Redis
+
+✓ Microservices Template:
+  API Gateway → 3x Services → Kafka → 2x Databases
+
+✓ Serverless Template:
+  API Gateway → Main Lambda → 2x Other Lambdas → RDS
+
+✓ Data Pipeline Template:
+  Kafka → Data Processor → 3x Databases
+
+✓ Koneksi otomatis untuk setiap template
+
+4. CANVAS & INTERACTION
+-----------------------
+✓ Interactive canvas sebagai area utama
+✓ Drag & drop komponen dengan mouse
+✓ Multi-select komponen dengan Ctrl+Click
+✓ Grid overlay untuk bantuan alignment
+✓ Kontrol zoom: Zoom In, Zoom Out, Reset, Fit to Screen
+✓ Pan mode untuk navigasi canvas
+
+5. CONNECTION SYSTEM
+-------------------
+✓ Koneksi manual dengan drag connection points
+✓ Koneksi otomatis pada template
+✓ Tipe koneksi: Data flow, API calls, database connections
+✓ Visual arrows berbasis SVG dengan arrowhead
+✓ Info koneksi dengan nama dan deskripsi
+
+6. SIMULATION & ANALYTICS
+-------------------------
+✓ Simulasi data flow dengan animasi
+✓ Alur data berurutan sesuai koneksi
+✓ Visual feedback dengan highlighting komponen aktif
+✓ Animasi paket data bergerak
+✓ Monitoring performa real-time
+
+7. METRICS & MONITORING
+-----------------------
+✓ Total Cost/Month - Kalkulasi biaya total
+✓ Performance Score - Skor performa (0-100%)
+✓ Scalability Level - Basic, Good, Excellent
+✓ Security Level - High, Very High
+✓ Component Count - Jumlah komponen aktif
+
+8. PRESENTATION MODE
+--------------------
+✓ Mode presentasi layar penuh
+✓ Interface bersih tanpa sidebar
+✓ Kontrol navigasi presentasi
+✓ Siap untuk export presentasi
+
+9. TUTORIAL & HELP
+------------------
+✓ Tutorial interaktif 4-step
+✓ Panduan penggunaan step-by-step
+✓ Daftar keyboard shortcuts
+✓ Overlay bantuan kontekstual
+
+10. KEYBOARD SHORTCUTS
+----------------------
+✓ Ctrl+Z - Undo
+✓ Ctrl+Y - Redo
+✓ Delete - Hapus komponen terpilih
+✓ Ctrl+S - Save
+✓ Ctrl+Shift+C - Clear canvas
+✓ H - Toggle hand mode
+✓ Escape - Close modals
+
+11. EXPORT & SAVE
+-----------------
+✓ Export arsitektur ke format JSON
+✓ Auto-save ke localStorage
+✓ Riwayat proyek terbaru
+✓ Load proyek yang tersimpan
+
+12. VISUAL FEATURES
+-------------------
+✓ Animasi smooth dan transisi halus
+✓ Efek hover pada komponen
+✓ Feedback visual untuk interaksi
+✓ Color coding untuk kategori komponen
+✓ Efek bayangan dan kedalaman
+
+13. ADVANCED FEATURES
+---------------------
+✓ Component Info Modal dengan detail lengkap
+✓ Connection Editor untuk mengatur koneksi
+✓ Arrow Styling untuk kustomisasi panah
+✓ Zoom Level Indicator
+✓ Tool Mode Indicator
+
+14. RESPONSIVE DESIGN
+---------------------
+✓ Optimized untuk perangkat mobile
+✓ Dukungan untuk tablet
+✓ Layout yang fleksibel
+✓ Dukungan touch untuk mobile
+
+15. USER EXPERIENCE
+-------------------
+✓ Interface yang intuitif
+✓ Update real-time
+✓ Performa yang smooth
+✓ Penanganan error yang baik
+✓ Sistem notifikasi
+
+================================================================================
+                            TEKNOLOGI YANG DIGUNAKAN
+================================================================================
+
+FRONTEND:
+- HTML5 untuk struktur aplikasi
+- CSS3 untuk styling dan animasi
+- JavaScript ES6+ untuk logika aplikasi
+- SVG untuk graphics dan koneksi
+
+LIBRARIES & FRAMEWORKS:
+- Font Awesome untuk icons
+- Google Fonts (Inter, Kalam) untuk typography
+- LocalStorage untuk penyimpanan lokal
+
+================================================================================
+                              TARGET PENGGUNA
+================================================================================
+
+PRIMARY USERS:
+- Solution Architects - Merancang arsitektur sistem
+- Software Developers - Memahami arsitektur aplikasi
+- DevOps Engineers - Merancang infrastruktur
+- Project Managers - Visualisasi proyek IT
+
+SECONDARY USERS:
+- Students - Belajar arsitektur perangkat lunak
+- Technical Consultants - Presentasi arsitektur
+- System Administrators - Perencanaan infrastruktur
+
+================================================================================
+                              CARA PENGGUNAAN
+================================================================================
+
+1. MEMULAI:
+   - Buka file architecture-simulator.html di browser
+   - Klik "Tutorial" untuk panduan lengkap
+   - Pilih quick template atau mulai dari scratch
+
+2. MERANCANG ARSITEKTUR:
+   - Drag komponen dari sidebar ke canvas
+   - Hubungkan komponen dengan connection points
+   - Atur posisi komponen sesuai kebutuhan
+
+3. SIMULASI:
+   - Klik tombol "Simulate" untuk menjalankan simulasi
+   - Lihat data flow dan animasi perpindahan data
+   - Monitor metrics dan performa real-time
+
+4. PRESENTASI:
+   - Gunakan mode "Present" untuk presentasi
+   - Export arsitektur untuk dokumentasi
+   - Simpan proyek untuk referensi masa depan
+
+================================================================================
+                              KEUNGGULAN
+================================================================================
+
+✓ Interface yang sangat intuitif dan mudah digunakan
+✓ Visualisasi arsitektur yang jelas dan profesional
+✓ Simulasi data flow yang realistis
+✓ Template siap pakai untuk berbagai skenario
+✓ Responsive design untuk semua perangkat
+✓ Export dan save functionality yang lengkap
+✓ Tutorial dan help system yang komprehensif
+✓ Performance monitoring yang real-time
+
+================================================================================
+                              KETERBATASAN
+================================================================================
+
+- Hanya berjalan di browser (tidak ada versi desktop)
+- Memerlukan koneksi internet untuk Font Awesome dan Google Fonts
+- Simulasi terbatas pada visual flow (tidak ada testing real)
+- Export hanya dalam format JSON (tidak ada PDF/PNG)
+
+================================================================================
+                              KESIMPULAN
+================================================================================
+
+Architecture Simulator adalah tool yang sangat komprehensif dan powerful 
+untuk merancang arsitektur perangkat lunak. Dengan interface yang intuitif, 
+fitur simulasi yang canggih, dan dukungan untuk berbagai skenario arsitektur, 
+tool ini sangat cocok untuk solution architect dan tim IT dalam merancang, 
+menganalisis, dan mempresentasikan arsitektur sistem.
+
+File ini merupakan single-page application yang lengkap dengan semua fitur 
+yang diperlukan untuk merancang arsitektur perangkat lunak modern.
+
+================================================================================
+                              INFORMASI TEKNIS
+================================================================================
+
+File Size: ~6,842 lines
+Dependencies: Font Awesome 6.0.0, Google Fonts
+Browser Support: Modern browsers (Chrome, Firefox, Safari, Edge)
+Mobile Support: Yes (responsive design)
+Offline Capability: Partial (requires internet for fonts)
+
+Last Updated: 2024
+Version: 1.0
+Author: Architecture Simulator Team
+License: Open Source
+
+================================================================================
